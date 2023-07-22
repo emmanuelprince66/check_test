@@ -1,0 +1,18 @@
+.gpt3__q {
+display: flex;
+justify-content: space-between;
+align-items: center;
+margin:0.5rem 0 1.5rem 0 ;
+}
+
+
+.gpt3__q-item  a{
+display: flex;
+flex-direction: column;
+align-items: center;
+justify-content: center;
+gap: 0.4rem;
+}
+.gpt3__q-item a p {
+font-weight: 600;
+}
