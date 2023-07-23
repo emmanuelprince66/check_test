@@ -15,7 +15,6 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import AddRoundedIcon from "@mui/icons-material/AddRounded";
 import { Modal } from "@mui/material";
 import { AuthProvider } from "../../util/AuthContext";
-import alwaysp from "../../images/practise/alwaysp.svg";
 import xflow from "../../images/practise/xflow.svg";
 import "./Cart.css";
 import { useSelector } from "react-redux";
@@ -23,6 +22,7 @@ import CartItem from "../../components/CartItem";
 import NoResult from "../../components/NoResult";
 import { removeFromCart } from "../../util/slice/CartSlice";
 import { useDispatch } from "react-redux";
+import alwaysp from "../../images/alwaysp.svg";
 
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
@@ -129,7 +129,15 @@ const Cart = () => {
                 >
                   <Box sx={{ display: "flex", gap: "6px" }}>
                     <Box>
-                      <img className="img" src={alwaysp} alt="ap" />
+                      <img
+                        className="img"
+                        src={
+                          item.productImage === null
+                            ? alwaysp
+                            : item.productImage
+                        }
+                        alt="ap"
+                      />
                     </Box>
 
                     <Box
