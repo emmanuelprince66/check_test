@@ -42,7 +42,7 @@ const Scanner = ({ superMarketId }) => {
     const isValueInArray = cart.some((item) => item.id === data.id);
 
     if (isValueInArray) {
-      notify("Item is already in cart");
+      notifyWarn("Item is already in cart");
       setOpen(false);
     } else {
       dispatch(addToCart(data));
@@ -54,7 +54,19 @@ const Scanner = ({ superMarketId }) => {
   const notify = (message) => {
     toast.success(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+  const notifyWarn = (message) => {
+    toast.warn(message, {
+      position: "top-center",
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
