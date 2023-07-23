@@ -2,7 +2,6 @@ import React from "react";
 import QrReader from "react-qr-scanner";
 import { Box } from "@mui/material";
 import useSuperMarketP from "../../hooks/useSuperMarketP";
-import { useMyContext } from "../../util/ScanContext";
 import { Modal, Button, Card, Typography } from "@mui/material";
 import alwaysp from "../../images/alwaysp.svg";
 import { useTheme } from "@mui/material";
@@ -13,9 +12,16 @@ import Quagga from "quagga";
 import { CircularProgress } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { addToCart } from "../../util/slice/CartSlice";
+import { useSelector } from "react-redux";
 
 const Scanner = ({ superMarketId }) => {
+  const cart = useSelector((state) => state.cart);
+
   const [result, setResult] = useState("");
+  const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
   const [count, setCount] = React.useState(0);
@@ -24,13 +30,38 @@ const Scanner = ({ superMarketId }) => {
   const handleClose = () => setOpen(false);
 
   const superMarketP = useSuperMarketP(superMarketId, result ? result : "");
-  // console.log(superMarketP.data);
 
   const currentTheme = useTheme();
   const decrement = () => {
     if (count > 0) {
       setCount(count - 1);
     }
+  };
+
+  const handleAddToCart = (data) => {
+    const isValueInArray = cart.some((item) => item.id === data.id);
+
+    if (isValueInArray) {
+      notify("Item is already in cart");
+      setOpen(false);
+    } else {
+      dispatch(addToCart(data));
+      notify("Item added to cart");
+      setOpen(false);
+    }
+  };
+
+  const notify = (message) => {
+    toast.success(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   useEffect(() => {
@@ -70,19 +101,6 @@ const Scanner = ({ superMarketId }) => {
       Quagga.stop();
     };
   }, []);
-
-  const notify = (message) => {
-    toast.success(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
 
   return (
     <>
@@ -256,7 +274,9 @@ const Scanner = ({ superMarketId }) => {
             </Card>
 
             <Button
-              onClick={() => notify("Items added to cart")}
+              onClick={() =>
+                handleAddToCart(superMarketP.data ? superMarketP.data : "")
+              }
               sx={{
                 height: "36px",
                 background: "#F6473C",

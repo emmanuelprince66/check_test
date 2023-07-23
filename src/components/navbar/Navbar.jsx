@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect, useState } from "react";
 import { Link, useMatch } from "react-router-dom";
 import hutLogo from "../../images/hutNoColor.svg";
 import sideArrow from "../../images/sideArrow.svg";
@@ -10,9 +10,13 @@ import { Card, Typography } from "@mui/material";
 import { useTheme } from "@mui/material";
 import BookmarkAddRoundedIcon from "@mui/icons-material/BookmarkAddRounded";
 import styled from "@emotion/styled";
+import { useSelector } from "react-redux";
+import { Box } from "@mui/material";
 
 const Navbar = () => {
   const currentTheme = useTheme();
+  const cartItem = useSelector((state) => state.cart);
+  const [numOfItem, setNumOfItem] = useState("");
 
   const MyTypography = styled(Typography)(({ theme }) => ({
     color: currentTheme.palette.type === "light" ? "#373737" : "#fff",
@@ -27,6 +31,11 @@ const Navbar = () => {
   const cartMatch = useMatch("/cart");
   const profileMatch = useMatch("/profile");
   const ordersMatch = useMatch("/orders");
+
+  useEffect(() => {
+    const val = cartItem.length;
+    setNumOfItem(val);
+  }, [cartItem]);
 
   return (
     <div className="gpt3__nav">
@@ -88,6 +97,18 @@ const Navbar = () => {
             </Link>
           </li>
           <li>
+            <Box
+              sx={{
+                position: "absolute",
+                // bottom: "2.5rem",
+                left: "66%",
+                color: "#DC0019",
+                top: "0.6rem",
+                fontWeight: "900",
+              }}
+            >
+              {numOfItem === 0 ? "" : numOfItem}
+            </Box>
             <Link
               to="/cart"
               className={cartMatch ? "active-link" : ""}

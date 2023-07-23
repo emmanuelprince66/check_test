@@ -14,149 +14,149 @@ import {
 } from "@mui/material";
 import { useTheme } from "@mui/material";
 import "./Scan.css";
-import { useParams } from "react-router-dom";
 import useSuperMarket from "../../hooks/useSuperMarket";
-import useSuperMarketP from "../../hooks/useSuperMarketP";
-import { MyContextProvider } from "../../util/ScanContext";
-import { useMyContext } from "../../util/ScanContext";
+import { useNavigate } from "react-router-dom";
 
 const Scan = () => {
-  const { superMarketKey } = useParams();
-
+  const navigate = useNavigate();
+  const [superMarketKey, setSuperMarketKey] = useState("");
   const superMarket = useSuperMarket(superMarketKey);
+
   const currentTheme = useTheme();
+  useEffect(() => {
+    const val = localStorage.getItem("myData");
+    val ? setSuperMarketKey(val) : navigate("/home");
+  }, []);
+
   return (
     <AuthProvider>
-      <MyContextProvider>
-        <Box
+      <Box
+        sx={{
+          maxWidth: "31%",
+          mx: "auto",
+          marginTop: "1rem",
+          maxWidth: { xs: "100%", sm: "100%", md: "31%" },
+        }}
+      >
+        <Container
           sx={{
-            maxWidth: "31%",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            alignItems: "start",
             mx: "auto",
-            marginTop: "1rem",
-            maxWidth: { xs: "100%", sm: "100%", md: "31%" },
+            width: { xs: "90%", sm: "70%", md: "100%" },
+            padding: 0,
+            marginBottom: "4rem",
           }}
         >
-          <Container
+          <Box
             sx={{
               display: "flex",
-              flexDirection: "column",
-              justifyContent: "center",
-              alignItems: "start",
-              mx: "auto",
-              width: { xs: "90%", sm: "70%", md: "100%" },
-              padding: 0,
-              marginBottom: "4rem",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+            }}
+          >
+            <Box>
+              <BackArrow destination="/home" />
+            </Box>
+          </Box>
+
+          <Card
+            sx={{
+              height: "70px",
+              width: "100%",
+              borderRadius: "16px",
+              padding: "0.5rem",
+              marginY: "1rem",
+              backgroundColor:
+                currentTheme.palette.type === "light" ? "#fff" : "#333333",
             }}
           >
             <Box
               sx={{
+                width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                width: "100%",
-              }}
-            >
-              <Box>
-                <BackArrow destination="/home" />
-              </Box>
-            </Box>
-
-            <Card
-              sx={{
-                height: "70px",
-                width: "100%",
-                borderRadius: "16px",
-                padding: "0.5rem",
-                marginY: "1rem",
-                backgroundColor:
-                  currentTheme.palette.type === "light" ? "#fff" : "#333333",
               }}
             >
               <Box
                 sx={{
-                  width: "100%",
                   display: "flex",
-                  justifyContent: "space-between",
-                  alignItems: "center",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "start",
+                  flex: "4",
                 }}
               >
-                <Box
+                <Typography
                   sx={{
-                    display: "flex",
-                    justifyContent: "center",
-                    flexDirection: "column",
-                    alignItems: "start",
-                    flex: "4",
+                    fontFamily: "raleWay",
+                    fontWeight: "600",
                   }}
                 >
+                  {superMarket.data ? superMarket.data.companyName : "NIL"}
+                </Typography>
+
+                <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   <Typography
                     sx={{
-                      fontFamily: "raleWay",
+                      color: "#000",
                       fontWeight: "600",
+                      fontFamily: "raleWay",
                     }}
                   >
-                    {superMarket.data ? superMarket.data.companyName : "NIL"}
+                    Total value in cart :
                   </Typography>
-
-                  <Box
-                    sx={{ display: "flex", alignItems: "center", gap: "4px" }}
+                  <Typography
+                    sx={{
+                      color: "#000",
+                      fontWeight: "600",
+                      fontFamily: "raleWay",
+                      color: "red",
+                    }}
                   >
-                    <Typography
-                      sx={{
-                        color: "#000",
-                        fontWeight: "600",
-                        fontFamily: "raleWay",
-                      }}
-                    >
-                      Total value in cart :
-                    </Typography>
-                    <Typography
-                      sx={{
-                        color: "#000",
-                        fontWeight: "600",
-                        fontFamily: "raleWay",
-                        color: "red",
-                      }}
-                    >
-                      &#8358;0
-                    </Typography>
-                  </Box>
+                    &#8358;0
+                  </Typography>
                 </Box>
               </Box>
-            </Card>
-
-            <Box
-              sx={{
-                minWidth: "100%",
-                minHeight: "100%",
-                overflow: "hidden",
-                display: "flex",
-                padding: "0.5rem",
-                justifyContent: "center",
-                alignItems: "center",
-                border: `2px hidden ${
-                  currentTheme.palette.type === "light" ? "#000" : "#fff"
-                }`,
-                padding: "1rem",
-              }}
-            >
-              {/* Bar code scanner starts */}
-
-              <Scanner
-                superMarketId={
-                  superMarket.data ? superMarket.data.inventoryName : ""
-                }
-              />
-              {/* Bar code scanner stops */}
             </Box>
-          </Container>
-          <ToastContainer />
-        </Box>
+          </Card>
 
-        {/* NAVBAR */}
+          <Box
+            sx={{
+              minWidth: "100%",
+              minHeight: "100%",
+              overflow: "hidden",
+              display: "flex",
+              padding: "0.5rem",
+              justifyContent: "center",
+              alignItems: "center",
+              border: `2px hidden ${
+                currentTheme.palette.type === "light" ? "#000" : "#fff"
+              }`,
+              padding: "1rem",
+            }}
+          >
+            {/* Bar code scanner starts */}
 
-        <Navbar />
-      </MyContextProvider>
+            <Scanner
+              superMarketId={
+                superMarket.data ? superMarket.data.inventoryName : ""
+              }
+            />
+            {/* Bar code scanner stops */}
+          </Box>
+        </Container>
+
+        <ToastContainer />
+      </Box>
+
+      {/* NAVBAR */}
+
+      <Navbar />
     </AuthProvider>
   );
 };

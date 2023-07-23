@@ -49,6 +49,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
 
   const handleLogOut = () => {
     Cookies.remove("authToken");
+    localStorage.clear();
     navigate("/");
   };
 

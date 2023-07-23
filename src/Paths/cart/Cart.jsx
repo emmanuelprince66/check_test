@@ -18,14 +18,28 @@ import { AuthProvider } from "../../util/AuthContext";
 import alwaysp from "../../images/practise/alwaysp.svg";
 import xflow from "../../images/practise/xflow.svg";
 import "./Cart.css";
+import { useSelector } from "react-redux";
+import CartItem from "../../components/CartItem";
+import NoResult from "../../components/NoResult";
+import { removeFromCart } from "../../util/slice/CartSlice";
+import { useDispatch } from "react-redux";
 
 const Cart = () => {
+  const cart = useSelector((state) => state.cart);
+  const dispatch = useDispatch();
+
+  console.log(cart);
+
   const [showPackage, setShowPackage] = useState(true);
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
 
   const [count, setCount] = useState(0);
+
+  const handleRemoveFromCart = (item) => {
+    dispatch(removeFromCart(item));
+  };
 
   const decrement = () => {
     if (count > 0) {
@@ -91,390 +105,147 @@ const Cart = () => {
               width: "100%",
             }}
           >
-            <Card
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "start",
-                width: "100%",
-                padding: "4px",
-                background:
-                  currentTheme.palette.type === "light" ? "#fff" : "#262626",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "6px" }}>
-                <Box>
-                  <img className="img" src={alwaysp} alt="ap" />
-                </Box>
-
-                <Box
+            {cart.length === 0 ? (
+              <NoResult
+                notification="You have no item in your cart"
+                smallText="proceed to scan to add items"
+                buttonText="Proceed"
+                linkText="/scan"
+              />
+            ) : (
+              cart.map((item) => (
+                <Card
                   sx={{
                     display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "start",
+                    justifyContent: "space-between",
                     alignItems: "start",
-                    gap: "3px",
+                    width: "100%",
+                    padding: "4px",
+                    background:
+                      currentTheme.palette.type === "light"
+                        ? "#fff"
+                        : "#262626",
                   }}
                 >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: "3px",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <Typography
+                  <Box sx={{ display: "flex", gap: "6px" }}>
+                    <Box>
+                      <img className="img" src={alwaysp} alt="ap" />
+                    </Box>
+
+                    <Box
                       sx={{
-                        fontFamily: "raleWay",
-                        fontSize: "12px",
-                        fontWeight: 400,
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "start",
+                        alignItems: "start",
+                        gap: "3px",
                       }}
                     >
-                      Always Sanitary Pad
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        fontSize: " 10px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      (size 10g)
-                    </Typography>
+                      <Box
+                        sx={{
+                          display: "flex",
+                          gap: "3px",
+                          alignItems: "baseline",
+                        }}
+                      >
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            fontSize: "12px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          {item.description}
+                        </Typography>
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            fontSize: " 10px",
+                            fontWeight: 400,
+                          }}
+                        >
+                          (size {item.weight}g)
+                        </Typography>
+                      </Box>
+
+                      {/* Price */}
+                      <Typography
+                        sx={{
+                          color: "#F79E1B",
+                          fontFamily: "raleWay",
+                          fontSize: "16px",
+                          fontWeight: 600,
+                        }}
+                      >
+                        &#8358;{item.price}
+                      </Typography>
+                      {/* Price end */}
+
+                      {/* Counter */}
+                      <Box
+                        sx={{
+                          display: "flex",
+                          background:
+                            currentTheme.palette.type === "light"
+                              ? "#fAFAFA"
+                              : "#000",
+                          borderRadius: "39px",
+                          justifyContent: "space-between",
+                          alignItems: "center",
+                        }}
+                      >
+                        <Button
+                          size="small"
+                          onClick={decrement}
+                          sx={{
+                            color:
+                              currentTheme.palette.type === "light"
+                                ? "#000"
+                                : "#fff",
+                            fontWeight: "900",
+                            padding: "0",
+                          }}
+                        >
+                          -
+                        </Button>
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            color:
+                              currentTheme.palette.type === "light"
+                                ? "#000"
+                                : "#fff",
+                            fomtWeight: "900",
+                            mx: "1ch",
+                          }}
+                        >
+                          {count}
+                        </Typography>
+                        <Button
+                          size="small"
+                          onClick={() => setCount(count + 1)}
+                          sx={{
+                            borderRadius: "36px",
+                            color:
+                              currentTheme.palette.type === "light"
+                                ? "#000"
+                                : "#fff",
+                            padding: "0",
+                          }}
+                        >
+                          +
+                        </Button>
+                      </Box>
+                      {/* Counter ends */}
+                    </Box>
                   </Box>
 
-                  {/* Price */}
-                  <Typography
-                    sx={{
-                      color: "#F79E1B",
-                      fontFamily: "raleWay",
-                      fontSize: "16px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    &#8358;1,900
-                  </Typography>
-                  {/* Price end */}
-
-                  {/* Counter */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      background:
-                        currentTheme.palette.type === "light"
-                          ? "#fAFAFA"
-                          : "#000",
-                      borderRadius: "39px",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      size="small"
-                      onClick={decrement}
-                      sx={{
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fontWeight: "900",
-                        padding: "0",
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fomtWeight: "900",
-                        mx: "1ch",
-                      }}
-                    >
-                      {count}
-                    </Typography>
-                    <Button
-                      size="small"
-                      onClick={() => setCount(count + 1)}
-                      sx={{
-                        borderRadius: "36px",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        padding: "0",
-                      }}
-                    >
-                      +
-                    </Button>
+                  <Box onClick={() => handleRemoveFromCart(item.id)}>
+                    <img src={xflow} alt="xflow" />
                   </Box>
-                  {/* Counter ends */}
-                </Box>
-              </Box>
-
-              <Box>
-                <img src={xflow} alt="xflow" />
-              </Box>
-            </Card>
-            <Card
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "start",
-                width: "100%",
-                padding: "4px",
-                background:
-                  currentTheme.palette.type === "light" ? "#fff" : "#262626",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "6px" }}>
-                <Box>
-                  <img className="img" src={alwaysp} alt="ap" />
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "start",
-                    alignItems: "start",
-                    gap: "3px",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: "3px",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        fontSize: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      Always Sanitary Pad
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        fontSize: " 10px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      (size 10g)
-                    </Typography>
-                  </Box>
-
-                  {/* Price */}
-                  <Typography
-                    sx={{
-                      color: "#F79E1B",
-                      fontFamily: "raleWay",
-                      fontSize: "16px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    &#8358;1,900
-                  </Typography>
-                  {/* Price end */}
-
-                  {/* Counter */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      background:
-                        currentTheme.palette.type === "light"
-                          ? "#fAFAFA"
-                          : "#000",
-                      borderRadius: "39px",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      size="small"
-                      onClick={decrement}
-                      sx={{
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fontWeight: "900",
-                        padding: "0",
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fomtWeight: "900",
-                        mx: "1ch",
-                      }}
-                    >
-                      {count}
-                    </Typography>
-                    <Button
-                      size="small"
-                      onClick={() => setCount(count + 1)}
-                      sx={{
-                        borderRadius: "36px",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        padding: "0",
-                      }}
-                    >
-                      +
-                    </Button>
-                  </Box>
-                  {/* Counter ends */}
-                </Box>
-              </Box>
-
-              <Box>
-                <img src={xflow} alt="xflow" />
-              </Box>
-            </Card>
-            <Card
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "start",
-                width: "100%",
-                padding: "4px",
-                background:
-                  currentTheme.palette.type === "light" ? "#fff" : "#262626",
-              }}
-            >
-              <Box sx={{ display: "flex", gap: "6px" }}>
-                <Box>
-                  <img className="img" src={alwaysp} alt="ap" />
-                </Box>
-
-                <Box
-                  sx={{
-                    display: "flex",
-                    flexDirection: "column",
-                    justifyContent: "start",
-                    alignItems: "start",
-                    gap: "3px",
-                  }}
-                >
-                  <Box
-                    sx={{
-                      display: "flex",
-                      gap: "3px",
-                      alignItems: "baseline",
-                    }}
-                  >
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        fontSize: "12px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      Always Sanitary Pad
-                    </Typography>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        fontSize: " 10px",
-                        fontWeight: 400,
-                      }}
-                    >
-                      (size 10g)
-                    </Typography>
-                  </Box>
-
-                  {/* Price */}
-                  <Typography
-                    sx={{
-                      color: "#F79E1B",
-                      fontFamily: "raleWay",
-                      fontSize: "16px",
-                      fontWeight: 600,
-                    }}
-                  >
-                    &#8358;1,900
-                  </Typography>
-                  {/* Price end */}
-
-                  {/* Counter */}
-                  <Box
-                    sx={{
-                      display: "flex",
-                      background:
-                        currentTheme.palette.type === "light"
-                          ? "#fAFAFA"
-                          : "#000",
-                      borderRadius: "39px",
-                      justifyContent: "space-between",
-                      alignItems: "center",
-                    }}
-                  >
-                    <Button
-                      size="small"
-                      onClick={decrement}
-                      sx={{
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fontWeight: "900",
-                        padding: "0",
-                      }}
-                    >
-                      -
-                    </Button>
-                    <Typography
-                      sx={{
-                        fontFamily: "raleWay",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        fomtWeight: "900",
-                        mx: "1ch",
-                      }}
-                    >
-                      {count}
-                    </Typography>
-                    <Button
-                      size="small"
-                      onClick={() => setCount(count + 1)}
-                      sx={{
-                        borderRadius: "36px",
-                        color:
-                          currentTheme.palette.type === "light"
-                            ? "#000"
-                            : "#fff",
-                        padding: "0",
-                      }}
-                    >
-                      +
-                    </Button>
-                  </Box>
-                  {/* Counter ends */}
-                </Box>
-              </Box>
-
-              <Box>
-                <img src={xflow} alt="xflow" />
-              </Box>
-            </Card>
+                </Card>
+              ))
+            )}
           </Box>
           {/* Card end */}
           <Container
@@ -538,6 +309,7 @@ const Cart = () => {
             </Button>
 
             <Button
+              onClick={() => navigate("/scan")}
               sx={{
                 width: "95%",
                 padding: "10px",
