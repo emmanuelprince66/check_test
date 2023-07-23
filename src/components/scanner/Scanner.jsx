@@ -43,8 +43,11 @@ const Scanner = ({ superMarketId }) => {
           constraints: {
             facingMode: "environment", // or user
           },
+          numOfWorkers: 4,
         },
-        frequency: 5,
+        frequency: 5, // Process every 5 frames
+        locate: true,
+        debug: false, // Set to true to see the debugging information
         decoder: {
           readers: ["ean_reader"], // Specify the barcode format(s) you want to scan
         },
