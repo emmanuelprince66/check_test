@@ -97,7 +97,11 @@ const Scan = () => {
                     fontWeight: "600",
                   }}
                 >
-                  {superMarket.data ? superMarket.data.companyName : "NIL"}
+                  {superMarket.data ? (
+                    superMarket.data.companyName
+                  ) : (
+                    <CircularProgress size="0.3rem" />
+                  )}
                 </Typography>
 
                 <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>

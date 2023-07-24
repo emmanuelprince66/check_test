@@ -1,5 +1,4 @@
 import React from "react";
-import Quagga from "quagga";
 import { useState } from "react";
 import QrReader from "react-qr-scanner";
 import { Box, Typography } from "@mui/material";

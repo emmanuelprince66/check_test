@@ -8,7 +8,6 @@ import { useTheme } from "@mui/material";
 import vcart from "../../images/practise/vcart.svg";
 import { useCallback } from "react";
 import { useState, useEffect } from "react";
-import Quagga from "quagga";
 import { CircularProgress } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,6 +15,7 @@ import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../util/slice/CartSlice";
 import { useSelector } from "react-redux";
+import Quagga from "@ericblade/quagga2";
 
 const Scanner = ({ superMarketId }) => {
   const cart = useSelector((state) => state.cart);
@@ -88,9 +88,10 @@ const Scanner = ({ superMarketId }) => {
           },
           numOfWorkers: 4,
         },
-        frequency: 5, // Process every 5 frames
-        locate: true,
-        debug: false, // Set to true to see the debugging information
+
+        // frequency: 5,
+        // locate: true,
+        debug: true, // Set to true to see the debugging information
         decoder: {
           readers: ["ean_reader"], // Specify the barcode format(s) you want to scan
         },
