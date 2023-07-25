@@ -85,9 +85,9 @@ const Scanner = ({ superMarketId }) => {
           target: document.querySelector("#scanner-container"),
           constraints: {
             facingMode: "environment",
-            // width: 360,
-            // height: 640,
-            aspectRatio: { min: 1, max: 100 },
+            width: 360,
+            height: 640,
+            aspectRatio: { ideal: 1 },
           },
           numOfWorkers: 4,
         },
