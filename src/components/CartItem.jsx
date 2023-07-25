@@ -3,7 +3,7 @@ import { useDispatch } from "react-redux";
 import alwaysp from "../images/alwaysp.svg";
 import { removeFromCart } from "../util/slice/CartSlice";
 import { useSelector } from "react-redux";
-import xflow from "../images/practise/xFlow.svg";
+import xFlow from "../images/practise/xFlow.svg";
 
 import { Card, Box, Typography, Stack, Container, Button } from "@mui/material";
 import { useEffect, useState } from "react";
@@ -151,7 +151,7 @@ const CartItem = ({ item }) => {
         </Box>
 
         <Box onClick={() => handleRemoveFromCart(item.id)}>
-          <img src={xflow} alt="xflow" />
+          <img src={xFlow} alt="xflow" />
         </Box>
       </Card>
     </>
