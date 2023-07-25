@@ -16,6 +16,8 @@ import { useTheme } from "@mui/material";
 import "./Scan.css";
 import useSuperMarket from "../../hooks/useSuperMarket";
 import { useNavigate } from "react-router-dom";
+import { Dialog } from "@mui/material";
+import { Slide } from "@mui/material";
 
 const Scan = () => {
   const navigate = useNavigate();
@@ -25,7 +27,11 @@ const Scan = () => {
   const currentTheme = useTheme();
   useEffect(() => {
     const val = localStorage.getItem("myData");
-    val ? setSuperMarketKey(val) : navigate("/home");
+    if (val) {
+      setSuperMarketKey(val);
+    } else {
+      navigate("/home");
+    }
   }, []);
 
   return (
@@ -100,7 +106,7 @@ const Scan = () => {
                   {superMarket.data ? (
                     superMarket.data.companyName
                   ) : (
-                    <CircularProgress size="0.3rem" />
+                    <CircularProgress size="1.5rem" color="error" />
                   )}
                 </Typography>
 

@@ -84,7 +84,10 @@ const Scanner = ({ superMarketId }) => {
           type: "LiveStream",
           target: document.querySelector("#scanner-container"),
           constraints: {
-            facingMode: "environment", // or user
+            facingMode: "environment",
+            width: 360,
+            height: 640,
+            aspectRatio: { min: 1, max: 100 },
           },
           numOfWorkers: 4,
         },
