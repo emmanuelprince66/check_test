@@ -23,8 +23,6 @@ import CartItem from "../../components/CartItem";
 const Cart = () => {
   const cart = useSelector((state) => state.cart);
 
-  console.log(cart);
-
   const [open, setOpen] = React.useState(false);
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);

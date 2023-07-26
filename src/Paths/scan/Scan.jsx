@@ -13,6 +13,7 @@ import {
   CircularProgress,
 } from "@mui/material";
 import { useTheme } from "@mui/material";
+import { useSelector } from "react-redux";
 import "./Scan.css";
 import useSuperMarket from "../../hooks/useSuperMarket";
 import { useNavigate } from "react-router-dom";
@@ -20,11 +21,29 @@ import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 
 const Scan = () => {
+  const cart = useSelector((state) => state.cart);
+
   const navigate = useNavigate();
   const [superMarketKey, setSuperMarketKey] = useState("");
   const superMarket = useSuperMarket(superMarketKey);
 
   const currentTheme = useTheme();
+
+  const calculateTotalPrice = () => {
+    if (cart.length === 0) {
+      return 0;
+    }
+
+    let totalPrice = 0;
+
+    cart.forEach((cartItem) => {
+      totalPrice += cartItem.price;
+    });
+
+    return totalPrice;
+  };
+  const totalPrice = calculateTotalPrice();
+
   useEffect(() => {
     const val = localStorage.getItem("myData");
     if (val) {
@@ -128,7 +147,7 @@ const Scan = () => {
                       color: "red",
                     }}
                   >
-                    &#8358;0
+                    &#8358;{totalPrice}
                   </Typography>
                 </Box>
               </Box>
