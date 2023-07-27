@@ -36,9 +36,12 @@ import { getCookie } from "../../util/cookieAuth";
 import { queryClient } from "../../helpers/queryClient";
 import useSuperMarket from "../../hooks/useSuperMarket";
 import successGif from "../../images/successGif.gif";
+import { clearCart } from "../../util/slice/CartSlice";
+import { useDispatch } from "react-redux";
 
 const Cart = () => {
   const { AuthAxios } = axiosInstance();
+  const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
 
@@ -107,7 +110,11 @@ const Cart = () => {
   const handleClose2 = () => setOpen2(false);
   const handleClose3 = () => setOpen3(false);
   const handleClose4 = () => setOpen4(false);
-  const handleClose5 = () => setSuccessResponse(false);
+  const handleClose5 = () => {
+    setSuccessResponse(false);
+    setOpen2(false);
+    setOpen(false);
+  };
 
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
@@ -254,6 +261,7 @@ const Cart = () => {
     onSuccess: (response) => {
       console.log(response);
       setSuccessResponse(true);
+      dispatch(clearCart());
     },
     onError: (response) => {
       console.log(response);
@@ -1244,12 +1252,10 @@ const Cart = () => {
                   flexDirection: "column",
                   display: "flex",
                   alignItems: "center",
-                  minWidth: "100%",
-                  gap: "1rem",
-                  marginTop: "1rem",
+                  width: "100%",
                 }}
               >
-                <img src={successGif} alt="gif" />
+                <img className="gif-img" src={successGif} alt="gif" />
                 <Button
                   onClick={() => handleClose5()}
                   sx={{
