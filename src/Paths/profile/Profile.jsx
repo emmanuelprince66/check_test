@@ -21,6 +21,8 @@ import "./Profile.css";
 import Cookies from "js-cookie";
 import { useNavigate } from "react-router-dom";
 import { Modal } from "@mui/material";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../../util/slice/CartSlice";
 
 const theme = createTheme({
   components: {
@@ -38,6 +40,7 @@ const theme = createTheme({
 });
 
 const Profile = ({ darkMode, onToggleDarkMode }) => {
+  const dispatch = useDispatch();
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = React.useState(false);
   const handleOpen = () => setOpen(true);
@@ -50,6 +53,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
   const handleLogOut = () => {
     Cookies.remove("authToken");
     localStorage.clear();
+    dispatch(clearCart());
     navigate("/");
   };
 
