@@ -5,15 +5,27 @@ import { removeFromCart } from "../util/slice/CartSlice";
 import { useSelector } from "react-redux";
 import xFlow from "../images/xFlow.svg";
 
-import { Card, Box, Typography, Stack, Container, Button } from "@mui/material";
+import {
+  Card,
+  Box,
+  Typography,
+  Stack,
+  Container,
+  Button,
+  Modal,
+} from "@mui/material";
 import { useEffect, useState } from "react";
 import { useTheme } from "@mui/material";
 import { incrementCounter, decrementCounter } from "../util/slice/CartSlice";
+import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 const CartItem = ({ item }) => {
   const currentTheme = useTheme();
   const dispatch = useDispatch();
   const handleRemoveFromCart = (item) => {
     dispatch(removeFromCart(item));
+  };
+  const handleClose6 = () => {
+    setDeleteModal(false);
   };
   // Access the counter (quantity) of the item with the cardId from the Redux store
   const itemCounter = useSelector((state) => {
@@ -38,7 +50,7 @@ const CartItem = ({ item }) => {
           width: "100%",
           padding: "4px",
           background:
-            currentTheme.palette.type === "light" ? "#fff" : "#262626",
+            currentTheme.palette.type === "light" ? "#eaeaea" : "#262626",
         }}
       >
         <Box sx={{ display: "flex", gap: "6px" }}>
@@ -151,7 +163,7 @@ const CartItem = ({ item }) => {
         </Box>
 
         <Box onClick={() => handleRemoveFromCart(item.id)}>
-          <img src={xFlow} alt="xflow" />
+          <DeleteForeverRoundedIcon sx={{ color: "#dc0019" }} />
         </Box>
       </Card>
     </>

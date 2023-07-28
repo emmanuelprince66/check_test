@@ -38,6 +38,14 @@ import useSuperMarket from "../../hooks/useSuperMarket";
 import successGif from "../../images/successGif.gif";
 import { clearCart } from "../../util/slice/CartSlice";
 import { useDispatch } from "react-redux";
+import ControlPointRoundedIcon from "@mui/icons-material/ControlPointRounded";
+import { Dialog } from "@mui/material";
+import { Slide } from "@mui/material";
+import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
+import CartReceipt from "../../components/CartReceipt";
+const Transition = React.forwardRef(function Transition(props, ref) {
+  return <Slide direction="up" ref={ref} {...props} />;
+});
 
 const Cart = () => {
   const { AuthAxios } = axiosInstance();
@@ -79,6 +87,8 @@ const Cart = () => {
   const [open4, setOpen4] = React.useState(false);
   const [superMarketKey, setSuperMarketKey] = useState("");
   const [successResponse, setSuccessResponse] = useState(false);
+  const [deleteCart, setDeleteCart] = useState(false);
+  const [openReceipt, setOpenReceipt] = useState(false);
 
   const superMarket = useSuperMarket(superMarketKey);
 
@@ -115,7 +125,12 @@ const Cart = () => {
     setOpen2(false);
     setOpen(false);
   };
-
+  const handleClose6 = () => {
+    setDeleteCart(false);
+  };
+  const handleClose7 = () => {
+    setOpenReceipt(false);
+  };
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
     if (value.length > 1) return;
@@ -136,6 +151,11 @@ const Cart = () => {
     const newPins = [...confirmNewPins];
     newPins[index] = value;
     setConfirmNewPins(newPins);
+  };
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+    handleClose6();
   };
 
   // handle create pin starts
@@ -261,7 +281,10 @@ const Cart = () => {
     onSuccess: (response) => {
       console.log(response);
       setSuccessResponse(true);
-      dispatch(clearCart());
+      setTimeout(() => {
+        setSuccessResponse(false);
+        setOpenReceipt(true);
+      }, 3000);
     },
     onError: (response) => {
       console.log(response);
@@ -348,13 +371,22 @@ const Cart = () => {
             mx: "auto",
             width: { xs: "96%", sm: "70%", md: "100%" },
             padding: 0,
-            marginBottom: "10rem",
           }}
         >
           <Box>
             <BackArrow destination="/home" />
           </Box>
-          <Box sx={{ marginBottom: "1rem" }}>
+
+          <Box
+            sx={{
+              marginBottom: "1rem",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              width: "100%",
+              marginBottom: "2rem",
+            }}
+          >
             <Typography
               sx={{
                 fontFamily: "raleWay",
@@ -364,6 +396,26 @@ const Cart = () => {
             >
               My Cart
             </Typography>
+            <Button
+              onClick={() => setDeleteCart(true)}
+              sx={{
+                width: "35%",
+                textTransform: "capitalize",
+                padding: "0",
+                background:
+                  currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
+                padding: "10px",
+                borderRadius: "8px",
+                color: "#fff",
+                "&:hover": {
+                  backgroundColor:
+                    currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                },
+                fontFamily: "raleWay",
+              }}
+            >
+              Clear Cart
+            </Button>
           </Box>
 
           {/*Card  */}
@@ -388,38 +440,6 @@ const Cart = () => {
             )}
           </Box>
           {/* Card end */}
-          <Container
-            sx={{
-              display: "flex",
-              width: { xs: "19rem", sm: "25rem", md: "25rem" },
-              justifyContent: "space-between",
-              alignItems: "center",
-              padding: "0",
-              my: "1rem",
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-                fomtWeight: "900",
-                fontSize: "16px",
-              }}
-            >
-              Subtotal
-            </Typography>
-
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-                fomtWeight: "900",
-                fontSize: "16px",
-              }}
-            >
-              &#8358;{totalPrice}
-            </Typography>
-          </Container>
 
           <Box
             sx={{
@@ -428,36 +448,20 @@ const Cart = () => {
               flexDirection: "column",
               alignItems: "center",
               gap: "10px",
+              my: "1.5rem",
             }}
           >
-            <Button
-              onClick={handleOpen}
-              sx={{
-                background:
-                  currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-                width: "95%",
-                padding: "10px",
-                borderRadius: "8px",
-                color: "#fff",
-                "&:hover": {
-                  backgroundColor:
-                    currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                },
-                fontFamily: "raleWay",
-              }}
-            >
-              Proceed to payment
-            </Button>
-
             <Button
               onClick={() => navigate("/scan")}
               sx={{
                 width: "95%",
                 padding: "10px",
                 borderRadius: "8px",
-                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+                color:
+                  currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
                 borderColor: "#dc0019",
                 fontFamily: "raleWay",
+                fontWeight: "900",
                 "&:hover": {
                   borderColor:
                     currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
@@ -465,8 +469,78 @@ const Cart = () => {
               }}
               variant="outlined"
             >
-              Scan more items
+              <ControlPointRoundedIcon sx={{ fontSize: "16px", mx: "5px" }} />{" "}
+              Scan another item
             </Button>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              gap: "4rem",
+              justifyContent: "start",
+              minHeight: "40vh",
+              padding: "1rem",
+              width: "100%",
+              textAlign: "center",
+              boxShadow: " 2px -18px 93px -5px rgba(0,0,0,0.1) inset",
+              marginBottom: "0",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                Grand Total
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                &#8358;{totalPrice}
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                onClick={handleOpen}
+                sx={{
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  padding: "10px",
+                  width: "100%",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                Proceed to payment
+              </Button>
+            </Box>
           </Box>
 
           {/* Modal 1  modal for purchase*/}
@@ -1224,10 +1298,71 @@ const Cart = () => {
           {/* Modal 4 ends*/}
 
           {/* Modal 5* success response */}
-          <Modal
-            classetsName="scale-in-center"
+          <Dialog
+            fullScreen
             open={successResponse}
             onClose={handleClose5}
+            TransitionComponent={Transition}
+          >
+            <Box
+              sx={{
+                flexDirection: "column",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                width: "100%",
+                height: "100% ",
+              }}
+            >
+              {/* <img className="gif-img" src={successGif} alt="gif" /> */}
+              <CheckRoundedIcon
+                sx={{
+                  fontSize: "4rem",
+                  background: "#008000",
+                  borderRadius: "50% ",
+                  padding: "1rem",
+                  color: "white",
+                  marginBottom: "1.7rem",
+                }}
+              />
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  fontWeight: 900,
+                  fontSize: "16px",
+                  lineHeight: "18.78px",
+                  marginY: "1rem",
+                  textAlign: "center",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                }}
+                id="modal-modal-title"
+              >
+                Payment Successful!
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  fontWeight: 600,
+                  fontSize: "13px",
+                  lineHeight: "18.78px",
+                  textAlign: "center",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                }}
+                id="modal-modal-title"
+              >
+                Generating Receipt.....
+              </Typography>
+            </Box>
+          </Dialog>
+          {/* Modal 5  ends*/}
+
+          {/* Modal 6* clear cart modal */}
+          <Modal
+            classetsName="scale-in-center"
+            open={deleteCart}
+            onClose={handleClose6}
             aria-labelledby="modal-modal-title"
             aria-describedby="modal-modal-description"
           >
@@ -1247,41 +1382,90 @@ const Cart = () => {
                 gap: "15px",
               }}
             >
-              <Box
+              <Typography
                 sx={{
-                  flexDirection: "column",
-                  display: "flex",
-                  alignItems: "center",
-                  width: "100%",
+                  fontFamily: "raleWay",
+                  fontWeight: 900,
+                  fontSize: "16px",
+                  lineHeight: "18.78px",
+                  marginY: "1rem",
+                  textAlign: "center",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                }}
+                id="modal-modal-title"
+              >
+                Are you sure you want to clear all items in your cart? This
+                cannot be undone.
+              </Typography>
+
+              <Button
+                onClick={() => handleClearCart()}
+                sx={{
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  width: "95%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
                 }}
               >
-                <img className="gif-img" src={successGif} alt="gif" />
-                <Button
-                  onClick={() => handleClose5()}
-                  sx={{
-                    background:
-                      currentTheme.palette.type === "light"
-                        ? "#dc0019"
-                        : "#dc0019",
-                    width: "95%",
-                    padding: "10px",
-                    borderRadius: "8px",
-                    color: "#fff",
-                    "&:hover": {
-                      backgroundColor:
-                        currentTheme.palette === "light"
-                          ? "#dc0019"
-                          : "#dc0019",
-                    },
-                    fontFamily: "raleWay",
-                  }}
-                >
-                  Okay
-                </Button>
-              </Box>
+                Yes, Clear Cart
+              </Button>
+              <Button
+                onClick={() => handleClose6()}
+                sx={{
+                  width: "95%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  borderColor: "#dc0019",
+                  fontFamily: "raleWay",
+                  "&:hover": {
+                    borderColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                }}
+                variant="outlined"
+              >
+                No,Go back
+              </Button>
             </Card>
           </Modal>
-          {/* Modal 5 success response*/}
+          {/* Modal 6  clear ends*/}
+
+          {/* Modal 7 receipt dialog */}
+          <Dialog
+            fullScreen
+            open={openReceipt}
+            onClose={handleClose7}
+            TransitionComponent={Transition}
+          >
+            <Box
+              sx={{
+                flexDirection: "column",
+                display: "flex",
+                alignItems: "start",
+                justifyContent: "start",
+                width: "100%",
+                height: "100% ",
+              }}
+            >
+              <CartReceipt
+                cart={cart ? cart : []}
+                totalPrice={totalPrice ? totalPrice : ""}
+              />
+            </Box>
+          </Dialog>
+          {/* Modal 7 receipt dialog  ends*/}
 
           <ToastContainer />
         </Container>

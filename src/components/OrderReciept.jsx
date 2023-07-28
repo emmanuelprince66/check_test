@@ -538,8 +538,6 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               >
                 RETAIL
               </Typography>
-
-              <Box></Box>
             </Box>
           </Box>
         </Card>
