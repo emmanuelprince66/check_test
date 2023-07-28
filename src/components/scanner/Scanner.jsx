@@ -24,7 +24,7 @@ const Scanner = ({ superMarketId }) => {
   const dispatch = useDispatch();
 
   const [open, setOpen] = React.useState(false);
-  const [count, setCount] = React.useState(0);
+  const [count, setCount] = React.useState(1);
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
@@ -33,10 +33,19 @@ const Scanner = ({ superMarketId }) => {
 
   const currentTheme = useTheme();
   const decrement = () => {
-    if (count > 0) {
+    if (count > 1 && count != 0) {
       setCount(count - 1);
     }
   };
+
+  const defaultComputedPrice = !superMarketP.data?.price || !count ? 0 : null;
+  const computedPrice = defaultComputedPrice
+    ? defaultComputedPrice
+    : superMarketP.data?.price * count;
+  const defaultPrice =
+    computedPrice && !defaultComputedPrice
+      ? computedPrice
+      : superMarketP.data?.price;
 
   const handleAddToCart = (data) => {
     const isValueInArray = cart.some((item) => item.id === data.id);
@@ -45,7 +54,7 @@ const Scanner = ({ superMarketId }) => {
       notifyWarn("Item is already in cart");
       setOpen(false);
     } else {
-      dispatch(addToCart(data));
+      dispatch(addToCart({ ...data, price: defaultPrice, counter: count }));
       notify("Item added to cart");
       setOpen(false);
     }
@@ -233,7 +242,7 @@ const Scanner = ({ superMarketId }) => {
                   fontWeight: 600,
                 }}
               >
-                &#8358;{superMarketP.data ? superMarketP.data.price : ""}
+                &#8358;{superMarketP.data ? defaultPrice : ""}
               </Typography>
 
               {/* Counter */}

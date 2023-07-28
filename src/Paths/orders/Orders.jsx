@@ -55,9 +55,6 @@ const Orders = () => {
     setOrdersItem(ordersFromId.id);
   };
 
-  // const [active, setActive] = useState(false);
-  // const [isShown, setIsShown] = useState(false);
-
   const currentTheme = useTheme();
   const navigate = useNavigate();
 
@@ -234,7 +231,7 @@ const Orders = () => {
                               item.status === "COMPLETED"
                                 ? "#008000"
                                 : item.status === "PENDING"
-                                ? "#C57600"
+                                ? "#727272"
                                 : item.status === "CANCELLED"
                                 ? "red"
                                 : "#727272",
@@ -250,7 +247,7 @@ const Orders = () => {
                               item.status === "COMPLETED"
                                 ? "#008000"
                                 : item.status === "PENDING"
-                                ? "#C57600"
+                                ? "#727272"
                                 : item.status === "CANCELLED"
                                 ? "red"
                                 : "#727272",

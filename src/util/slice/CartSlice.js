@@ -15,7 +15,7 @@ const cartSlice = createSlice({
         existingItem.counter += 1;
         existingItem.price += newItem.price;
       } else {
-        state.push({ ...newItem, counter: 1 }); // Initialize counter with 1
+        state.push({ ...newItem, counter: newItem.counter }); // Initialize counter with 1
       }
     },
     removeFromCart: (state, action) => {

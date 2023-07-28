@@ -16,10 +16,20 @@ import useOrders from "../hooks/useOrders";
 import { Divider, Button } from "@mui/material";
 import checkLogo from "../images/checkLogo.svg";
 import QRCode from "react-qr-code";
+import {
+  TableBody,
+  TableCell,
+  TableContainer,
+  TableHead,
+  Paper,
+  TableRow,
+  Table,
+} from "@mui/material";
 
 const OrderReciept = ({ handleClose2, orderId, orders }) => {
   const orderItem = orders.find((data) => data.id === orderId);
   console.log(orderItem.orders);
+  const value = JSON.stringify(orderItem.orders, null, 2);
 
   const handleDownload2 = () => {
     const receipt = document.querySelector("#receipt");
@@ -32,6 +42,21 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
       pdf.save("receipt.pdf");
     });
   };
+
+  const calculateTotalPrice = () => {
+    if (orderItem.orders.length === 0) {
+      return 0;
+    }
+
+    let totalPrice = 0;
+
+    orderItem.orders.forEach((orderItem) => {
+      totalPrice += orderItem.price;
+    });
+
+    return totalPrice;
+  };
+  const totalPrice = calculateTotalPrice();
 
   const formattedTime = (oldTime) => {
     const dateTimeString = oldTime;
@@ -302,137 +327,61 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               gap: "10px",
             }}
           >
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                ITEM
-              </Typography>
-
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                {orderItem.orders.map((itemName) => itemName.productName)}
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                SIZE
-              </Typography>
-
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                {orderItem.orders.map((itemName) => itemName.size)}
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "center",
-                flexDirection: "column",
-                gap: "10px",
-              }}
-            >
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                QTY
-              </Typography>
-
-              <Typography
-                sx={{
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#000",
-                  fontWeight: 900,
-                  fontFamily: "raleWay",
-                  fontSize: "16px",
-                }}
-              >
-                {orderItem.orders.map((itemName) => itemName.unit)}
-              </Typography>
-            </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              alignItems: "end",
-              flexDirection: "column",
-              gap: "10px",
-            }}
-          >
-            <Typography
-              sx={{
-                color: currentTheme.palette.type === "light" ? "#000" : "#000",
-                fontWeight: 900,
-                fontFamily: "raleWay",
-                fontSize: "16px",
-              }}
-            >
-              PRICE/unit(N)
-            </Typography>
-
-            <Typography
-              sx={{
-                color: currentTheme.palette.type === "light" ? "#000" : "#000",
-                fontWeight: 900,
-                fontFamily: "raleWay",
-                fontSize: "16px",
-              }}
-            >
-              {orderItem.orders.map((itemName) => itemName.offerPrice)}
-            </Typography>
+            <TableContainer component={Paper}>
+              <Table aria-label="simple table">
+                <TableHead>
+                  <TableRow>
+                    <TableCell
+                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                    >
+                      ITEM NAME
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      align="right"
+                    >
+                      SIZE
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      align="right"
+                    >
+                      QTY&nbsp;
+                    </TableCell>
+                    <TableCell
+                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      align="right"
+                    >
+                      PRICE&nbsp;(&#8358;)
+                    </TableCell>
+                  </TableRow>
+                </TableHead>
+                <TableBody>
+                  {orderItem.orders.map((item) => (
+                    <TableRow
+                      key={item.name}
+                      sx={{ "&:last-child td, &:last-child th": { border: 0 } }}
+                    >
+                      <TableCell sx={{ fontFamily: "raleWay" }} align="left">
+                        {item.description}
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: "raleWay" }} align="right">
+                        {item.weight}g
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: "raleWay" }} align="right">
+                        {item.quantity}
+                      </TableCell>
+                      <TableCell sx={{ fontFamily: "raleWay" }} align="right">
+                        {item.price}
+                      </TableCell>
+                    </TableRow>
+                  ))}
+                </TableBody>
+              </Table>
+            </TableContainer>
           </Box>
         </Box>
+
         <Divider
           sx={{
             color: "#000",
@@ -467,7 +416,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               fontSize: "16px",
             }}
           >
-            {orderItem.orders.map((itemName) => itemName.price)}
+            {totalPrice}
           </Typography>
         </Box>
 
@@ -571,67 +520,45 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
         <Box
           sx={{
             display: "flex",
-            width: "100%",
-            padding: "0.5rem",
-            justifyContent: "space-between",
+            flexDirection: "column",
+            padding: "1rem",
+            background: "#d2d2d2",
             alignItems: "center",
+            gap: "0.5rem",
           }}
         >
-          <Box
+          <Typography
             sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "start",
-              gap: "6px",
+              fontFamily: "raleWay",
+              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+              fomtWeight: "900",
+              fontSize: "16px",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                fontWeight: "900",
-                fontSize: "12px",
-                color: currentTheme.palette.type === "light" ? "#000" : "#ffff",
-              }}
-            >
-              Customer QR
-            </Typography>
+            Receipt QR
+          </Typography>
 
-            <Box
-              sx={{
-                padding: "0.4rem",
-                borderRadius: "5px",
-                border: "1px solid #eee",
-                display: "flex",
-                justifyContent: "center",
-                alignItems: "center",
-              }}
-            >
-              <QRCode
-                size={256}
-                style={{ height: "5rem", width: "5rem" }}
-                value={orderItem ? JSON.stringify(orderItem.orders) : "no data"}
-                viewBox={`0 0 256 256`}
-              />
-            </Box>
+          <Box>
+            <QRCode
+              size={256}
+              style={{ height: "15rem", width: "15rem" }}
+              value={value}
+              viewBox={`0 0 256 256`}
+            />
           </Box>
 
-          <Box
+          <Typography
             sx={{
-              maxWidth: "12.5rem",
+              fontFamily: "raleWay",
+              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+              fomtWeight: "600",
+              fontSize: "14px",
+              textAlign: "center",
             }}
           >
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                fontWeight: "600",
-                fontSize: "10px",
-                color: currentTheme.palette.type === "light" ? "#000" : "#ffff",
-              }}
-            >
-              Kindly note that this receipt may be required for verification at
-              the exit.Thanks for your patronage!
-            </Typography>
-          </Box>
+            Kindly note that this receipt may be required for verification
+            before you exit the store. Thank you for shopping with us!
+          </Typography>
         </Box>
       </Container>
 
