@@ -89,6 +89,7 @@ const Cart = () => {
   const [successResponse, setSuccessResponse] = useState(false);
   const [deleteCart, setDeleteCart] = useState(false);
   const [openReceipt, setOpenReceipt] = useState(false);
+  const [orderData, setOrderData] = useState();
 
   const superMarket = useSuperMarket(superMarketKey);
 
@@ -280,6 +281,7 @@ const Cart = () => {
   const mutationData = useMutation(sendDataToEndpoint, {
     onSuccess: (response) => {
       console.log(response);
+      setOrderData(response);
       setSuccessResponse(true);
       setTimeout(() => {
         setSuccessResponse(false);
@@ -396,26 +398,31 @@ const Cart = () => {
             >
               My Cart
             </Typography>
-            <Button
-              onClick={() => setDeleteCart(true)}
-              sx={{
-                width: "35%",
-                textTransform: "capitalize",
-                padding: "0",
-                background:
-                  currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-                padding: "10px",
-                borderRadius: "8px",
-                color: "#fff",
-                "&:hover": {
-                  backgroundColor:
-                    currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                },
-                fontFamily: "raleWay",
-              }}
-            >
-              Clear Cart
-            </Button>
+
+            {cart.length != 0 && (
+              <Button
+                onClick={() => setDeleteCart(true)}
+                sx={{
+                  width: "35%",
+                  textTransform: "capitalize",
+                  padding: "0",
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                Clear Cart
+              </Button>
+            )}
           </Box>
 
           {/*Card  */}
@@ -451,27 +458,31 @@ const Cart = () => {
               my: "1.5rem",
             }}
           >
-            <Button
-              onClick={() => navigate("/scan")}
-              sx={{
-                width: "95%",
-                padding: "10px",
-                borderRadius: "8px",
-                color:
-                  currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-                borderColor: "#dc0019",
-                fontFamily: "raleWay",
-                fontWeight: "900",
-                "&:hover": {
-                  borderColor:
-                    currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                },
-              }}
-              variant="outlined"
-            >
-              <ControlPointRoundedIcon sx={{ fontSize: "16px", mx: "5px" }} />{" "}
-              Scan another item
-            </Button>
+            {cart.length != 0 && (
+              <Button
+                onClick={() => navigate("/scan")}
+                sx={{
+                  width: "95%",
+                  padding: "10px",
+                  borderRadius: "8px",
+                  color:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  borderColor: "#dc0019",
+                  fontFamily: "raleWay",
+                  fontWeight: "900",
+                  "&:hover": {
+                    borderColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                }}
+                variant="outlined"
+              >
+                <ControlPointRoundedIcon sx={{ fontSize: "16px", mx: "5px" }} />{" "}
+                Scan another item
+              </Button>
+            )}
           </Box>
 
           <Box
@@ -1462,6 +1473,7 @@ const Cart = () => {
               <CartReceipt
                 cart={cart ? cart : []}
                 totalPrice={totalPrice ? totalPrice : ""}
+                orderData={orderData ? orderData : ""}
               />
             </Box>
           </Dialog>

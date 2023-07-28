@@ -28,12 +28,31 @@ import {
   Table,
 } from "@mui/material";
 
-const CartReceipt = ({ cart, totalPrice }) => {
-  console.log(cart);
+const CartReceipt = ({ cart, totalPrice, orderData }) => {
+  console.log(orderData);
   const value = JSON.stringify(cart, null, 2);
   const currentTheme = useTheme();
   const [superMarketKey, setSuperMarketKey] = useState("");
   const superMarket = useSuperMarket(superMarketKey);
+
+  const formattedTime = (oldTime) => {
+    const dateTimeString = oldTime;
+    const dateTime = new Date(dateTimeString);
+
+    const options = {
+      year: "numeric",
+      month: "long",
+      day: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric",
+    };
+    const formattedString = dateTime
+      .toLocaleString("en-US", options)
+      .replace(/, /g, " | ");
+
+    return formattedString;
+  };
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
@@ -143,8 +162,152 @@ const CartReceipt = ({ cart, totalPrice }) => {
             marginY: "1.5rem",
           }}
         />
+        {/* Display order data */}
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "center",
+            alignItems: "center",
+            flexDirection: "column",
+            my: "0.5rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "1rem",
+              width: "100%",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+                fomtWeight: "1000",
+                fontSize: "16px",
+              }}
+            >
+              Purchase Receipt
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#d7d7d7" : "#d7d7d7",
+                fomtWeight: "900",
+                fontSize: "13px",
+              }}
+            >
+              {orderData.orderInfo.transactionRef}
+            </Typography>
+          </Box>
 
-        {/* Display Reciept data */}
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "1rem",
+              width: "100%",
+              marginTop: "0.5rem",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#B66C00" : "#B66C00",
+                fomtWeight: "1000",
+                fontSize: "16px",
+              }}
+            >
+              Date & Time:
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#d7d7d7" : "#d7d7d7",
+                fomtWeight: "900",
+                fontSize: "13px",
+              }}
+            >
+              {formattedTime(orderData.orderInfo.createdAt)}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "1rem",
+              width: "100%",
+              marginTop: "0.5rem",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#B66C00" : "#B66C00",
+                fomtWeight: "1000",
+                fontSize: "16px",
+              }}
+            >
+              Merchant
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#d7d7d7" : "#d7d7d7",
+                fomtWeight: "900",
+                fontSize: "13px",
+              }}
+            >
+              {orderData.orderInfo.supermarket.companyName}
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "center",
+              gap: "1rem",
+              width: "100%",
+              marginTop: "0.5rem",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#B66C00" : "#B66C00",
+                fomtWeight: "1000",
+                fontSize: "16px",
+              }}
+            >
+              Attendant
+            </Typography>
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                color:
+                  currentTheme.palette.type === "light" ? "#d7d7d7" : "#d7d7d7",
+                fomtWeight: "900",
+                fontSize: "13px",
+              }}
+            >
+              {orderData.orderInfo.user.firstName}
+            </Typography>
+          </Box>
+        </Box>
+
+        {/* Display product data */}
         <Box
           sx={{
             display: "flex",
@@ -189,7 +352,7 @@ const CartReceipt = ({ cart, totalPrice }) => {
                       {item.description}
                     </TableCell>
                     <TableCell sx={{ fontFamily: "raleWay" }} align="right">
-                      {item.size}g
+                      {item.weight}g
                     </TableCell>
                     <TableCell sx={{ fontFamily: "raleWay" }} align="right">
                       {item.quantity}
