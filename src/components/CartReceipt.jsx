@@ -410,7 +410,8 @@ const CartReceipt = ({ cart, totalPrice, orderData }) => {
             display: "flex",
             flexDirection: "column",
             padding: "1rem",
-            background: "#d2d2d2",
+            background:
+              currentTheme.palette.type === "light" ? "#d2d2d2" : "#463E32",
             alignItems: "center",
             gap: "0.5rem",
           }}

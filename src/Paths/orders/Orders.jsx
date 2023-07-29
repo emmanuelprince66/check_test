@@ -261,7 +261,16 @@ const Orders = () => {
                 ))
               )
             ) : (
-              <CircularProgress size="3rem" color="error" />
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "10rem",
+                }}
+              >
+                <CircularProgress size="4rem" color="error" />
+              </Box>
             )}
 
             <Modal
