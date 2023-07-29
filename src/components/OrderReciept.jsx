@@ -25,6 +25,7 @@ import {
   TableRow,
   Table,
 } from "@mui/material";
+import FormattedPrice from "./FormattedPrice";
 
 const OrderReciept = ({ handleClose2, orderId, orders }) => {
   const orderItem = orders.find((data) => data.id === orderId);
@@ -416,7 +417,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               fontSize: "16px",
             }}
           >
-            {totalPrice}
+            <FormattedPrice amount={totalPrice} />
           </Typography>
         </Box>
 

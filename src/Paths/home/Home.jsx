@@ -12,6 +12,7 @@ import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
 import { Card, Box, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
+import FormattedPrice from "../../components/FormattedPrice";
 
 import QrCodeRoundedIcon from "@mui/icons-material/QrCodeRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
@@ -82,8 +83,11 @@ const Home = () => {
                   fontSize: "18px",
                 }}
               >
-                &#8358;&nbsp;
-                {user.data ? user.data.balance : <CircularProgress />}
+                {user.data ? (
+                  <FormattedPrice amount={user.data.balance} />
+                ) : (
+                  <CircularProgress />
+                )}
               </Typography>
             </Box>
 

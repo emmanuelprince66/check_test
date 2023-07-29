@@ -27,6 +27,7 @@ import useTransactions from "../../hooks/useTransactions";
 import html2canvas from "html2canvas";
 import { jsPDF } from "jspdf";
 import NoResult from "../../components/NoResult";
+import FormattedPrice from "../../components/FormattedPrice";
 
 const Transaction = () => {
   const transaction = useTransactions();
@@ -162,7 +163,7 @@ const Transaction = () => {
                               : "#DC0019",
                         }}
                       >
-                        &#8358;&nbsp;{item.amount}
+                        <FormattedPrice amount={item.amount} />
                       </Typography>
                       <Typography
                         variant="h2"
@@ -471,7 +472,11 @@ const Transaction = () => {
                               : "#000",
                         }}
                       >
-                        &#8358;&nbsp;{modalItem ? modalItem.amount : ""}
+                        {modalItem ? (
+                          <FormattedPrice amount={modalItem.amount} />
+                        ) : (
+                          ""
+                        )}
                       </Typography>
                     </Box>
                   </Box>

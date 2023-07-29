@@ -29,6 +29,7 @@ import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import OrderReciept from "../../components/OrderReciept";
+import FormattedPrice from "../../components/FormattedPrice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -163,7 +164,7 @@ const Orders = () => {
                               : "#727272",
                         }}
                       >
-                        &#8358;&nbsp;{item.totalAmount}
+                        <FormattedPrice amount={item.totalAmount} />
                       </Typography>
 
                       <Box

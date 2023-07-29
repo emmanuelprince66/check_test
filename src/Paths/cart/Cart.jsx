@@ -43,6 +43,7 @@ import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CartReceipt from "../../components/CartReceipt";
+import FormattedPrice from "../../components/FormattedPrice";
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -52,6 +53,7 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
+  console.log(cart);
 
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
@@ -312,7 +314,7 @@ const Cart = () => {
   // Dara to send to complete order endpoint start
 
   const productId = cart.map((item) => {
-    return { productId: item.id };
+    return { productId: item.productId };
   });
 
   const commission = (0.5 / 100) * totalPrice;
@@ -526,7 +528,7 @@ const Cart = () => {
                   fontSize: "16px",
                 }}
               >
-                &#8358;{totalPrice}
+                <FormattedPrice amount={totalPrice} />
               </Typography>
             </Box>
 

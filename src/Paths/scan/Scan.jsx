@@ -19,6 +19,7 @@ import useSuperMarket from "../../hooks/useSuperMarket";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
+import FormattedPrice from "../../components/FormattedPrice";
 
 const Scan = () => {
   const cart = useSelector((state) => state.cart);
@@ -147,7 +148,7 @@ const Scan = () => {
                       color: "red",
                     }}
                   >
-                    &#8358;{totalPrice}
+                    <FormattedPrice amount={totalPrice} />
                   </Typography>
                 </Box>
               </Box>

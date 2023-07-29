@@ -27,6 +27,7 @@ import {
   TableRow,
   Table,
 } from "@mui/material";
+import FormattedPrice from "./FormattedPrice";
 
 const CartReceipt = ({ cart, totalPrice, orderData }) => {
   console.log(orderData);
@@ -355,7 +356,7 @@ const CartReceipt = ({ cart, totalPrice, orderData }) => {
                       {item.weight}g
                     </TableCell>
                     <TableCell sx={{ fontFamily: "raleWay" }} align="right">
-                      {item.quantity}
+                      {item.counter}
                     </TableCell>
                     <TableCell sx={{ fontFamily: "raleWay" }} align="right">
                       {item.price}
@@ -399,7 +400,7 @@ const CartReceipt = ({ cart, totalPrice, orderData }) => {
               fontSize: "16px",
             }}
           >
-            &#8358;{totalPrice}
+            <FormattedPrice amount={totalPrice} />
           </Typography>
         </Box>
 

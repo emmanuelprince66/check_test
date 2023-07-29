@@ -136,7 +136,7 @@ const Scanner = ({ superMarketId }) => {
         <QrReader
           delay={300}
           onError={(err) => console.error("Error scanning QR code:", err)}
-          style={{ maxWidth: "100%", maxHeight: "100%" }}
+          style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
           constraints={{
             video: { facingMode: "environment" },
           }}
@@ -204,7 +204,7 @@ const Scanner = ({ superMarketId }) => {
                 padding: "1rem 2rem",
                 my: "0.5rem",
                 background:
-                  currentTheme.palette.type === "light" ? "#fff" : "#262626",
+                  currentTheme.palette.type === "light" ? "#e8e5e5" : "#262626",
               }}
             >
               <Box
@@ -217,8 +217,8 @@ const Scanner = ({ superMarketId }) => {
                 <Typography
                   sx={{
                     fontFamily: "raleWay",
-                    fontSize: "12x",
-                    fontWeight: 400,
+                    fontSize: "12px",
+                    fontWeight: 900,
                   }}
                 >
                   {superMarketP.data ? superMarketP.data.description : ""}
@@ -233,7 +233,64 @@ const Scanner = ({ superMarketId }) => {
                   (size {superMarketP.data ? superMarketP.data.weight : ""})
                 </Typography>
               </Box>
+              {/* Counter */}
+              <Box
+                sx={{
+                  display: "flex",
+                  width: "100%",
+                  justifyContent: "center",
+                }}
+              >
+                <Button
+                  size="small"
+                  onClick={decrement}
+                  sx={{
+                    background: "#eff0f9",
+                    color:
+                      currentTheme.palette.type === "light" ? "#000" : "#000",
+                    fontWeight: "900",
+                    padding: "0",
+                    width: "2px",
+                    paddingLeft: "1ch",
+                  }}
+                  i
+                >
+                  -
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      color:
+                        currentTheme.palette.type === "light" ? "#000" : "#000",
+                      fomtWeight: "900",
+                      mx: "2ch",
+                    }}
+                  >
+                    {count}
+                  </Typography>
+                </Button>
 
+                <Box
+                  onClick={() => setCount(count + 1)}
+                  sx={{
+                    background: "#ff0808",
+                    color:
+                      currentTheme.palette.type === "light" ? "#fff" : "#fff",
+                    width: "25px",
+                    height: "25px",
+                    borderRadius: "50%",
+                    fontFamily: "raleWay",
+                    display: "flex",
+                    justifyContent: "center",
+                    alignItems: "center",
+                    marginLeft: "-10px",
+                    zIndex: "1",
+                  }}
+                >
+                  +
+                </Box>
+              </Box>
+
+              {/* Counter ends */}
               <Typography
                 sx={{
                   color: "#F79E1B",
@@ -244,55 +301,6 @@ const Scanner = ({ superMarketId }) => {
               >
                 &#8358;{superMarketP.data ? defaultPrice : ""}
               </Typography>
-
-              {/* Counter */}
-              <Box
-                sx={{
-                  display: "flex",
-                  background:
-                    currentTheme.palette.type === "light" ? "#535353" : "#000",
-                  borderRadius: "39px",
-                  justifyContent: "space-between",
-                  alignItems: "center",
-                }}
-              >
-                <Button
-                  size="small"
-                  onClick={decrement}
-                  sx={{
-                    color:
-                      currentTheme.palette.type === "light" ? "#fff" : "#fff",
-                    fontWeight: "900",
-                    padding: "0",
-                  }}
-                >
-                  -
-                </Button>
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    color:
-                      currentTheme.palette.type === "light" ? "#fff" : "#fff",
-                    fomtWeight: "900",
-                    mx: "1ch",
-                  }}
-                >
-                  {count}
-                </Typography>
-                <Button
-                  size="small"
-                  onClick={() => setCount(count + 1)}
-                  sx={{
-                    borderRadius: "36px",
-                    color:
-                      currentTheme.palette.type === "light" ? "#fff" : "#fff",
-                    padding: "0",
-                  }}
-                >
-                  +
-                </Button>
-              </Box>
-              {/* Counter ends */}
             </Card>
 
             <Button

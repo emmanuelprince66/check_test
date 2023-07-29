@@ -43,7 +43,7 @@ const Qrscanner = () => {
           delay={300}
           onError={handleError}
           onScan={handleQrScan}
-          style={{ maxWidth: "100%", maxHeight: "100%" }}
+          style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
           constraints={{
             video: { facingMode: "environment" },
           }}

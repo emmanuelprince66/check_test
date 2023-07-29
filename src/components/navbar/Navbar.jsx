@@ -60,7 +60,7 @@ const Navbar = () => {
             listStyleType: "none",
           }}
         >
-          <li>
+          {/* <li>
             <Link
               to="/home"
               className={homeMatch ? "active-link" : ""}
@@ -71,7 +71,7 @@ const Navbar = () => {
                 <MyTypography>Dashbaord</MyTypography>
               </div>
             </Link>
-          </li>
+          </li> */}
           <li>
             <Link
               to="/transactions"
@@ -101,10 +101,20 @@ const Navbar = () => {
               sx={{
                 position: "absolute",
                 // bottom: "2.5rem",
-                left: "66%",
-                color: "#DC0019",
+                left: "54%",
+                color: "#fff",
                 top: "0.6rem",
                 fontWeight: "900",
+                borderRadius: "50%",
+                display: "flex",
+                justifyContent: "center",
+                alignItems: "center",
+                padding: "8px",
+                fontSize: "9px",
+                background: numOfItem === 0 ? "" : "#dc0019",
+                width: "15px",
+                height: "15px",
+                zIndex: "1",
               }}
             >
               {numOfItem === 0 ? "" : numOfItem}
