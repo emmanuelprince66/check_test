@@ -6,8 +6,6 @@ import { Modal, Button, Card, Typography } from "@mui/material";
 import alwaysp from "../../images/alwaysp.svg";
 import { useTheme } from "@mui/material";
 import vcart from "../../images/practise/vcart.svg";
-import { useCallback } from "react";
-import { useState, useEffect } from "react";
 import { CircularProgress } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
 import { ToastContainer, toast } from "react-toastify";
@@ -16,12 +14,22 @@ import { useDispatch } from "react-redux";
 import { addToCart } from "../../util/slice/CartSlice";
 import { useSelector } from "react-redux";
 import Quagga from "@ericblade/quagga2";
-
+import { useRef, useCallback, useState, useEffect } from "react";
+import TestScanner from "../TestScanner";
 const Scanner = ({ superMarketId }) => {
   const cart = useSelector((state) => state.cart);
 
   const [result, setResult] = useState("");
   const dispatch = useDispatch();
+
+  // test states
+  const [scanning, setScanning] = useState(true); // toggleable state for "should render scanner"
+  const [cameras, setCameras] = useState([]); // array of available cameras, as returned by Quagga.CameraAccess.enumerateVideoDevices()
+  const [cameraId, setCameraId] = useState(null); // id of the active camera device
+  const [cameraError, setCameraError] = useState(null); // error message from failing to access the camera
+  const [torchOn, setTorch] = useState(false); // toggleable state for "should torch be on"
+  const scannerRef = useRef(null); // reference to the scanner element in the DOM
+  // end test states
 
   const [open, setOpen] = React.useState(false);
   const [count, setCount] = React.useState(1);
@@ -36,6 +44,11 @@ const Scanner = ({ superMarketId }) => {
     if (count > 1 && count != 0) {
       setCount(count - 1);
     }
+  };
+  const handleModal = (res) => {
+    setResult(res);
+    setCount(1);
+    setOpen(true);
   };
 
   const defaultComputedPrice = !superMarketP.data?.price || !count ? 0 : null;
@@ -84,49 +97,78 @@ const Scanner = ({ superMarketId }) => {
       theme: "dark",
     });
   };
-
   useEffect(() => {
-    Quagga.init(
-      {
-        inputStream: {
-          name: "Live",
-          type: "LiveStream",
-          target: document.querySelector("#scanner-container"),
-          constraints: {
-            facingMode: "environment",
-          },
-          numOfWorkers: 4,
-        },
-
-        // frequency: 5,
-        // locate: true,
-        debug: true, // Set to true to see the debugging information
-        decoder: {
-          readers: ["ean_reader"], // Specify the barcode format(s) you want to scan
-        },
-      },
-      (err) => {
-        if (err) {
-          console.error("Error initializing Quagga:", err);
-          return;
-        }
-        Quagga.start();
-      }
-    );
-
-    Quagga.onDetected((data) => {
-      setResult(data.codeResult.code);
-      setCount(1);
-      setOpen(true);
-    });
-
-    return () => {
-      Quagga.stop();
+    const enableCamera = async () => {
+      await Quagga.CameraAccess.request(null, {});
     };
+    const disableCamera = async () => {
+      await Quagga.CameraAccess.release();
+    };
+    const enumerateCameras = async () => {
+      const cameras = await Quagga.CameraAccess.enumerateVideoDevices();
+      console.log("Cameras Detected: ", cameras);
+      return cameras;
+    };
+    enableCamera()
+      .then(disableCamera)
+      .then(enumerateCameras)
+      .then((cameras) => setCameras(cameras))
+      .then(() => Quagga.CameraAccess.disableTorch()) // disable torch at start, in case it was enabled before and we hot-reloaded
+      .catch((err) => setCameraError(err));
+    return () => disableCamera();
   }, []);
 
+  // provide a function to toggle the torch/flashlight
+  const onTorchClick = useCallback(() => {
+    const torch = !torchOn;
+    setTorch(torch);
+    if (torch) {
+      Quagga.CameraAccess.enableTorch();
+    } else {
+      Quagga.CameraAccess.disableTorch();
+    }
+  }, [torchOn, setTorch]);
   return (
-    <>
+    <Box
+      sx={{
+        display: "flex",
+        flexDirection: "column",
+        alignItems: "center",
+        gap: "1rem",
+      }}
+    >
+      <Box>
+        {cameraError ? (
+          <p>
+            ERROR INITIALIZING CAMERA ${JSON.stringify(cameraError)} -- DO YOU
+            HAVE PERMISSION?
+          </p>
+        ) : null}
+        {cameras.length === 0 ? (
+          <p>
+            Enumerating Cameras, browser may be prompting for permissions
+            beforehand
+          </p>
+        ) : (
+          <form>
+            <select onChange={(event) => setCameraId(event.target.value)}>
+              {cameras.map((camera) => (
+                <option key={camera.deviceId} value={camera.deviceId}>
+                  {camera.label || camera.deviceId}
+                </option>
+              ))}
+            </select>
+          </form>
+        )}
+      </Box>
+      <Box>
+        {/* <button onClick={onTorchClick}>
+          {torchOn ? "Disable Torch" : "Enable Torch"}
+        </button> */}
+        {/* <button onClick={() => setScanning(!scanning)}>
+          {scanning ? "Stop" : "Start"}
+        </button> */}
+      </Box>
       <Box
         sx={{
           border: "1px dashed black",
@@ -134,20 +176,25 @@ const Scanner = ({ superMarketId }) => {
           borderRadius: "10px ",
         }}
       >
-        <Box
-          id="scanner-container"
-          sx={{
-            display: "none",
-          }}
-        ></Box>
         <QrReader
-          delay={300}
-          onError={(err) => console.error("Error scanning QR code:", err)}
           style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
           constraints={{
             video: { facingMode: "environment" },
           }}
         />
+      </Box>
+
+      <Box sx={{ maxWidth: "40%", display: "none" }} ref={scannerRef}></Box>
+      <Box sx={{}}>
+        <Box>
+          {scanning ? (
+            <TestScanner
+              scannerRef={scannerRef}
+              cameraId={cameraId}
+              onDetected={(res) => handleModal(res)}
+            />
+          ) : null}
+        </Box>
       </Box>
 
       <Modal
@@ -347,7 +394,7 @@ const Scanner = ({ superMarketId }) => {
           </Box>
         </Card>
       </Modal>
-    </>
+    </Box>
   );
 };
 
