@@ -163,7 +163,7 @@ const Scanner = ({ superMarketId }) => {
           {scanning ? "Stop" : "Start"}
         </button> */}
       </Box>
-      <Box
+      {/* <Box
         sx={{
           border: "1px dashed black",
           padding: "0.5rem",
@@ -176,9 +176,9 @@ const Scanner = ({ superMarketId }) => {
             video: { facingMode: "environment" },
           }}
         />
-      </Box>
+      </Box> */}
 
-      <Box sx={{ maxWidth: "50%", display: "none" }} ref={scannerRef}></Box>
+      <Box sx={{ maxWidth: "50%" }} ref={scannerRef}></Box>
       <Box sx={{}}>
         <Box>
           {scanning ? (
