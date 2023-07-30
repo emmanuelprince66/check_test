@@ -137,7 +137,7 @@ const Scanner = ({ superMarketId }) => {
         gap: "1rem",
       }}
     >
-      {/* <Box>
+      <Box>
         {cameras.length === 0 ? (
           <p>
             Enumerating Cameras, browser may be prompting for permissions
@@ -154,7 +154,7 @@ const Scanner = ({ superMarketId }) => {
             </select>
           </form>
         )}
-      </Box> */}
+      </Box>
       <Box>
         {/* <button onClick={onTorchClick}>
           {torchOn ? "Disable Torch" : "Enable Torch"}
@@ -178,7 +178,7 @@ const Scanner = ({ superMarketId }) => {
         />
       </Box>
 
-      <Box sx={{ maxWidth: "40%", display: "none" }} ref={scannerRef}></Box>
+      <Box sx={{ maxWidth: "50%", display: "none" }} ref={scannerRef}></Box>
       <Box sx={{}}>
         <Box>
           {scanning ? (
