@@ -163,22 +163,23 @@ const Scanner = ({ superMarketId }) => {
           {scanning ? "Stop" : "Start"}
         </button> */}
       </Box>
-      {/* <Box
+      <Box
         sx={{
           border: "1px dashed black",
           padding: "0.5rem",
           borderRadius: "10px ",
         }}
       >
+        <Box sx={{ maxWidth: "50%", display: "none" }} ref={scannerRef}></Box>
+
         <QrReader
           style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
           constraints={{
             video: { facingMode: "environment" },
           }}
         />
-      </Box> */}
+      </Box>
 
-      <Box sx={{ maxWidth: "50%" }} ref={scannerRef}></Box>
       <Box sx={{}}>
         <Box>
           {scanning ? (
