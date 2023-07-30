@@ -116,6 +116,7 @@ const Scanner = ({ superMarketId }) => {
 
     Quagga.onDetected((data) => {
       setResult(data.codeResult.code);
+      setCount(1);
       setOpen(true);
     });
 
@@ -126,7 +127,13 @@ const Scanner = ({ superMarketId }) => {
 
   return (
     <>
-      <Box>
+      <Box
+        sx={{
+          border: "1px dashed black",
+          padding: "0.5rem",
+          borderRadius: "10px ",
+        }}
+      >
         <Box
           id="scanner-container"
           sx={{

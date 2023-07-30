@@ -105,8 +105,9 @@ const CartItem = ({ item }) => {
                 display: "flex",
                 justifyContent: "space-between",
                 alignItems: "center",
-                width: "100%",
+                minWidth: "100%",
                 marginTop: "0.5rem",
+                gap: "2rem",
               }}
             >
               {/* Price */}

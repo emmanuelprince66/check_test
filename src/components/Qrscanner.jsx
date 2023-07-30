@@ -38,7 +38,13 @@ const Qrscanner = () => {
   };
   return (
     <Box>
-      <Box>
+      <Box
+        sx={{
+          border: "1px dashed black",
+          padding: "0.5rem",
+          borderRadius: "10px ",
+        }}
+      >
         <QrReader
           delay={300}
           onError={handleError}

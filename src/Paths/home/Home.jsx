@@ -30,7 +30,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const currentTheme = useTheme();
   const navigate = useNavigate();
-  const [isTextVisible, setIsTextVisible] = useState(false);
+  // const [isTextVisible, setIsTextVisible] = useState(false);
 
   const user = useUser();
   console.log(user.data);
