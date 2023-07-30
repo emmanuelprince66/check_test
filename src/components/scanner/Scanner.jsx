@@ -137,13 +137,7 @@ const Scanner = ({ superMarketId }) => {
         gap: "1rem",
       }}
     >
-      <Box>
-        {cameraError ? (
-          <p>
-            ERROR INITIALIZING CAMERA ${JSON.stringify(cameraError)} -- DO YOU
-            HAVE PERMISSION?
-          </p>
-        ) : null}
+      {/* <Box>
         {cameras.length === 0 ? (
           <p>
             Enumerating Cameras, browser may be prompting for permissions
@@ -160,7 +154,7 @@ const Scanner = ({ superMarketId }) => {
             </select>
           </form>
         )}
-      </Box>
+      </Box> */}
       <Box>
         {/* <button onClick={onTorchClick}>
           {torchOn ? "Disable Torch" : "Enable Torch"}
