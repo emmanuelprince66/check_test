@@ -80,12 +80,7 @@ const TestScanner = ({
             });
           });
       }
-      if (result.box) {
-        Quagga.ImageDebug.drawPath(result.box, { x: 0, y: 1 }, drawingCtx, {
-          color: "blue",
-          lineWidth: 2,
-        });
-      }
+
       if (result.codeResult && result.codeResult.code) {
         // const validated = barcodeValidator(result.codeResult.code);
         // const validated = validateBarcode(result.codeResult.code);
