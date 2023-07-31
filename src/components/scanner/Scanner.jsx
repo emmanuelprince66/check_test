@@ -137,7 +137,7 @@ const Scanner = ({ superMarketId }) => {
         gap: "1rem",
       }}
     >
-      <Box>
+      {/* <Box>
         {cameras.length === 0 ? (
           <p>
             Enumerating Cameras, browser may be prompting for permissions
@@ -154,7 +154,7 @@ const Scanner = ({ superMarketId }) => {
             </select>
           </form>
         )}
-      </Box>
+      </Box> */}
       <Box>
         {/* <button onClick={onTorchClick}>
           {torchOn ? "Disable Torch" : "Enable Torch"}
@@ -163,22 +163,20 @@ const Scanner = ({ superMarketId }) => {
           {scanning ? "Stop" : "Start"}
         </button> */}
       </Box>
+
       <Box
         sx={{
-          border: "1px dashed black",
+          maxHeight: "12rem",
           padding: "0.5rem",
           borderRadius: "10px ",
+          justifyContent: "start",
+          alignItems: "center",
+          display: "flex",
+          flexDirection: "column",
+          maxWidth: { xs: "16rem", sm: "15rem", md: "15rem", lg: "15rem" },
         }}
-      >
-        <Box sx={{ maxWidth: "50%", display: "none" }} ref={scannerRef}></Box>
-
-        <QrReader
-          style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
-          constraints={{
-            video: { facingMode: "environment" },
-          }}
-        />
-      </Box>
+        ref={scannerRef}
+      ></Box>
 
       <Box sx={{}}>
         <Box>
