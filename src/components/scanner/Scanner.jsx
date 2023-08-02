@@ -424,6 +424,7 @@ const Scanner = ({ superMarketId }) => {
                   fontFamily: "raleWay",
                   paddingTop: "7px",
                   textTransform: "capitalize",
+                  fontWeight: "1000",
                 }}
               >
                 Add to Cart

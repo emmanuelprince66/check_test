@@ -434,6 +434,7 @@ const Cart = () => {
                 sx={{
                   width: "35%",
                   textTransform: "capitalize",
+                  fontWeight: "1000",
                   padding: "0",
                   background:
                     currentTheme.palette.type === "light"
@@ -500,7 +501,7 @@ const Cart = () => {
                       : "#dc0019",
                   borderColor: "#dc0019",
                   fontFamily: "raleWay",
-                  fontWeight: "900",
+                  fontWeight: "1000",
                   "&:hover": {
                     borderColor:
                       currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
@@ -568,7 +569,9 @@ const Cart = () => {
                       ? "#dc0019"
                       : "#dc0019",
                   padding: "10px",
+                  fontWeight: "1000",
                   width: "100%",
+                  textTransform: "capitalize",
                   borderRadius: "8px",
                   color: "#fff",
                   "&:hover": {
@@ -671,6 +674,8 @@ const Cart = () => {
                   height: "48px",
                   fontSize: "16px",
                   borderRadius: "8px",
+                  textTransform: "capitalize",
+                  fontWeight: "1000",
                   color: "#fff",
                   "&:hover": {
                     backgroundColor:
@@ -690,6 +695,9 @@ const Cart = () => {
                   height: "48px",
                   fontSize: "16px",
                   borderRadius: "8px",
+
+                  textTransform: "capitalize",
+                  fontWeight: "1000",
                   color:
                     currentTheme.palette.type === "light" ? "#000" : "#fff",
                   borderColor: "#dc0019",
@@ -818,6 +826,8 @@ const Cart = () => {
                           : "#dc0019",
                       width: "100%",
                       padding: "10px, 16px, 10px, 16px",
+                      textTransform: "capitalize",
+                      fontWeight: "1000",
                       width: {
                         xs: "300px",
                         sm: "333px",
@@ -849,6 +859,8 @@ const Cart = () => {
                       width: "100%",
                       marginTop: "-0.9rem",
                       padding: "10px, 16px, 10px, 16px",
+                      textTransform: "capitalize",
+                      fontWeight: "1000",
                       width: {
                         xs: "300px",
                         sm: "333px",
