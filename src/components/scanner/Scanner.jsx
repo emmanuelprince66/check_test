@@ -103,6 +103,7 @@ const Scanner = ({ superMarketId }) => {
       theme: "dark",
     });
   };
+
   useEffect(() => {
     const enableCamera = async () => {
       await Quagga.CameraAccess.request(null, {});
@@ -281,7 +282,14 @@ const Scanner = ({ superMarketId }) => {
                 gap: "10px",
                 justifyContent: "center",
                 padding: "1rem 2rem",
-                width: "335px",
+                // width: "335px",
+                width: {
+                  xs: "300px",
+                  md: "335px",
+                  sm: "335px",
+                  lg: "335px",
+                  margin: "auto",
+                },
                 my: "0.5rem",
                 background:
                   currentTheme.palette.type === "light" ? "#e8e5e5" : "#262626",
@@ -392,7 +400,7 @@ const Scanner = ({ superMarketId }) => {
                 height: "48px",
                 background: "#F6473C",
                 borderRadius: "8px",
-                width: "333px",
+                width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                 display: "flex",
                 padding: "10px, 16px, 10px, 16px",
                 alignItems: "center",

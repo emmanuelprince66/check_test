@@ -33,13 +33,25 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
   const value = JSON.stringify(orderItem.orders, null, 2);
 
   const handleDownload2 = () => {
+    // Select the element with ID "receipt"
     const receipt = document.querySelector("#receipt");
-    console.log(receipt);
 
-    html2canvas(receipt).then((canvas) => {
-      const imgData = canvas.toDataURL("image/png");
-      const pdf = new jsPDF();
-      pdf.addImage(imgData, "PNG", 10, 10, 190, 277);
+    // Convert the element to a JPEG image using html2canvas and lower quality setting
+    html2canvas(receipt, { useCORS: true, dpi: 150 }).then((canvas) => {
+      // Get the image data URL from the canvas with JPEG format and lower quality (adjust quality as needed)
+      const imgData = canvas.toDataURL("image/jpeg", 0.8); // Adjust the quality (0.0 to 1.0)
+
+      // Create a new jsPDF instance with a customized page size (use "pt" for points)
+      const pdf = new jsPDF({
+        orientation: "portrait", // "portrait" or "landscape"
+        unit: "pt", // Points as the unit of measurement
+        format: [canvas.width * 0.75, canvas.height * 0.75], // Reduce page size to 75% of the canvas size
+      });
+
+      // Add the image to the PDF at the top-left corner
+      pdf.addImage(imgData, "JPEG", 0, 0);
+
+      // Save the PDF with the name "receipt.pdf"
       pdf.save("receipt.pdf");
     });
   };

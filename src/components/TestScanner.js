@@ -51,10 +51,28 @@ const TestScanner = ({
       // if Quagga is at least 75% certain that it read correctly, then accept the code.
       if (err < 0.25) {
         onDetected(result.codeResult.code);
+        playNotificationSound();
       }
     },
     [onDetected]
   );
+
+  let notificationSound;
+
+  const playNotificationSound = () => {
+    const audioFile = "/notication.mp3";
+    notificationSound = new Audio(audioFile);
+    notificationSound.onerror = () => {
+      console.error("Failed to load audio:", audioFile);
+    };
+    notificationSound.play();
+
+    // Stop the audio after 1 second (1000 milliseconds)
+    setTimeout(() => {
+      notificationSound.pause();
+      notificationSound.currentTime = 0; // Reset audio to the beginning
+    }, 400);
+  };
 
   const handleProcessed = (result) => {
     const drawingCtx = Quagga.canvas.ctx.overlay;

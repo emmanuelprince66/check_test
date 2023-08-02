@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import QrReader from "react-qr-scanner";
-import { Box, CircularProgress, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography, Button } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
@@ -31,11 +31,29 @@ const Qrscanner = () => {
   const handleQrScan = (data) => {
     if (data) {
       localStorage.setItem("myData", data.text);
+      playNotificationSound();
       setShowProgress(true);
       setTimeout(() => {
         welcomeUser();
       }, 3000);
     }
+  };
+
+  let notificationSound;
+
+  const playNotificationSound = () => {
+    const audioFile = "/notication.mp3";
+    notificationSound = new Audio(audioFile);
+    notificationSound.onerror = () => {
+      console.error("Failed to load audio:", audioFile);
+    };
+    notificationSound.play();
+
+    // Stop the audio after 1 second (1000 milliseconds)
+    setTimeout(() => {
+      notificationSound.pause();
+      notificationSound.currentTime = 0; // Reset audio to the beginning
+    }, 400);
   };
 
   const handleError = (err) => {
