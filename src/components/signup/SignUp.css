@@ -1,265 +1,253 @@
 .gpt3__check-login {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin: auto;
+  margin-top: 5rem;
+}
+.gpt3__signup {
+  margin-bottom: 4rem;
+}
+
+.gpt3__check-img_text h2 {
+  color: #1e1e1e;
+  width: 15.93px;
+  height: 24.2px;
+  margin-bottom: 4px;
+}
+
+.gpt3__check-img_text {
+  min-width: 100%;
+}
+.gpt3__check-img_text h5 {
+  font-weight: light;
+  text-align: right;
+  letter-spacing: 0.1em;
+  margin-top: -10px;
+  font-size: 10px;
+}
+
+.gpt3__check-img {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  align-self: center;
+  margin: 2rem 0;
+}
+
+.gpt3__check-image img {
+  height: 50.98564147949219px;
+  width: 142.97471618652344px;
+  left: 115px;
+  top: 94px;
+  border-radius: 0px;
+}
+.gpt3__check-auth-btn {
+  display: flex;
+  margin-bottom: 2rem;
+}
+
+.gpt3__check-auth-btn button {
+  font-size: 14px;
+  font-weight: 600;
+  line-height: 21px;
+  letter-spacing: 0em;
+
+  height: 41px;
+  width: 163.5px;
+  left: 0px;
+  top: 0px;
+  border-radius: 0px;
+  padding: 10px 16px 10px 16px;
+  border: none;
+  background: transparent;
+  border-bottom: 2px solid #f3f2f2;
+}
+
+.active {
+  color: #dc0019;
+  border-bottom: 2px solid #dc0019 !important;
+}
+.night {
+  color: white !important;
+}
+.light {
+  color: #000 !important;
+}
+
+.gpt3__login-form-box {
+  display: flex;
+  flex-direction: column;
+}
+.gpt3__check-forget {
+  margin: 1rem 0;
+  text-align: right;
+}
+
+.gpt3__check-forget > a {
+  font-weight: 500;
+  font-size: 16px;
+  height: 19px;
+  color: #dc0019;
+  text-decoration: none;
+  padding-right: 0.6em;
+}
+
+.gpt3__check-button {
+  margin: 0 0 4rem 0;
+}
+
+.gpt3__check-button button {
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
+  padding: 10px;
+  gap: 10px;
+  position: absolute;
+  width: 327px;
+  height: 48px;
+  background: #dc0019;
+  border-radius: 8px;
+  outline: none;
+  border: none;
+  color: #fff;
+  font-weight: 600;
+  font-size: 16px;
+}
+.MuiFormHelperText-root {
+  font-family: raleWay !important;
+  color: #dc0019 !important;
+  font-weight: 900 !important;
+}
+.gpt3__check-register-link {
+  display: flex;
+  justify-content: center;
+  font-weight: 600;
+  gap: 6px;
+}
+
+.ex-logo {
+  width: 16px;
+  height: 16px;
+}
+.ex-logo-text {
+  color: #c57600;
+  width: 303px;
+  font-family: "Raleway";
+  font-style: normal;
+  font-weight: 400;
+  font-size: 12px;
+}
+
+.gpt3__password-strength {
+  display: flex;
+  justify-content: space-between;
+  align-items: start;
+  margin-top: 0.7rem;
+}
+
+.gpt3__password-strength p {
+  font-weight: 600;
+  font-size: 12px;
+  line-height: 14px;
+}
+
+.gpt3__password-strength-div {
+  display: flex;
+  justify-content: space-evenly;
+  gap: 5px;
+}
+.gpt3__password-flex {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-self: center;
+  align-items: center;
+}
+
+.gpt3__password-text {
+  display: flex;
+  justify-content: center;
+  gap: 17px;
+  padding-top: 0.5rem;
+}
+
+.gpt3__password-strength-div > span {
+  width: 50px;
+  height: 4px;
+}
+.gpt3__password-strength-div > #weak {
+  background: #dc0019;
+  opacity: 0.3;
+  border-radius: 8px;
+}
+
+.gpt3__password-strength-div :nth-child(2) {
+  background: rgb(123, 123, 251);
+  opacity: 0.3;
+  border-radius: 8px;
+}
+.gpt3__password-strength-div :nth-child(3) {
+  background: #008000;
+  opacity: 0.3;
+  border-radius: 8px;
+}
+.medium {
+  opacity: 1 !important;
+  background: #0000ff !important;
+}
+.weak {
+  opacity: 1 !important;
+  background: #dc0019 !important;
+}
+
+.strong {
+  opacity: 1 !important;
+  background: green !important;
+}
+.gpt3__requirement {
+  margin: 1rem 0;
+}
+.gpt3__requirement h4 {
+  font-weight: 600;
+  margin-bottom: 0.5rem;
+}
+.gpt3__requirement-div {
+  display: flex;
+  justify-content: start;
+  align-items: center;
+  gap: 8px;
+  margin: 0.2rem 0;
+}
+
+/* /media query  */
+
+@media screen and (min-width: 320px) {
+  .gpt3__login-form-box {
+    max-width: 100% !important;
+  }
+  .gpt3__check-button {
+    min-width: 100%;
+    margin-top: 1rem;
     display: flex;
-    flex-direction: column;
     justify-content: center;
-    align-items: center;
-    margin: auto;
-    margin-top: 5rem;
-   }
-   .gpt3__signup {
-   margin-bottom: 4rem;
-   }
-   
-   .gpt3__check-img_text h2 {
-   color:#1E1E1E;
-   width: 15.93px;
-   height: 24.2px;
-   margin-bottom: 4px;
-   }
-   
-   .gpt3__check-img_text {
-   min-width: 100%;
-   }
-   .gpt3__check-img_text h5 {
-   font-weight: light;
-   text-align: right;
-   letter-spacing: 0.1em;
-   margin-top: -10px;
-   font-size: 10px;
-      
-   }
-   
-   .gpt3__check-img {
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    align-self: center;
-    margin: 2rem 0;
-   }
-   
-   .gpt3__check-image img {
-       height: 50.98564147949219px;
-       width: 142.97471618652344px;
-       left: 115px;
-       top: 94px;
-       border-radius: 0px;
-       
-   }
-   .gpt3__check-auth-btn {
-    display: flex;
-    margin-bottom: 2rem;
-   }
-   
-   .gpt3__check-auth-btn button {
-   
-       font-size: 14px;
-       font-weight: 600;
-       line-height: 21px;
-       letter-spacing: 0em;
-       
-       height: 41px;
-       width: 163.5px;
-       left: 0px;
-       top: 0px;
-       border-radius: 0px;
-       padding: 10px 16px 10px 16px;
-       border: none;
-       background: transparent;
-       border-bottom: 2px solid #F3F2F2;
-       
-   }
-   
-   .active {
-       color: #DC0019;
-       border-bottom: 2px solid #DC0019 !important;
-       
-   }
-   .night {
-   color:white !important;
-   }
-   .light{
-   color: #000 !important;
-   }
-
-   .gpt3__login-form-box {
-     display: flex;
-     flex-direction: column;
-   }
-   .gpt3__check-forget {
-      margin: 1rem 0;
-      text-align: right;
-   }
-   
-   .gpt3__check-forget > a{
-     font-weight: 500;
-     font-size: 16px;
-     height: 19px;
-     color: #DC0019;
-     text-decoration: none;
-     padding-right: 0.6em;
-   }
-   
-   .gpt3__check-button {
-     margin: 0 0 4rem 0;
-   }
-   
-   .gpt3__check-button  button {
-   display: flex;
-   flex-direction: row;
-   justify-content: center;
-   align-items: center;
-   padding: 10px;
-   gap: 10px;
-   position: absolute;
-   width: 327px;
-   background: #DC0019;
-   border-radius: 8px;
-   outline: none;
-   border: none;
-   color: #fff;
-   }
-   .MuiFormHelperText-root {
-    font-family: raleWay !important;
-    color: #DC0019 !important;
-    font-weight: 900 !important;
-    }
-   .gpt3__check-register-link {
-   display: flex;
-   justify-content: center;
-   font-weight: 600;
-   gap: 6px;
-   }
-
-   .ex-logo {
-   width: 16px;
-   height: 16px;
-   }
-   .ex-logo-text {
-    color: #C57600;
-    width: 303px;
-    font-family: 'Raleway';
-    font-style: normal;
-    font-weight: 400;
-    font-size: 12px;
-   }
-   
-
-     
-   .gpt3__password-strength {
-      display: flex;
-      justify-content: space-between;
-      align-items: start;
-      margin-top: 0.7rem;
-   }
-   
-   .gpt3__password-strength p {
-    font-weight: 600;
-    font-size: 12px;
-    line-height: 14px;
-   }
-   
-   .gpt3__password-strength-div {
-   display: flex;
-   justify-content: space-evenly;
-   gap: 5px;
-   
-   }
-   .gpt3__password-flex {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-self: center;
-      align-items: center;
-   }
-   
-   .gpt3__password-text {
-    display: flex;
-    justify-content: center;
-    gap: 17px;
-    padding-top: 0.5rem;
-   }
-   
-   .gpt3__password-strength-div > span {
-    width: 50px;
-    height: 4px;
-   }
-   .gpt3__password-strength-div  > #weak {
-    background: #DC0019;
-    opacity: 0.3;
-    border-radius: 8px;
-   }
-   
-   .gpt3__password-strength-div :nth-child(2) {
-    background:rgb(123, 123, 251);
-    opacity: 0.3;
-    border-radius: 8px;
-   }
-   .gpt3__password-strength-div :nth-child(3) {
-    background:#008000;
-    opacity: 0.3;
-    border-radius: 8px;
-   }
-   .medium {
-    opacity: 1 !important;
-    background:#0000FF !important;
-   }
-   .weak {
-   opacity: 1 !important;
-   background:#DC0019 !important;
-   }
-
-   .strong {
-    opacity: 1 !important;
-    background:green !important;
-   }
-   .gpt3__requirement {
-   margin: 1rem 0;
-   }
-   .gpt3__requirement h4 {
-   font-weight: 600;
-   margin-bottom: 0.5rem;
-   
-   }
-   .gpt3__requirement-div {
-   display: flex;
-   justify-content: start;
-   align-items: center;
-   gap: 8px;
-   margin: 0.2rem 0;
-   }
-   
-
-   
-   /* /media query  */
- 
-   
-   
-   @media screen and (min-width:320px) {
-       .gpt3__login-form-box {
-        max-width: 100% !important;
-       
-       }
-       .gpt3__check-button {
-       min-width: 100%;
-       margin-top: 1rem;
-       display: flex;
-       justify-content: center;
-       }
-       .gpt3__check-button > button {
-       max-width: 90%;
-       }
-       .gpt3__check-auth-btn {
-       max-width: 90%;
-       }
-       .gpt3__check-forget {
-       padding-right:5px ;
-       }
-       .gpt3__password-strength {
-       padding: 0px 10px;
-       }
-       .gpt3__requirement {
-       padding: 0px 0px 0px 5px;
-       }
-    }
-   
+  }
+  .gpt3__check-button > button {
+    max-width: 90%;
+  }
+  .gpt3__check-auth-btn {
+    max-width: 90%;
+  }
+  .gpt3__check-forget {
+    padding-right: 5px;
+  }
+  .gpt3__password-strength {
+    padding: 0px 10px;
+  }
+  .gpt3__requirement {
+    padding: 0px 0px 0px 5px;
+  }
+}

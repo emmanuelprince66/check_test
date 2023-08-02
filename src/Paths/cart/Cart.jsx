@@ -44,6 +44,8 @@ import { Slide } from "@mui/material";
 import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CartReceipt from "../../components/CartReceipt";
 import FormattedPrice from "../../components/FormattedPrice";
+import { useRef } from "react";
+
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
@@ -53,7 +55,6 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
-  console.log(cart);
 
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
@@ -92,6 +93,7 @@ const Cart = () => {
   const [deleteCart, setDeleteCart] = useState(false);
   const [openReceipt, setOpenReceipt] = useState(false);
   const [orderData, setOrderData] = useState();
+  const pinRefs = [useRef(), useRef(), useRef(), useRef()];
 
   const superMarket = useSuperMarket(superMarketKey);
 
@@ -140,6 +142,11 @@ const Cart = () => {
     const newPins = [...pins];
     newPins[index] = value;
     setPins(newPins);
+
+    // Automatically focus on the next TextField if not already at the last one
+    if (index < pinRefs.length - 1) {
+      pinRefs[index + 1].current.focus();
+    }
   };
   const handleNewPinChange = (index, value) => {
     // Ensure that the value is only one digit
@@ -288,6 +295,7 @@ const Cart = () => {
       setTimeout(() => {
         setSuccessResponse(false);
         setOpenReceipt(true);
+        dispatch(clearCart());
       }, 3000);
     },
     onError: (response) => {
@@ -317,7 +325,8 @@ const Cart = () => {
     return { productId: item.productId };
   });
 
-  const commission = (0.5 / 100) * totalPrice;
+  const commissionCal = (0.5 / 100) * totalPrice;
+  const commission = commissionCal.toFixed(2);
   const superMarketId = superMarket.data ? superMarket.data.id : "";
   // test
 
@@ -329,6 +338,20 @@ const Cart = () => {
     paymentType: "WALLET",
     orders: productId,
   };
+
+  const orderLoad = {
+    id: orderData ? orderData.orderInfo.id : "",
+    commission: commission,
+    supermarketId: superMarketId,
+    total: totalPrice,
+    order: productId,
+    customerName: orderData
+      ? orderData.orderInfo.user.firstName +
+        " " +
+        orderData.orderInfo.user.lastName
+      : "",
+  };
+
   // end test
 
   // data to send to complete order endpoint end
@@ -638,7 +661,10 @@ const Cart = () => {
                       ? "#dc0019"
                       : "#dc0019",
                   width: "95%",
-                  padding: "10px",
+                  padding: "10px, 16px, 10px, 16px",
+                  width: "333px",
+                  height: "48px",
+                  fontSize: "16px",
                   borderRadius: "8px",
                   color: "#fff",
                   "&:hover": {
@@ -654,7 +680,10 @@ const Cart = () => {
                 onClick={() => handleClose()}
                 sx={{
                   width: "95%",
-                  padding: "10px",
+                  padding: "10px, 16px, 10px, 16px",
+                  width: "333px",
+                  height: "48px",
+                  fontSize: "16px",
                   borderRadius: "8px",
                   color:
                     currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -768,6 +797,7 @@ const Cart = () => {
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
+                        inputRef={pinRefs[index]}
                       />
                     ))}
                   </Box>
@@ -781,7 +811,10 @@ const Cart = () => {
                           ? "#dc0019"
                           : "#dc0019",
                       width: "100%",
-                      padding: "10px",
+                      padding: "10px, 16px, 10px, 16px",
+                      width: "333px",
+                      height: "48px",
+                      fontSize: "16px",
                       borderRadius: "8px",
                       color: "#fff",
                       "&:hover": {
@@ -804,7 +837,10 @@ const Cart = () => {
                     sx={{
                       width: "100%",
                       marginTop: "-0.9rem",
-                      padding: "10px",
+                      padding: "10px, 16px, 10px, 16px",
+                      width: "333px",
+                      height: "48px",
+                      fontSize: "16px",
                       borderRadius: "8px",
                       color:
                         currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -1028,7 +1064,10 @@ const Cart = () => {
                         ? "#dc0019"
                         : "#dc0019",
                     width: "95%",
-                    padding: "10px",
+                    padding: "10px, 16px, 10px, 16px",
+                    width: "333px",
+                    height: "48px",
+                    fontSize: "16px",
                     borderRadius: "8px",
                     color: "#fff",
                     "&:hover": {
@@ -1046,7 +1085,10 @@ const Cart = () => {
                   onClick={() => handleClose3()}
                   sx={{
                     width: "95%",
-                    padding: "10px",
+                    padding: "10px, 16px, 10px, 16px",
+                    width: "333px",
+                    height: "48px",
+                    fontSize: "16px",
                     borderRadius: "8px",
                     color:
                       currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -1266,7 +1308,10 @@ const Cart = () => {
                         ? "#dc0019"
                         : "#dc0019",
                     width: "95%",
-                    padding: "10px",
+                    padding: "10px, 16px, 10px, 16px",
+                    width: "333px",
+                    height: "48px",
+                    fontSize: "16px",
                     borderRadius: "8px",
                     color: "#fff",
                     "&:hover": {
@@ -1288,7 +1333,10 @@ const Cart = () => {
                   onClick={() => handleClose4()}
                   sx={{
                     width: "95%",
-                    padding: "10px",
+                    padding: "10px, 16px, 10px, 16px",
+                    width: "333px",
+                    height: "48px",
+                    fontSize: "16px",
                     borderRadius: "8px",
                     color:
                       currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -1476,6 +1524,7 @@ const Cart = () => {
                 cart={cart ? cart : []}
                 totalPrice={totalPrice ? totalPrice : ""}
                 orderData={orderData ? orderData : ""}
+                orderLoad={orderLoad ? orderLoad : ""}
               />
             </Box>
           </Dialog>

@@ -29,6 +29,8 @@ const Scanner = ({ superMarketId }) => {
   const [cameraError, setCameraError] = useState(null); // error message from failing to access the camera
   const [torchOn, setTorch] = useState(false); // toggleable state for "should torch be on"
   const scannerRef = useRef(null); // reference to the scanner element in the DOM
+  const [showProgress, setShowProgress] = useState(false);
+
   // end test states
 
   const [open, setOpen] = React.useState(false);
@@ -46,9 +48,13 @@ const Scanner = ({ superMarketId }) => {
     }
   };
   const handleModal = (res) => {
-    setResult(res);
-    setCount(1);
-    setOpen(true);
+    setTimeout(() => {
+      setShowProgress(false);
+      setResult(res);
+      setCount(1);
+      setOpen(true);
+    }, 3000);
+    setShowProgress(true);
   };
 
   const defaultComputedPrice = !superMarketP.data?.price || !count ? 0 : null;
@@ -164,19 +170,31 @@ const Scanner = ({ superMarketId }) => {
         </button> */}
       </Box>
 
-      <Box
-        sx={{
-          maxHeight: "12rem",
-          padding: "0.5rem",
-          borderRadius: "10px ",
-          justifyContent: "start",
-          alignItems: "center",
-          display: "flex",
-          flexDirection: "column",
-          maxWidth: { xs: "16rem", sm: "15rem", md: "15rem", lg: "15rem" },
-        }}
-        ref={scannerRef}
-      ></Box>
+      {showProgress ? (
+        <CircularProgress
+          size="3.5rem"
+          sx={{
+            marginTop: "3rem",
+          }}
+          color="error"
+        />
+      ) : (
+        <Box
+          sx={{
+            maxHeight: "19rem",
+            marginTop: "-4rem",
+            padding: "0.5rem",
+            borderRadius: "10px ",
+            justifyContent: "start",
+            alignItems: "center",
+            display: "flex",
+            flexDirection: "column",
+
+            maxWidth: { xs: "16rem", sm: "15rem", md: "15rem", lg: "15rem" },
+          }}
+          ref={scannerRef}
+        ></Box>
+      )}
 
       <Box sx={{}}>
         <Box>
@@ -223,7 +241,21 @@ const Scanner = ({ superMarketId }) => {
             }}
           >
             <Box>
-              <Box sx={{ maxWidth: "30%", mx: "auto" }}>
+              <Box
+                sx={{
+                  maxWidth: "50%",
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                  mx: "auto",
+                  padding: "1rem",
+                  backgroundColor:
+                    currentTheme.palette.type === "light"
+                      ? "rgba(232, 229, 229, 1)"
+                      : "rgba(232, 229, 229, 1)",
+                  borderRadius: "8px",
+                }}
+              >
                 <img
                   src={
                     superMarketP.data ? (
@@ -249,6 +281,7 @@ const Scanner = ({ superMarketId }) => {
                 gap: "10px",
                 justifyContent: "center",
                 padding: "1rem 2rem",
+                width: "335px",
                 my: "0.5rem",
                 background:
                   currentTheme.palette.type === "light" ? "#e8e5e5" : "#262626",
@@ -259,6 +292,7 @@ const Scanner = ({ superMarketId }) => {
                   display: "flex",
                   alignItems: "baseline",
                   gap: "3px",
+                  justifyContent: "center",
                 }}
               >
                 <Typography
@@ -355,13 +389,15 @@ const Scanner = ({ superMarketId }) => {
                 handleAddToCart(superMarketP.data ? superMarketP.data : "")
               }
               sx={{
-                height: "36px",
+                height: "48px",
                 background: "#F6473C",
                 borderRadius: "8px",
+                width: "333px",
                 display: "flex",
+                padding: "10px, 16px, 10px, 16px",
                 alignItems: "center",
                 justifyContent: "center",
-                gap: "0.5rem",
+                gap: "16px",
                 flexGrow: "1",
                 cursor: "pointer",
                 "&:hover": {
@@ -379,9 +415,10 @@ const Scanner = ({ superMarketId }) => {
                   fontSize: "14px",
                   fontFamily: "raleWay",
                   paddingTop: "7px",
+                  textTransform: "capitalize",
                 }}
               >
-                Add to cart
+                Add to Cart
               </Typography>
             </Button>
           </Box>

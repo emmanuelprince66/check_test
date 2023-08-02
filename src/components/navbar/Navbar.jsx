@@ -74,18 +74,6 @@ const Navbar = () => {
           </li> */}
           <li>
             <Link
-              to="/transactions"
-              className={transactionsMatch ? "active-link" : ""}
-              style={{ color: "black", textDecoration: "none" }}
-            >
-              <div className="gpt3__navbar">
-                <img src={sideArrow} alt="side-logo" />
-                <MyTypography>Transaction</MyTypography>
-              </div>
-            </Link>
-          </li>
-          <li>
-            <Link
               to="/scan"
               className={scanMatch ? "active-link" : ""}
               style={{ color: "black", textDecoration: "none" }}
@@ -96,6 +84,19 @@ const Navbar = () => {
               </div>
             </Link>
           </li>
+          <li>
+            <Link
+              to="/transactions"
+              className={transactionsMatch ? "active-link" : ""}
+              style={{ color: "black", textDecoration: "none" }}
+            >
+              <div className="gpt3__navbar">
+                <img src={sideArrow} alt="side-logo" />
+                <MyTypography>Transaction</MyTypography>
+              </div>
+            </Link>
+          </li>
+
           <li>
             <Box
               sx={{

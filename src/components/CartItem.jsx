@@ -22,6 +22,7 @@ import FormattedPrice from "./FormattedPrice";
 const CartItem = ({ item }) => {
   const currentTheme = useTheme();
   const dispatch = useDispatch();
+
   const handleRemoveFromCart = (item) => {
     dispatch(removeFromCart(item));
   };

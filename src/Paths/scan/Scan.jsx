@@ -4,6 +4,11 @@ import Scanner from "../../components/scanner/Scanner";
 import { AuthProvider } from "../../util/AuthContext";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { ToastContainer, toast } from "react-toastify";
+import Visibility from "@mui/icons-material/Visibility";
+import VisibilityOff from "@mui/icons-material/VisibilityOff";
+import plusLogo from "../../images/plusLogo.svg";
+import { Link } from "react-router-dom";
+import notiLogo from "../../images/notiLogo.svg";
 
 import {
   Box,
@@ -20,12 +25,16 @@ import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import FormattedPrice from "../../components/FormattedPrice";
+import useUser from "../../hooks/useUser";
 
 const Scan = () => {
   const cart = useSelector((state) => state.cart);
+  const user = useUser();
 
   const navigate = useNavigate();
   const [superMarketKey, setSuperMarketKey] = useState("");
+  const [isTextVisible, setIsTextVisible] = useState(false);
+
   const superMarket = useSuperMarket(superMarketKey);
 
   const currentTheme = useTheme();
@@ -88,16 +97,14 @@ const Scan = () => {
               <BackArrow destination="/home" />
             </Box>
           </Box>
-
           <Card
             sx={{
-              height: "70px",
+              height: "92px",
               width: "100%",
               borderRadius: "16px",
               padding: "0.5rem",
-              marginY: "1rem",
               backgroundColor:
-                currentTheme.palette.type === "light" ? "#fff" : "#333333",
+                currentTheme.palette.type === "light" ? "#FFEDED" : "#FFEDED",
             }}
           >
             <Box
@@ -105,54 +112,146 @@ const Scan = () => {
                 width: "100%",
                 display: "flex",
                 justifyContent: "space-between",
-                alignItems: "center",
+                alignItems: "start",
               }}
             >
+              <Box>
+                {!isTextVisible ? (
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                    }}
+                  >
+                    ******************
+                  </Typography>
+                ) : (
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {user.data ? (
+                      <FormattedPrice amount={user.data.balance} />
+                    ) : (
+                      <CircularProgress />
+                    )}
+                  </Typography>
+                )}
+              </Box>
+
               <Box
                 sx={{
                   display: "flex",
                   justifyContent: "center",
                   flexDirection: "column",
-                  alignItems: "start",
-                  flex: "4",
+                  alignItems: "end",
+                  width: "100%",
                 }}
               >
-                <Typography
+                <Box
                   sx={{
-                    fontFamily: "raleWay",
-                    fontWeight: "600",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "0.5rem",
+                    borderRadius: "8px",
+                    backgroundColor: "rgba(220, 0, 25, 0.1)",
+                    padding: "4px 8px 4px 8px",
                   }}
                 >
-                  {superMarket.data ? (
-                    superMarket.data.companyName
+                  {isTextVisible ? (
+                    <Visibility
+                      sx={{ color: "#C57600", fontSize: "15px" }}
+                      onClick={() => setIsTextVisible(false)}
+                    />
                   ) : (
-                    <CircularProgress size="1.5rem" color="error" />
+                    <VisibilityOff
+                      sx={{ color: "#C57600", fontSize: "15px" }}
+                      onClick={() => setIsTextVisible(true)}
+                    />
                   )}
-                </Typography>
-
-                <Box sx={{ display: "flex", alignItems: "center", gap: "4px" }}>
                   <Typography
                     sx={{
-                      color: "#000",
-                      fontWeight: "600",
+                      fontWeight: "400",
+                      fontSize: "10px",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1e1e1e"
+                          : "#ffff",
+                      letterSpacing: "-0.24px",
                       fontFamily: "raleWay",
+                      paddingTop: "1px",
                     }}
                   >
-                    Total value in cart :
+                    Show Balance
                   </Typography>
-                  <Typography
-                    sx={{
-                      color: "#000",
-                      fontWeight: "600",
-                      fontFamily: "raleWay",
-                      color: "red",
-                    }}
-                  >
-                    <FormattedPrice amount={totalPrice} />
-                  </Typography>
+                </Box>
+                <Box
+                  sx={{
+                    height: "36px",
+                    background:
+                      "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
+                    borderRadius: "8px",
+                    display: "flex",
+                    alignItems: "center",
+                    justifyContent: "center",
+                    gap: "0.5rem",
+                    width: "103px",
+                    marginTop: "1rem",
+                  }}
+                >
+                  <img src={plusLogo} alt="plus-logo" />
+                  <Link to="/fwallet">
+                    <Typography
+                      sx={{
+                        color: "#fff",
+                        fontSize: "12px",
+                        fontFamily: "raleWay",
+                      }}
+                    >
+                      Fund Wallet
+                    </Typography>
+                  </Link>
                 </Box>
               </Box>
             </Box>
+          </Card>
+
+          <Card
+            sx={{
+              display: "flex",
+              textAlign: "center",
+              alignItems: "center",
+              justifyContent: "center",
+              maxWidth: "15rem",
+              mx: "auto",
+              padding: "0.3rem",
+              gap: "7px",
+              borderRadius: "11px",
+              width: "100%",
+              marginBottom: "2rem",
+              marginTop: "1rem",
+              backgroundColor:
+                currentTheme.palette.type === "light"
+                  ? "rgba(232, 229, 229, 1)"
+                  : "rgba(232, 229, 229, 1)",
+            }}
+          >
+            <Typography
+              sx={{
+                fontFamily: "raleWay",
+                fontWeight: "600",
+              }}
+            >
+              {superMarket.data ? (
+                superMarket.data.companyName
+              ) : (
+                <CircularProgress size="1.5rem" color="error" />
+              )}
+            </Typography>
           </Card>
 
           <Box
@@ -160,13 +259,10 @@ const Scan = () => {
               minWidth: "100%",
               minHeight: "100%",
               overflow: "hidden",
-              display: "flex",
-              padding: "0.5rem",
+              borderRadius: "20px",
+              borderTop: "20px",
               justifyContent: "center",
               alignItems: "center",
-              border: `2px hidden ${
-                currentTheme.palette.type === "light" ? "#000" : "#fff"
-              }`,
               padding: "1rem",
             }}
           >
@@ -178,6 +274,36 @@ const Scan = () => {
               }
             />
             {/* Bar code scanner stops */}
+          </Box>
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "4px",
+              width: "100%",
+              justifyContent: "center",
+              marginY: "2rem",
+            }}
+          >
+            <Typography
+              sx={{
+                color: "#000",
+                fontWeight: "600",
+                fontFamily: "raleWay",
+              }}
+            >
+              Total value in cart :
+            </Typography>
+            <Typography
+              sx={{
+                color: "#000",
+                fontWeight: "600",
+                fontFamily: "raleWay",
+                color: "red",
+              }}
+            >
+              <FormattedPrice amount={totalPrice} />
+            </Typography>
           </Box>
         </Container>
 

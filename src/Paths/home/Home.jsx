@@ -30,7 +30,7 @@ import { Link } from "react-router-dom";
 const Home = () => {
   const currentTheme = useTheme();
   const navigate = useNavigate();
-  // const [isTextVisible, setIsTextVisible] = useState(false);
+  const [isTextVisible, setIsTextVisible] = useState(false);
 
   const user = useUser();
   console.log(user.data);
@@ -40,13 +40,13 @@ const Home = () => {
       <div className="gpt3__home">
         <Card
           sx={{
-            height: "70px",
+            height: "92px",
             width: "100%",
             borderRadius: "16px",
             padding: "0.5rem",
             marginY: "1rem",
             backgroundColor:
-              currentTheme.palette.type === "light" ? "#fff" : "#333333",
+              currentTheme.palette.type === "light" ? "#FFEDED" : "#FFEDED",
           }}
         >
           <Box
@@ -54,67 +54,110 @@ const Home = () => {
               width: "100%",
               display: "flex",
               justifyContent: "space-between",
-              alignItems: "center",
+              alignItems: "start",
             }}
           >
+            <Box>
+              {!isTextVisible ? (
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: "600",
+                    fontSize: "18px",
+                  }}
+                >
+                  ******************
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: "600",
+                    fontSize: "18px",
+                  }}
+                >
+                  {user.data ? (
+                    <FormattedPrice amount={user.data.balance} />
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </Typography>
+              )}
+            </Box>
+
             <Box
               sx={{
                 display: "flex",
                 justifyContent: "center",
                 flexDirection: "column",
-                alignItems: "start",
-                flex: "4",
+                alignItems: "end",
+                width: "100%",
               }}
             >
-              <Typography
+              <Box
                 sx={{
-                  fontFamily: "raleWay",
-                  fontWeight: "400",
-                  fontSize: "10px",
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "0.5rem",
+                  borderRadius: "8px",
+                  backgroundColor: "rgba(220, 0, 25, 0.1)",
+                  padding: "4px 8px 4px 8px",
                 }}
               >
-                My Balance
-              </Typography>
-
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  fontWeight: "600",
-                  fontSize: "18px",
-                }}
-              >
-                {user.data ? (
-                  <FormattedPrice amount={user.data.balance} />
+                {isTextVisible ? (
+                  <Visibility
+                    sx={{ color: "#C57600", fontSize: "15px" }}
+                    onClick={() => setIsTextVisible(false)}
+                  />
                 ) : (
-                  <CircularProgress />
+                  <VisibilityOff
+                    sx={{ color: "#C57600", fontSize: "15px" }}
+                    onClick={() => setIsTextVisible(true)}
+                  />
                 )}
-              </Typography>
-            </Box>
-
-            <Box
-              sx={{
-                height: "36px",
-                background: "#F6473C",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                flexGrow: "1",
-              }}
-            >
-              <img src={plusLogo} alt="plus-logo" />
-              <Link to="/fwallet">
                 <Typography
                   sx={{
-                    color: "#fff",
-                    fontSize: "12px",
+                    fontWeight: "400",
+                    fontSize: "10px",
+                    color:
+                      currentTheme.palette.type === "light"
+                        ? "#1e1e1e"
+                        : "#ffff",
+                    letterSpacing: "-0.24px",
                     fontFamily: "raleWay",
+                    paddingTop: "1px",
                   }}
                 >
-                  Fund Wallet
+                  Show Balance
                 </Typography>
-              </Link>
+              </Box>
+              <Box
+                sx={{
+                  height: "36px",
+                  background:
+                    "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  width: "103px",
+                  marginTop: "1rem",
+                }}
+              >
+                <img src={plusLogo} alt="plus-logo" />
+                <Link to="/fwallet">
+                  <Typography
+                    sx={{
+                      color: "#fff",
+                      fontSize: "12px",
+                      fontFamily: "raleWay",
+                    }}
+                  >
+                    Fund Wallet
+                  </Typography>
+                </Link>
+              </Box>
             </Box>
           </Box>
         </Card>
@@ -130,10 +173,14 @@ const Home = () => {
             justifyContent: "center",
             padding: "0.3rem",
             gap: "7px",
+            borderRadius: "11px",
             width: "100%",
             marginBottom: "2rem",
+            marginTop: "1rem",
             backgroundColor:
-              currentTheme.palette.type === "light" ? "#fff" : "#333333",
+              currentTheme.palette.type === "light"
+                ? "rgba(232, 229, 229, 1)"
+                : "rgba(232, 229, 229, 1)",
           }}
         >
           <img src={exclamgreen} alt="ex" />
@@ -142,6 +189,8 @@ const Home = () => {
               color: currentTheme.palette.type === "light" ? "#000" : "#fff",
               paddingTop: "1px",
               fontFamily: "raleWay",
+              fontWeight: "400",
+              fontSize: "16px",
             }}
           >
             Scan Qr code to start shopping.
@@ -152,16 +201,14 @@ const Home = () => {
 
         <Box
           sx={{
-            minWidth: "100%",
-            minHeight: "100%",
+            maxHeight: "19rem",
             overflow: "hidden",
             display: "flex",
-            padding: "0.5rem",
             justifyContent: "center",
             alignItems: "center",
-            border: `2px hidden ${
-              currentTheme.palette.type === "light" ? "#000" : "#fff"
-            }`,
+            borderRadius: "20px",
+            marginBottom: "20%",
+
             padding: "1rem",
           }}
         >

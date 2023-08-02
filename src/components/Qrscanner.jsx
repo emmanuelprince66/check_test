@@ -1,7 +1,7 @@
 import React from "react";
 import { useState } from "react";
 import QrReader from "react-qr-scanner";
-import { Box, Typography } from "@mui/material";
+import { Box, CircularProgress, Typography } from "@mui/material";
 import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
@@ -16,8 +16,10 @@ const Qrscanner = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [showProgress, setShowProgress] = useState(false);
 
   const welcomeUser = () => {
+    setShowProgress(false);
     setOpen(true);
 
     setTimeout(() => {
@@ -29,31 +31,46 @@ const Qrscanner = () => {
   const handleQrScan = (data) => {
     if (data) {
       localStorage.setItem("myData", data.text);
-      welcomeUser();
+      setShowProgress(true);
+      setTimeout(() => {
+        welcomeUser();
+      }, 3000);
     }
   };
 
   const handleError = (err) => {
     console.log(err);
   };
+
   return (
     <Box>
       <Box
         sx={{
-          border: "1px dashed black",
           padding: "0.5rem",
-          borderRadius: "10px ",
         }}
       >
-        <QrReader
-          delay={300}
-          onError={handleError}
-          onScan={handleQrScan}
-          style={{ maxWidth: "100%", maxHeight: "100%", borderRadius: "20px" }}
-          constraints={{
-            video: { facingMode: "environment" },
-          }}
-        />
+        {showProgress ? (
+          <CircularProgress
+            size="3.5rem"
+            sx={{
+              marginTop: "3rem",
+            }}
+            color="error"
+          />
+        ) : (
+          <QrReader
+            delay={300}
+            onError={handleError}
+            onScan={handleQrScan}
+            style={{
+              minWidth: "100%",
+              minHeight: "100%",
+            }}
+            constraints={{
+              video: { facingMode: "environment" },
+            }}
+          />
+        )}
       </Box>
 
       {/* Dialouge full screen modal start */}
