@@ -341,18 +341,20 @@ const Cart = () => {
     orders: productId,
   };
 
-  const orderLoad = {
-    id: orderData ? orderData.orderInfo.id : "",
-    commission: commission,
-    supermarketId: superMarketId,
-    total: totalPrice.toString(),
-    order: productId,
-    customerName: orderData
-      ? orderData.orderInfo.user.firstName +
-        " " +
-        orderData.orderInfo.user.lastName
-      : "",
-  };
+  const orderLoad = [
+    {
+      id: orderData ? orderData.orderInfo.id : "",
+      commission: commission,
+      supermarketId: superMarketId,
+      total: totalPrice.toString(),
+      order: productId,
+      customerName: orderData
+        ? orderData.orderInfo.user.firstName +
+          " " +
+          orderData.orderInfo.user.lastName
+        : "",
+    },
+  ];
 
   // end test
 
@@ -1536,7 +1538,7 @@ const Cart = () => {
             >
               <CartReceipt
                 orderData={orderData ? orderData : ""}
-                orderLoad={orderLoad ? orderLoad : ""}
+                orderLoad={orderLoad ? orderLoad : []}
                 cart={cart ? cart : []}
               />
             </Box>

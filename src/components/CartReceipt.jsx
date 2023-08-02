@@ -33,6 +33,7 @@ import { useNavigate } from "react-router-dom";
 
 const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const value = JSON.stringify(orderLoad, null, 2);
+  console.log(value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
