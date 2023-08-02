@@ -338,6 +338,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               justifyContent: "start",
               alignItems: "center",
               gap: "10px",
+              width: "100%",
             }}
           >
             <TableContainer component={Paper}>
