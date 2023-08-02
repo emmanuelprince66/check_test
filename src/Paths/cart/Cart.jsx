@@ -139,6 +139,9 @@ const Cart = () => {
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
     if (value.length > 1) return;
+
+    if (!/^\d*$/.test(value)) return;
+
     const newPins = [...pins];
     newPins[index] = value;
     setPins(newPins);
@@ -295,7 +298,6 @@ const Cart = () => {
       setTimeout(() => {
         setSuccessResponse(false);
         setOpenReceipt(true);
-        dispatch(clearCart());
       }, 3000);
     },
     onError: (response) => {
@@ -343,7 +345,7 @@ const Cart = () => {
     id: orderData ? orderData.orderInfo.id : "",
     commission: commission,
     supermarketId: superMarketId,
-    total: totalPrice,
+    total: totalPrice.toString(),
     order: productId,
     customerName: orderData
       ? orderData.orderInfo.user.firstName +
@@ -622,6 +624,9 @@ const Cart = () => {
                 sx={{
                   display: "flex",
                   alignItems: "center",
+                  width: "100%",
+                  textAlign: "center",
+                  justifyContent: "center",
                 }}
               >
                 <Typography
@@ -635,21 +640,20 @@ const Cart = () => {
                   }}
                 >
                   Are you sure want to purchse these items for{" "}
-                </Typography>
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    fontWeight: 600,
-                    fontSize: "13px",
-                    lineHeight: "18.78px",
-                    mx: "3px",
-                    color:
-                      currentTheme.palette.type === "light"
-                        ? "#C57600"
-                        : "#C57600",
-                  }}
-                >
-                  &#8358;{totalPrice}?{" "}
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: 600,
+                      fontSize: "13px",
+                      lineHeight: "18.78px",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#C57600"
+                          : "#C57600",
+                    }}
+                  >
+                    &#8358;{totalPrice}?{" "}
+                  </Typography>
                 </Typography>
               </Box>
 
@@ -660,9 +664,8 @@ const Cart = () => {
                     currentTheme.palette.type === "light"
                       ? "#dc0019"
                       : "#dc0019",
-                  width: "95%",
                   padding: "10px, 16px, 10px, 16px",
-                  width: "333px",
+                  width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                   height: "48px",
                   fontSize: "16px",
                   borderRadius: "8px",
@@ -681,7 +684,7 @@ const Cart = () => {
                 sx={{
                   width: "95%",
                   padding: "10px, 16px, 10px, 16px",
-                  width: "333px",
+                  width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                   height: "48px",
                   fontSize: "16px",
                   borderRadius: "8px",
@@ -732,6 +735,7 @@ const Cart = () => {
                   fontWeight: 600,
                   fontSize: "13px",
                   lineHeight: "18.78px",
+                  textAlign: "center",
                   marginY: "1rem",
                   color:
                     currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -812,7 +816,12 @@ const Cart = () => {
                           : "#dc0019",
                       width: "100%",
                       padding: "10px, 16px, 10px, 16px",
-                      width: "333px",
+                      width: {
+                        xs: "300px",
+                        sm: "333px",
+                        md: "333px",
+                        lg: "333px",
+                      },
                       height: "48px",
                       fontSize: "16px",
                       borderRadius: "8px",
@@ -838,7 +847,12 @@ const Cart = () => {
                       width: "100%",
                       marginTop: "-0.9rem",
                       padding: "10px, 16px, 10px, 16px",
-                      width: "333px",
+                      width: {
+                        xs: "300px",
+                        sm: "333px",
+                        md: "333px",
+                        lg: "333px",
+                      },
                       height: "48px",
                       fontSize: "16px",
                       borderRadius: "8px",
@@ -1521,10 +1535,9 @@ const Cart = () => {
               }}
             >
               <CartReceipt
-                cart={cart ? cart : []}
-                totalPrice={totalPrice ? totalPrice : ""}
                 orderData={orderData ? orderData : ""}
                 orderLoad={orderLoad ? orderLoad : ""}
+                cart={cart ? cart : []}
               />
             </Box>
           </Dialog>

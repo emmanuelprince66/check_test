@@ -17,7 +17,6 @@ import BackArrow from "./backArrow/BackArrow";
 import useSuperMarket from "../hooks/useSuperMarket";
 import { jsPDF } from "jspdf";
 import html2canvas from "html2canvas";
-
 import {
   TableBody,
   TableCell,
@@ -28,9 +27,16 @@ import {
   Table,
 } from "@mui/material";
 import FormattedPrice from "./FormattedPrice";
+import { useDispatch } from "react-redux";
+import { clearCart } from "../util/slice/CartSlice";
+import { useNavigate } from "react-router-dom";
 
-const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
+const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const value = JSON.stringify(orderLoad, null, 2);
+  const dispatch = useDispatch();
+  const navigate = useNavigate();
+
+  console.log(value);
   const currentTheme = useTheme();
   const [superMarketKey, setSuperMarketKey] = useState("");
 
@@ -86,6 +92,11 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
     }
   }, []);
 
+  const handleClearCart = () => {
+    console.log("hello");
+    navigate("/scan");
+    dispatch(clearCart());
+  };
   return (
     <Box
       sx={{
@@ -99,6 +110,10 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
           padding: "1rem",
         }}
       >
+        <Box onClick={() => handleClearCart()}>
+          <BackArrow />
+        </Box>
+
         <Box id="receipt">
           <Box
             sx={{
@@ -229,7 +244,7 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
                       ? "rgba(83, 83, 83, 1)"
                       : "#d7d7d7",
                   fontWeight: "1000",
-                  fontSize: "13px",
+                  fontSize: { xs: "12px", sm: "13px", md: "13px", lg: "13px" },
                 }}
               >
                 {orderData.orderInfo.transactionRef}
@@ -445,7 +460,9 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
                 fontSize: "16px",
               }}
             >
-              <FormattedPrice amount={totalPrice} />
+              <FormattedPrice
+                amount={parseInt(orderData.orderInfo.totalAmount)}
+              />
             </Typography>
           </Box>
 
@@ -503,6 +520,7 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
             flexDirection: "column",
             gap: "1rem",
             margin: "2rem 0",
+            alignItems: "center",
           }}
         >
           <Button
@@ -510,7 +528,12 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
             sx={{
               background:
                 currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
-              width: "333px",
+              width: {
+                xs: "300px",
+                sm: "333px",
+                md: "333px",
+                lg: "333px",
+              },
               height: "48px",
               padding: "10px, 16px, 10px, 16px",
               borderRadius: "8px",
@@ -529,7 +552,12 @@ const CartReceipt = ({ cart, totalPrice, orderData, orderLoad }) => {
             sx={{
               width: "100%",
               padding: "10px, 16px, 10px, 16px",
-              width: "333px",
+              width: {
+                xs: "300px",
+                sm: "333px",
+                md: "333px",
+                lg: "333px",
+              },
               height: "48px",
               fontSize: "16px",
               borderRadius: "8px",

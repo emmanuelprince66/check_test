@@ -9,6 +9,8 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import plusLogo from "../../images/plusLogo.svg";
 import { Link } from "react-router-dom";
 import notiLogo from "../../images/notiLogo.svg";
+import vcart from "../../images/practise/vcart.svg";
+import { Button } from "@mui/material";
 
 import {
   Box,
@@ -279,31 +281,80 @@ const Scan = () => {
             sx={{
               display: "flex",
               alignItems: "center",
+              flexDirection: "column",
               gap: "4px",
               width: "100%",
               justifyContent: "center",
               marginY: "2rem",
             }}
           >
-            <Typography
+            <Box
               sx={{
-                color: "#000",
-                fontWeight: "600",
-                fontFamily: "raleWay",
+                display: "flex",
+                gap: "10px",
+                background: "#262626",
+                borderRadius: "8px",
+                padding: "5px 10px",
+                marginBottom: "0.5rem",
               }}
             >
-              Total value in cart :
-            </Typography>
-            <Typography
-              sx={{
-                color: "#000",
-                fontWeight: "600",
-                fontFamily: "raleWay",
-                color: "red",
-              }}
-            >
-              <FormattedPrice amount={totalPrice} />
-            </Typography>
+              <Typography
+                sx={{
+                  color: "#fff",
+                  fontWeight: "600",
+                  fontFamily: "raleWay",
+                }}
+              >
+                Total value in cart :
+              </Typography>
+              <Typography
+                sx={{
+                  color: "#000",
+                  fontWeight: "600",
+                  fontFamily: "raleWay",
+                  color: "red",
+                }}
+              >
+                <FormattedPrice amount={totalPrice} />
+              </Typography>
+            </Box>
+
+            <Link to={"/cart"}>
+              <Button
+                sx={{
+                  height: "48px",
+                  background: "#FF0808",
+                  borderRadius: "8px",
+                  width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
+                  display: "flex",
+                  padding: "10px, 16px, 10px, 16px",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "16px",
+                  flexGrow: "1",
+                  cursor: "pointer",
+                  "&:hover": {
+                    backgroundColor: "#FF0808", // Custom background color on hover
+                  },
+                  "&:active": {
+                    backgroundColor: "#FF0808", // Custom background color on click
+                  },
+                }}
+              >
+                <img src={vcart} alt="vcart" />
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "14px",
+                    fontFamily: "raleWay",
+                    paddingTop: "7px",
+                    textTransform: "capitalize",
+                  }}
+                >
+                  Go to Cart
+                </Typography>
+              </Button>
+            </Link>
           </Box>
         </Container>
 

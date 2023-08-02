@@ -361,7 +361,7 @@ const Scanner = ({ superMarketId }) => {
                 <Box
                   onClick={() => setCount(count + 1)}
                   sx={{
-                    background: "#ff0808",
+                    background: "#FF0808",
                     color:
                       currentTheme.palette.type === "light" ? "#fff" : "#fff",
                     width: "25px",
@@ -398,7 +398,7 @@ const Scanner = ({ superMarketId }) => {
               }
               sx={{
                 height: "48px",
-                background: "#F6473C",
+                background: "#FF0808",
                 borderRadius: "8px",
                 width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                 display: "flex",
@@ -409,10 +409,10 @@ const Scanner = ({ superMarketId }) => {
                 flexGrow: "1",
                 cursor: "pointer",
                 "&:hover": {
-                  backgroundColor: "#F6473C", // Custom background color on hover
+                  backgroundColor: "#FF0808", // Custom background color on hover
                 },
                 "&:active": {
-                  backgroundColor: "#F6473C", // Custom background color on click
+                  backgroundColor: "#FF0808", // Custom background color on click
                 },
               }}
             >
