@@ -94,9 +94,8 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
   }, []);
 
   const handleClearCart = () => {
-    console.log("hello");
-    navigate("/scan");
     dispatch(clearCart());
+    navigate("/scan");
   };
   return (
     <Box
@@ -111,10 +110,6 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
           padding: "1rem",
         }}
       >
-        <Box onClick={() => handleClearCart()}>
-          <BackArrow />
-        </Box>
-
         <Box id="receipt">
           <Box
             sx={{
@@ -380,24 +375,24 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
                 <TableHead>
                   <TableRow>
                     <TableCell
-                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      sx={{ fontFamily: "raleWay", fontWeight: "1000" }}
                     >
                       ITEM NAME
                     </TableCell>
                     <TableCell
-                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      sx={{ fontFamily: "raleWay", fontWeight: "1000" }}
                       align="right"
                     >
                       SIZE
                     </TableCell>
                     <TableCell
-                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      sx={{ fontFamily: "raleWay", fontWeight: "1000" }}
                       align="right"
                     >
                       QTY&nbsp;
                     </TableCell>
                     <TableCell
-                      sx={{ fontFamily: "raleWay", fontWeight: "900" }}
+                      sx={{ fontFamily: "raleWay", fontWeight: "1000" }}
                       align="right"
                     >
                       PRICE&nbsp;(&#8358;)
@@ -447,7 +442,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
               sx={{
                 fontFamily: "raleWay",
                 color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-                fomtWeight: "900",
+                fontWeight: "1000",
                 fontSize: "16px",
               }}
             >
@@ -457,7 +452,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
               sx={{
                 fontFamily: "raleWay",
                 color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-                fomtWeight: "900",
+                fontWeight: "1000",
                 fontSize: "16px",
               }}
             >
@@ -539,6 +534,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
               padding: "10px, 16px, 10px, 16px",
               borderRadius: "8px",
               fontSize: "16px",
+              fontWeight: "1000",
               color: "#fff",
               "&:hover": {
                 backgroundColor:
@@ -560,7 +556,36 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
                 lg: "333px",
               },
               height: "48px",
+              fontWeight: "1000",
               fontSize: "16px",
+              background:
+                currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
+              borderRadius: "8px",
+              color: currentTheme.palette.type === "light" ? "#fff" : "#fff",
+              borderColor: "#dc0019",
+              fontFamily: "raleWay",
+              "&:hover": {
+                borderColor:
+                  currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+              },
+            }}
+          >
+            Share receipt
+          </Button>
+          <Button
+            onClick={handleClearCart}
+            sx={{
+              width: "100%",
+              padding: "10px, 16px, 10px, 16px",
+              width: {
+                xs: "300px",
+                sm: "333px",
+                md: "333px",
+                lg: "333px",
+              },
+              height: "48px",
+              fontSize: "16px",
+              fontWeight: "1000",
               borderRadius: "8px",
               color: currentTheme.palette.type === "light" ? "#000" : "#fff",
               borderColor: "#dc0019",
@@ -572,7 +597,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             }}
             variant="outlined"
           >
-            Share receipt
+            Back to Scan
           </Button>
         </Box>
       </Container>

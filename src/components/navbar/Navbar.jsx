@@ -144,7 +144,7 @@ const Navbar = () => {
                     color: "#7F7F7F",
                   }}
                 />
-                <MyTypography>Orders</MyTypography>
+                <MyTypography>Status</MyTypography>
               </div>
             </Link>
           </li>

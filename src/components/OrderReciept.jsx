@@ -26,11 +26,13 @@ import {
   Table,
 } from "@mui/material";
 import FormattedPrice from "./FormattedPrice";
+import { useNavigate } from "react-router-dom";
 
 const OrderReciept = ({ handleClose2, orderId, orders }) => {
   const orderItem = orders.find((data) => data.id === orderId);
   console.log(orderItem.orders);
   const value = JSON.stringify(orderItem.orders, null, 2);
+  const navigate = useNavigate();
 
   const handleDownload2 = () => {
     // Select the element with ID "receipt"
@@ -99,39 +101,6 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
         minWidth: { xs: "100%", sm: "100%", md: "31%" },
       }}
     >
-      <Box
-        sx={{
-          display: "flex",
-          justifyContent: "space-between",
-          alignItems: "center",
-          background: "#000",
-          padding: "0.6em",
-          maxHeight: "3.4rem",
-        }}
-      >
-        <Box
-          sx={{
-            paddingTop: "1.7rem",
-          }}
-          onClick={() => handleClose2(true)}
-        >
-          <BackArrow />
-        </Box>
-
-        <Typography
-          variant="h2"
-          sx={{
-            fontFamily: "raleWay",
-            color:
-              currentTheme.palette.type === "light" ? "#EEEEEE" : "#EEEEEE",
-            fontWeight: 600,
-            fontSize: "12px",
-          }}
-        >
-          check_order_receipt.pdf
-        </Typography>
-      </Box>
-
       <Container
         id="receipt"
         sx={{
@@ -144,6 +113,93 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
           marginBottom: "12rem",
         }}
       >
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "end",
+            width: "100%",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "end",
+              justifySelf: "end",
+              flexDirection: "column",
+            }}
+          >
+            <Box>
+              <img
+                src={checkLogo}
+                className="checkLogo"
+                alt="check-retail-logo"
+              />
+            </Box>
+
+            <Typography
+              variant="h2"
+              sx={{
+                marginTop: "-2.4rem",
+                fontFamily: "raleWay",
+                letterSpacing: "0.2em",
+                color:
+                  currentTheme.palette.type === "light" ? "#000000" : "#EEEEEE",
+                fontSize: "10px",
+              }}
+            >
+              RETAIL
+            </Typography>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "end",
+            }}
+          >
+            <Typography
+              sx={{
+                color: currentTheme.palette.type === "light" ? "#000" : "#000",
+                fontWeight: 900,
+                fontFamily: "raleWay",
+                fontSize: "16px",
+              }}
+            >
+              Check Retail
+            </Typography>
+            <Typography
+              sx={{
+                color: currentTheme.palette.type === "light" ? "#000" : "#000",
+                fontWeight: 900,
+                fontFamily: "raleWay",
+                fontSize: "13px",
+              }}
+            >
+              www.checkretail.tech
+            </Typography>
+            <Typography
+              sx={{
+                color: currentTheme.palette.type === "light" ? "#000" : "#000",
+                fontWeight: 900,
+                fontFamily: "raleWay",
+                fontSize: "13px",
+              }}
+            >
+              +234 812 3456 789
+            </Typography>
+          </Box>
+        </Box>
+
+        <Divider
+          sx={{
+            color: "#000",
+            width: "100%",
+            marginY: "1.5rem",
+          }}
+        />
+        {/* Display order data */}
         <Card
           sx={{
             display: "flex",
@@ -433,103 +489,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
             <FormattedPrice amount={totalPrice} />
           </Typography>
         </Box>
-
-        <Card
-          sx={{
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            padding: "1rem",
-            background: " rgba(197, 118, 0, 0.1)",
-            my: "1rem",
-          }}
-        >
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Typography
-              variant="h2"
-              sx={{
-                fontFamily: "raleWay",
-                fontStyle: "italic",
-                color:
-                  currentTheme.palette.type === "light" ? "#000000" : "#EEEEEE",
-                fontWeight: 900,
-                fontSize: "16px",
-                lineHeight: "23.18px",
-              }}
-            >
-              POWERED BY
-            </Typography>
-
-            <Box
-              sx={{
-                display: "flex",
-                alignItems: "end",
-                flexDirection: "column",
-              }}
-            >
-              <Box
-                sx={{
-                  height: "-20rem",
-                }}
-              >
-                <img
-                  src={checkLogo}
-                  className="checkLogo"
-                  alt="check-retail-logo"
-                />
-              </Box>
-
-              <Typography
-                variant="h2"
-                sx={{
-                  marginTop: "-2.4rem",
-                  fontFamily: "raleWay",
-                  letterSpacing: "0.2em",
-                  color:
-                    currentTheme.palette.type === "light"
-                      ? "#000000"
-                      : "#EEEEEE",
-                  fontSize: "10px",
-                }}
-              >
-                RETAIL
-              </Typography>
-            </Box>
-          </Box>
-        </Card>
-
-        <Card
-          sx={{
-            display: "flex",
-            padding: "1rem",
-            justifyContent: "center",
-            alignItems: "center",
-            my: "1.5rem",
-            background: " rgba(197, 118, 0, 0.1)",
-          }}
-        >
-          <Typography
-            variant="h2"
-            sx={{
-              fontFamily: "raleWay",
-              color:
-                currentTheme.palette.type === "light" ? "#000000" : "#EEEEEE",
-              fontWeight: 900,
-              fontSize: "16px",
-            }}
-          >
-            www.checkretail.tech
-          </Typography>
-        </Card>
-
-        {/* QR CODE */}
+        {/* qr code box*/}
 
         <Box
           sx={{
@@ -540,6 +500,8 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
               currentTheme.palette.type === "light" ? "#d2d2d2" : "#463E32",
             alignItems: "center",
             gap: "0.5rem",
+            marginY: "20px",
+            marginBottom: "2.3rem",
           }}
         >
           <Typography
@@ -623,6 +585,26 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
           <Button
             sx={{
               width: "95%",
+              background:
+                currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
+              padding: "10px",
+              borderRadius: "8px",
+              color: currentTheme.palette.type === "light" ? "#fff" : "#fff",
+              borderColor: "#dc0019",
+              fontFamily: "raleWay",
+              "&:hover": {
+                borderColor:
+                  currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+              },
+            }}
+          >
+            Share receipt
+          </Button>
+
+          <Button
+            onClick={() => navigate("/scan")}
+            sx={{
+              width: "95%",
               padding: "10px",
               borderRadius: "8px",
               color: currentTheme.palette.type === "light" ? "#fff" : "#fff",
@@ -635,7 +617,7 @@ const OrderReciept = ({ handleClose2, orderId, orders }) => {
             }}
             variant="outlined"
           >
-            Share receipt
+            Back to Scan
           </Button>
         </Box>
       </Card>

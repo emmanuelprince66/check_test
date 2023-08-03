@@ -229,7 +229,7 @@ const Scanner = ({ superMarketId }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            gap: "15px",
+            minHeight: "75%",
           }}
         >
           <Box
@@ -238,7 +238,7 @@ const Scanner = ({ superMarketId }) => {
               justifyContent: "center",
               textAlign: "center",
               flexDirection: "column",
-              gap: "0.5rem",
+              gap: "3rem",
             }}
           >
             <Box>
@@ -399,6 +399,7 @@ const Scanner = ({ superMarketId }) => {
               sx={{
                 height: "48px",
                 background: "#FF0808",
+                marginTop: "-2rem",
                 borderRadius: "8px",
                 width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                 display: "flex",

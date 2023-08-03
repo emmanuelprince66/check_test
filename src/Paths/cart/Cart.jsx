@@ -324,7 +324,11 @@ const Cart = () => {
   // Dara to send to complete order endpoint start
 
   const productId = cart.map((item) => {
-    return { productId: item.productId };
+    return {
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price,
+    };
   });
 
   const commissionCal = (0.5 / 100) * totalPrice;
@@ -341,13 +345,25 @@ const Cart = () => {
     orders: productId,
   };
 
+  const orderItemsList = cart.map((item) => {
+    return {
+      productId: item.productId,
+      quantity: item.quantity,
+      price: item.price,
+      productName: item.description,
+      productImage:
+        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb4bWFeC3xdMrPMv02qbxINHCiyEVUNPlnBQ&usqp=CAU",
+      size: item.weight.toString(),
+    };
+  });
+
   const orderLoad = [
     {
       id: orderData ? orderData.orderInfo.id : "",
       commission: commission,
       supermarketId: superMarketId,
       total: totalPrice.toString(),
-      order: productId,
+      order: orderItemsList,
       customerName: orderData
         ? orderData.orderInfo.user.firstName +
           " " +
@@ -401,13 +417,10 @@ const Cart = () => {
             alignItems: "start",
             mx: "auto",
             width: { xs: "96%", sm: "70%", md: "100%" },
+            minHeight: "100vh",
             padding: 0,
           }}
         >
-          <Box>
-            <BackArrow destination="/home" />
-          </Box>
-
           <Box
             sx={{
               marginBottom: "1rem",
@@ -415,7 +428,7 @@ const Cart = () => {
               justifyContent: "space-between",
               alignItems: "center",
               width: "100%",
-              marginBottom: "2rem",
+              marginBottom: "3rem",
             }}
           >
             <Typography
@@ -521,12 +534,12 @@ const Cart = () => {
               flexDirection: "column",
               gap: "4rem",
               justifyContent: "start",
-              minHeight: "40vh",
+              marginTop: "10%",
+              minHeight: "50vh",
               padding: "1rem",
               width: "100%",
               textAlign: "center",
               boxShadow: " 2px -18px 93px -5px rgba(0,0,0,0.1) inset",
-              marginBottom: "0",
             }}
           >
             <Box

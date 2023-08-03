@@ -80,6 +80,7 @@ const Scan = () => {
             display: "flex",
             flexDirection: "column",
             justifyContent: "center",
+            maxHeight: "100vh",
             alignItems: "start",
             mx: "auto",
             width: { xs: "90%", sm: "70%", md: "100%" },
@@ -87,18 +88,6 @@ const Scan = () => {
             marginBottom: "4rem",
           }}
         >
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-            }}
-          >
-            <Box>
-              <BackArrow destination="/home" />
-            </Box>
-          </Box>
           <Card
             sx={{
               height: "92px",
@@ -347,6 +336,7 @@ const Scan = () => {
                     color: "#fff",
                     fontSize: "14px",
                     fontFamily: "raleWay",
+                    fontWeight: "1000",
                     paddingTop: "7px",
                     textTransform: "capitalize",
                   }}
