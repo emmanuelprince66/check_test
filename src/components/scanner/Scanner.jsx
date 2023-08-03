@@ -50,9 +50,11 @@ const Scanner = ({ superMarketId }) => {
   const handleModal = (res) => {
     setTimeout(() => {
       setShowProgress(false);
-      setResult(res);
-      setCount(1);
-      setOpen(true);
+      if (res) {
+        setResult(res);
+        setOpen(true);
+        setCount(1);
+      }
     }, 3000);
     setShowProgress(true);
   };
@@ -229,7 +231,7 @@ const Scanner = ({ superMarketId }) => {
             flexDirection: "column",
             justifyContent: "center",
             alignItems: "center",
-            minHeight: "75%",
+            minHeight: "76%",
           }}
         >
           <Box
