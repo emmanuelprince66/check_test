@@ -59,7 +59,7 @@ const CartItem = ({ item }) => {
         <Box sx={{ display: "flex", gap: "6px" }}>
           <Box>
             <img
-              className="img"
+              className="cart_img"
               src={item.productImage === null ? alwaysp : item.image}
               alt="ap"
             />
