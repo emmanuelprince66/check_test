@@ -60,7 +60,7 @@ const TestScanner = ({
   let notificationSound;
 
   const playNotificationSound = () => {
-    const audioFile = "/notication.mp3";
+    const audioFile = "/notification.mp3";
     notificationSound = new Audio(audioFile);
     notificationSound.onerror = () => {
       console.error("Failed to load audio:", audioFile);

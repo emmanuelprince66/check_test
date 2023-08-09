@@ -60,13 +60,13 @@ const Scanner = ({ companyName, companyLocation }) => {
       setShowMarketEntryModal(true);
       return;
     }
-    setResult(res);
     setShowProgress(true);
+    setResult(res);
+
     setTimeout(() => {
       if (superMarketPError) {
-        notifyErr(superMarketPError.response.data.message);
+        notifyErr("Error Fetching Product");
         setShowProgress(false);
-
         return;
       } else if (superMarketP) {
         setShowProgress(false);

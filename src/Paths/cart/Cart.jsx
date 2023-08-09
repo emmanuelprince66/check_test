@@ -326,7 +326,7 @@ const Cart = () => {
 
   const productId = cart.map((item) => {
     return {
-      productId: item.productId,
+      EAN: item.code,
       quantity: item.quantity,
       price: item.price,
     };
