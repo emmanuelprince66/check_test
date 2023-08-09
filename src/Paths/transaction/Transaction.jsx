@@ -31,6 +31,7 @@ import FormattedPrice from "../../components/FormattedPrice";
 
 const Transaction = () => {
   const transaction = useTransactions();
+  console.log(transaction.data);
   const [open, setOpen] = React.useState(false);
   const [modalItem, setModalItem] = useState();
 
@@ -178,7 +179,7 @@ const Transaction = () => {
                           lineHeight: "16.18px",
                         }}
                       >
-                        {item.transferTo.firstName}
+                        {item.transferFrom.firstName}
                       </Typography>
 
                       <Typography

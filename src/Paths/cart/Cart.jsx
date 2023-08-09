@@ -295,6 +295,7 @@ const Cart = () => {
       console.log(response);
       setOrderData(response);
       setSuccessResponse(true);
+
       setTimeout(() => {
         setSuccessResponse(false);
         setOpenReceipt(true);

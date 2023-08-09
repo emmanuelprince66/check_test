@@ -81,10 +81,11 @@ const Login = () => {
       }
     },
     onSuccess: (data) => {
-      //  console.log(data.access_token);
       const authToken = data.access_token;
-      const expirationTime = 5000;
-      setCookie("authToken", authToken, expirationTime);
+      const currentTime = new Date();
+
+      const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
+      setCookie("authToken", authToken, expiryTime);
       navigate("/home");
     },
     onError(err) {

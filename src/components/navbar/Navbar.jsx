@@ -75,7 +75,7 @@ const Navbar = () => {
           <li>
             <Link
               to="/scan"
-              className={scanMatch ? "active-link" : ""}
+              className={scanMatch || homeMatch ? "active-link" : ""}
               style={{ color: "black", textDecoration: "none" }}
             >
               <div className="gpt3__navbar">

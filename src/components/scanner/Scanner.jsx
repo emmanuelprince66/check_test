@@ -16,7 +16,9 @@ import { useSelector } from "react-redux";
 import Quagga from "@ericblade/quagga2";
 import { useRef, useCallback, useState, useEffect } from "react";
 import TestScanner from "../TestScanner";
-const Scanner = ({ superMarketId }) => {
+import { Link } from "react-router-dom";
+import "./Scanner.css";
+const Scanner = ({ companyName, companyLocation }) => {
   const cart = useSelector((state) => state.cart);
 
   const [result, setResult] = useState("");
@@ -30,6 +32,7 @@ const Scanner = ({ superMarketId }) => {
   const [torchOn, setTorch] = useState(false); // toggleable state for "should torch be on"
   const scannerRef = useRef(null); // reference to the scanner element in the DOM
   const [showProgress, setShowProgress] = useState(false);
+  const [showMarketEntryModal, setShowMarketEntryModal] = useState(false);
 
   // end test states
 
@@ -38,8 +41,13 @@ const Scanner = ({ superMarketId }) => {
 
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
+  const handleCloseMarketEntryModal = () => setShowMarketEntryModal(false);
 
-  const superMarketP = useSuperMarketP(superMarketId, result ? result : "");
+  const { data: superMarketP, error: superMarketPError } = useSuperMarketP(
+    result ? result : "",
+    companyName,
+    companyLocation
+  );
 
   const currentTheme = useTheme();
   const decrement = () => {
@@ -48,25 +56,38 @@ const Scanner = ({ superMarketId }) => {
     }
   };
   const handleModal = (res) => {
-    setTimeout(() => {
-      setShowProgress(false);
-      if (res) {
-        setResult(res);
-        setOpen(true);
-        setCount(1);
-      }
-    }, 3000);
+    if (!companyLocation || companyName) {
+      setShowMarketEntryModal(true);
+      return;
+    }
+    setResult(res);
     setShowProgress(true);
+    setTimeout(() => {
+      if (superMarketPError) {
+        notifyErr(superMarketPError.response.data.message);
+        setShowProgress(false);
+
+        return;
+      } else if (superMarketP) {
+        setShowProgress(false);
+        setCount(1);
+        setOpen(true);
+        return;
+      }
+
+      setShowProgress(false);
+      notifyWarn("Something went wrong please try again");
+    }, 5000);
   };
 
-  const defaultComputedPrice = !superMarketP.data?.price || !count ? 0 : null;
+  const defaultComputedPrice = !superMarketP?.price || !count ? 0 : null;
   const computedPrice = defaultComputedPrice
     ? defaultComputedPrice
-    : superMarketP.data?.price * count;
+    : superMarketP?.price * count;
   const defaultPrice =
     computedPrice && !defaultComputedPrice
       ? computedPrice
-      : superMarketP.data?.price;
+      : superMarketP?.price;
 
   const handleAddToCart = (data) => {
     const isValueInArray = cart.some((item) => item.id === data.id);
@@ -95,6 +116,18 @@ const Scanner = ({ superMarketId }) => {
   };
   const notifyWarn = (message) => {
     toast.warn(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
+  const notifyErr = (message) => {
+    toast.error(message, {
       position: "top-center",
       autoClose: 2000,
       hideProgressBar: false,
@@ -260,12 +293,13 @@ const Scanner = ({ superMarketId }) => {
                 }}
               >
                 <img
+                  className="product_img"
                   src={
-                    superMarketP.data ? (
-                      superMarketP.data.productImage === null ? (
+                    superMarketP ? (
+                      superMarketP.image === null ? (
                         alwaysp
                       ) : (
-                        superMarketP.data.productImage
+                        superMarketP.image
                       )
                     ) : (
                       <CircularProgress size="10px" />
@@ -312,7 +346,7 @@ const Scanner = ({ superMarketId }) => {
                     fontWeight: 900,
                   }}
                 >
-                  {superMarketP.data ? superMarketP.data.description : ""}
+                  {superMarketP ? superMarketP.description : ""}
                 </Typography>
                 <Typography
                   sx={{
@@ -321,7 +355,7 @@ const Scanner = ({ superMarketId }) => {
                     fontWeight: 400,
                   }}
                 >
-                  (size {superMarketP.data ? superMarketP.data.weight : ""})
+                  (size {superMarketP ? superMarketP.weight : ""})
                 </Typography>
               </Box>
               {/* Counter */}
@@ -390,18 +424,17 @@ const Scanner = ({ superMarketId }) => {
                   fontWeight: 600,
                 }}
               >
-                &#8358;{superMarketP.data ? defaultPrice : ""}
+                &#8358;{superMarketP ? defaultPrice : ""}
               </Typography>
             </Card>
 
             <Button
-              onClick={() =>
-                handleAddToCart(superMarketP.data ? superMarketP.data : "")
-              }
+              onClick={() => handleAddToCart(superMarketP ? superMarketP : "")}
               sx={{
                 height: "48px",
                 background: "#FF0808",
                 marginTop: "-2rem",
+                mx: "auto",
                 borderRadius: "8px",
                 width: { xs: "300px", sm: "333px", md: "333px", lg: "333px" },
                 display: "flex",
@@ -436,6 +469,85 @@ const Scanner = ({ superMarketId }) => {
           </Box>
         </Card>
       </Modal>
+
+      {/* Market entry modal starts */}
+
+      <Modal
+        className="scale-in-center"
+        open={showMarketEntryModal}
+        onClose={handleCloseMarketEntryModal}
+        aria-labelledby="modal-modal-title"
+        aria-describedby="modal-modal-description"
+      >
+        <Card
+          sx={{
+            position: "absolute",
+            borderTopLeftRadius: "10px",
+            borderTopRightRadius: "10px",
+            bottom: { xs: "33%", sm: "46%", md: "33%", lg: "33%" },
+            width: { xs: "93%", sm: "70%", lg: "31%" },
+            left: { xs: "3%", sm: "14%", lg: "34%" },
+            padding: "1rem",
+            display: "flex",
+            flexDirection: "column",
+            justifyContent: "center",
+            gap: "2rem",
+            alignItems: "center",
+            minHeight: "40%",
+          }}
+        >
+          <Typography
+            sx={{
+              fontWeight: "700",
+              fontSize: "14px",
+              color:
+                currentTheme.palette.type === "light" ? "#1e1e1e" : "#ffff",
+              letterSpacing: "-0.24px",
+              fontFamily: "raleWay",
+            }}
+          >
+            Click here to scan Qr Code.
+          </Typography>
+
+          <Link to={"/home"}>
+            <Button
+              sx={{
+                height: "48px",
+                background: "#FF0808",
+                borderRadius: "8px",
+                width: { xs: "250px", sm: "333px", md: "333px", lg: "333px" },
+                display: "flex",
+                padding: "10px, 16px, 10px, 16px",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "16px",
+                flexGrow: "1",
+                cursor: "pointer",
+                "&:hover": {
+                  backgroundColor: "#FF0808", // Custom background color on hover
+                },
+                "&:active": {
+                  backgroundColor: "#FF0808", // Custom background color on click
+                },
+              }}
+            >
+              <Typography
+                sx={{
+                  color: "#fff",
+                  fontSize: "14px",
+                  fontFamily: "raleWay",
+                  fontWeight: "1000",
+                  paddingTop: "7px",
+                  textTransform: "capitalize",
+                }}
+              >
+                Scan Qr Code
+              </Typography>
+            </Button>
+          </Link>
+        </Card>
+      </Modal>
+      {/* Market entry modal ends */}
     </Box>
   );
 };

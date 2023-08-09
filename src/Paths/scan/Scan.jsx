@@ -36,6 +36,7 @@ const Scan = () => {
   const navigate = useNavigate();
   const [superMarketKey, setSuperMarketKey] = useState("");
   const [isTextVisible, setIsTextVisible] = useState(false);
+  const [superMarketEntry, setSuperMarketEntry] = useState(false);
 
   const superMarket = useSuperMarket(superMarketKey);
 
@@ -60,8 +61,7 @@ const Scan = () => {
     const val = localStorage.getItem("myData");
     if (val) {
       setSuperMarketKey(val);
-    } else {
-      navigate("/home");
+      setSuperMarketEntry(true);
     }
   }, []);
 
@@ -211,39 +211,58 @@ const Scan = () => {
             </Box>
           </Card>
 
-          <Card
-            sx={{
-              display: "flex",
-              textAlign: "center",
-              alignItems: "center",
-              justifyContent: "center",
-              maxWidth: "15rem",
-              mx: "auto",
-              padding: "0.3rem",
-              gap: "7px",
-              borderRadius: "11px",
-              width: "100%",
-              marginBottom: "2rem",
-              marginTop: "1rem",
-              backgroundColor:
-                currentTheme.palette.type === "light"
-                  ? "rgba(232, 229, 229, 1)"
-                  : "rgba(232, 229, 229, 1)",
-            }}
-          >
-            <Typography
+          {superMarketEntry ? (
+            <Card
               sx={{
-                fontFamily: "raleWay",
-                fontWeight: "600",
+                display: "flex",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                maxWidth: "15rem",
+                mx: "auto",
+                padding: "0.3rem",
+                gap: "7px",
+                borderRadius: "11px",
+                width: "100%",
+                marginBottom: "2rem",
+                marginTop: "1rem",
+                backgroundColor:
+                  currentTheme.palette.type === "light"
+                    ? "rgba(232, 229, 229, 1)"
+                    : "rgba(232, 229, 229, 1)",
               }}
             >
-              {superMarket.data ? (
-                superMarket.data.companyName
-              ) : (
-                <CircularProgress size="1.5rem" color="error" />
-              )}
-            </Typography>
-          </Card>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  fontWeight: "600",
+                }}
+              >
+                {superMarket.data ? (
+                  superMarket.data.companyName
+                ) : (
+                  <CircularProgress size="1.5rem" color="error" />
+                )}
+              </Typography>
+            </Card>
+          ) : (
+            <Box
+              sx={{
+                display: "flex",
+                textAlign: "center",
+                alignItems: "center",
+                justifyContent: "center",
+                maxWidth: "15rem",
+                mx: "auto",
+                padding: "0.3rem",
+                gap: "7px",
+                borderRadius: "11px",
+                width: "100%",
+                marginBottom: "2rem",
+                marginTop: "1rem",
+              }}
+            ></Box>
+          )}
 
           <Box
             sx={{
@@ -260,8 +279,9 @@ const Scan = () => {
             {/* Bar code scanner starts */}
 
             <Scanner
-              superMarketId={
-                superMarket.data ? superMarket.data.inventoryName : ""
+              companyName={superMarket.data ? superMarket.data.companyName : ""}
+              companyLocation={
+                superMarket.data ? superMarket.data.location : ""
               }
             />
             {/* Bar code scanner stops */}
@@ -271,7 +291,7 @@ const Scan = () => {
               display: "flex",
               alignItems: "center",
               flexDirection: "column",
-              gap: "4px",
+              gap: "15px",
               width: "100%",
               justifyContent: "center",
               marginY: "2rem",

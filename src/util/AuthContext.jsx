@@ -4,6 +4,7 @@ import useUser from "../hooks/useUser";
 import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
+import { isCookieExpired } from "./cookieAuth";
 
 export function AuthProvider({ children }) {
   const user = useUser();
@@ -43,7 +44,8 @@ export function AuthProvider({ children }) {
     return <>{children}</>;
   }
 
-  if (!user.data) {
+  if (isCookieExpired("authToken") || !user.data) {
+    localStorage.clear();
     return <Navigate to="/" />;
   }
 
