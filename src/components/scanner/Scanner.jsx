@@ -56,7 +56,7 @@ const Scanner = ({ companyName, companyLocation }) => {
     }
   };
   const handleModal = (res) => {
-    if (!companyLocation || companyName) {
+    if (!companyLocation || !companyName) {
       setShowMarketEntryModal(true);
       return;
     }

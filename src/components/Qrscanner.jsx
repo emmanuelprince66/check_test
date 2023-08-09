@@ -48,12 +48,6 @@ const Qrscanner = () => {
       console.error("Failed to load audio:", audioFile);
     };
     notificationSound.play();
-
-    // Stop the audio after 1 second (1000 milliseconds)
-    setTimeout(() => {
-      notificationSound.pause();
-      notificationSound.currentTime = 0; // Reset audio to the beginning
-    }, 400);
   };
 
   const handleError = (err) => {
