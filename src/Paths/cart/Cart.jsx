@@ -331,6 +331,7 @@ const Cart = () => {
       price: item.price,
     };
   });
+  console.log(productId);
 
   const commissionCal = (0.5 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
@@ -352,8 +353,7 @@ const Cart = () => {
       quantity: item.quantity,
       price: item.price,
       productName: item.description,
-      productImage:
-        "https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcTb4bWFeC3xdMrPMv02qbxINHCiyEVUNPlnBQ&usqp=CAU",
+      productImage: item.image,
       size: item.weight.toString(),
     };
   });

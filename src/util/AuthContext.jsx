@@ -5,12 +5,14 @@ import { useLocation, Navigate } from "react-router-dom";
 import { Box } from "@mui/material";
 import { CircularProgress } from "@mui/material";
 import { isCookieExpired } from "./cookieAuth";
+import { getCookie } from "./cookieAuth";
 
 export function AuthProvider({ children }) {
   const user = useUser();
   const { pathname } = useLocation();
   const authPages = ["/"];
   const isAuthPage = authPages.includes(pathname);
+  const getCookieValue = getCookie("authToken");
 
   if (user.isLoading) {
     return (
@@ -44,7 +46,7 @@ export function AuthProvider({ children }) {
     return <>{children}</>;
   }
 
-  if (isCookieExpired("authToken") || !user.data) {
+  if (!getCookieValue || !user.data) {
     localStorage.clear();
     return <Navigate to="/" />;
   }
