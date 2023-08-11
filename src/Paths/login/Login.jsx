@@ -293,7 +293,11 @@ const Login = () => {
                   </Typography>
                   <TextField
                     sx={{
-                      width: { xs: "300px", sm: "100%", md: "327px" },
+                      width: {
+                        xs: "300px",
+                        sm: "100%",
+                        md: "327px",
+                      },
                       mx: "auto",
                       "& .MuiOutlinedInput-root": {
                         "& fieldset": {
