@@ -67,10 +67,12 @@ const Scanner = ({ companyName, companyLocation }) => {
       if (superMarketPError) {
         notifyErr("Error Fetching Product");
         setShowProgress(false);
+        setOpen(false);
         return;
       } else if (isLoading) {
         setShowProgress(true);
-      } else if (superMarketP) {
+        setOpen(false);
+      } else if (superMarketP && !isLoading) {
         setShowProgress(false);
         setCount(1);
         setOpen(true);
