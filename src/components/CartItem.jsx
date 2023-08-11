@@ -20,7 +20,6 @@ import { incrementCounter, decrementCounter } from "../util/slice/CartSlice";
 import DeleteForeverRoundedIcon from "@mui/icons-material/DeleteForeverRounded";
 import FormattedPrice from "./FormattedPrice";
 const CartItem = ({ item }) => {
-  console.log(item);
   const currentTheme = useTheme();
   const dispatch = useDispatch();
 
@@ -57,7 +56,7 @@ const CartItem = ({ item }) => {
         }}
       >
         <Box sx={{ display: "flex", gap: "6px" }}>
-          <Box>
+          <Box sx={{ marginBottom: "-0.3rem" }}>
             <img
               className="cart_img"
               src={item.productImage === null ? alwaysp : item.image}

@@ -192,7 +192,7 @@ const Login = () => {
               className={
                 active
                   ? currentTheme.palette.type === "light"
-                    ? undefined
+                    ? "light"
                     : "night"
                   : "active"
               }
@@ -205,7 +205,7 @@ const Login = () => {
                 active
                   ? "active"
                   : currentTheme.palette.type === "light"
-                  ? undefined
+                  ? "light"
                   : "night"
               }
               onClick={showSignUp}

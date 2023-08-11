@@ -32,6 +32,9 @@ const Routess = () => {
   };
 
   const theme = createTheme({
+    typography: {
+      fontFamily: "Raleway, sans-serif", // Set your preferred font family here
+    },
     palette: {
       type: darkMode ? "dark" : "light",
       mode: darkMode ? "dark" : "light",

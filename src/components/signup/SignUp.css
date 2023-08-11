@@ -69,6 +69,7 @@
 .active {
   color: #dc0019;
   border-bottom: 2px solid #dc0019 !important;
+  -webkit-tap-highlight-color: transparent;
 }
 .night {
   color: white !important;

@@ -43,11 +43,11 @@ const Scanner = ({ companyName, companyLocation }) => {
   const handleClose = () => setOpen(false);
   const handleCloseMarketEntryModal = () => setShowMarketEntryModal(false);
 
-  const { data: superMarketP, error: superMarketPError } = useSuperMarketP(
-    result ? result : "",
-    companyName,
-    companyLocation
-  );
+  const {
+    data: superMarketP,
+    error: superMarketPError,
+    isLoading: isLoading,
+  } = useSuperMarketP(result ? result : "", companyName, companyLocation);
 
   const currentTheme = useTheme();
   const decrement = () => {
@@ -68,6 +68,8 @@ const Scanner = ({ companyName, companyLocation }) => {
         notifyErr("Error Fetching Product");
         setShowProgress(false);
         return;
+      } else if (isLoading) {
+        setShowProgress(true);
       } else if (superMarketP) {
         setShowProgress(false);
         setCount(1);
@@ -96,7 +98,9 @@ const Scanner = ({ companyName, companyLocation }) => {
       notifyWarn("Item is already in cart");
       setOpen(false);
     } else {
-      dispatch(addToCart({ ...data, price: defaultPrice, counter: count }));
+      dispatch(
+        addToCart({ ...data, price: defaultPrice, counter: count, EAN: result })
+      );
       notify("Item added to cart");
       setOpen(false);
     }

@@ -94,6 +94,7 @@ const Cart = () => {
   const [openReceipt, setOpenReceipt] = useState(false);
   const [orderData, setOrderData] = useState();
   const pinRefs = [useRef(), useRef(), useRef(), useRef()];
+  const pinReffs = [useRef(), useRef(), useRef(), useRef()];
 
   const superMarket = useSuperMarket(superMarketKey);
 
@@ -157,6 +158,10 @@ const Cart = () => {
     const firstNewPins = [...newPins];
     firstNewPins[index] = value;
     setNewPins(firstNewPins);
+    // Automatically focus on the next TextField if not already at the last one
+    if (index < pinRefs.length - 1) {
+      pinRefs[index + 1].current.focus();
+    }
   };
   const handleConfirmNewPins = (index, value) => {
     // Ensure that the value is only one digit
@@ -164,6 +169,10 @@ const Cart = () => {
     const newPins = [...confirmNewPins];
     newPins[index] = value;
     setConfirmNewPins(newPins);
+    // Automatically focus on the next TextField if not already at the last one
+    if (index < pinReffs.length - 1) {
+      pinReffs[index + 1].current.focus();
+    }
   };
 
   const handleClearCart = () => {
@@ -326,12 +335,11 @@ const Cart = () => {
 
   const productId = cart.map((item) => {
     return {
-      EAN: item.code,
+      EAN: item.EAN,
       quantity: item.quantity,
       price: item.price,
     };
   });
-  console.log(productId);
 
   const commissionCal = (0.5 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
@@ -1260,6 +1268,7 @@ const Cart = () => {
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
+                        inputRef={pinRefs[index]}
                       />
                     ))}
                   </Box>
@@ -1325,6 +1334,7 @@ const Cart = () => {
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
+                        inputRef={pinReffs[index]}
                       />
                     ))}
                   </Box>
