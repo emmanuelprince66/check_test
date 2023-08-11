@@ -78,6 +78,7 @@ const Qrscanner = () => {
             style={{
               minWidth: "100%",
               minHeight: "100%",
+              borderRadius: "20px",
             }}
             constraints={{
               video: { facingMode: "environment" },

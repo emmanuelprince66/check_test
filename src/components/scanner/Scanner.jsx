@@ -226,7 +226,7 @@ const Scanner = ({ companyName, companyLocation }) => {
             maxHeight: "19rem",
             marginTop: "-4rem",
             padding: "0.5rem",
-            borderRadius: "10px ",
+            borderRadius: "20px !important",
             justifyContent: "start",
             alignItems: "center",
             display: "flex",
