@@ -26,6 +26,7 @@ import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
 import { Link } from "react-router-dom";
+import Acctbox from "../../components/acctbox/Acctbox";
 
 const Home = () => {
   const currentTheme = useTheme();
@@ -38,7 +39,7 @@ const Home = () => {
   return (
     <AuthProvider>
       <div className="gpt3__home">
-        <Card
+        {/* <Card
           sx={{
             height: "92px",
             width: "100%",
@@ -46,7 +47,7 @@ const Home = () => {
             padding: "0.5rem",
             marginY: "1rem",
             backgroundColor:
-              currentTheme.palette.type === "light" ? "#FFEDED" : "#FFEDED",
+              currentTheme.palette.type === "light" ? "#FFEDED" : "#2C2C2E",
           }}
         >
           <Box
@@ -160,7 +161,9 @@ const Home = () => {
               </Box>
             </Box>
           </Box>
-        </Card>
+        </Card> */}
+
+        <Acctbox />
 
         {/* Header */}
 
@@ -180,7 +183,7 @@ const Home = () => {
             backgroundColor:
               currentTheme.palette.type === "light"
                 ? "rgba(232, 229, 229, 1)"
-                : "rgba(232, 229, 229, 1)",
+                : "#2C2C2E",
           }}
         >
           <img src={exclamgreen} alt="ex" />

@@ -543,12 +543,16 @@ const Cart = () => {
               flexDirection: "column",
               gap: "4rem",
               justifyContent: "start",
-              marginTop: "10%",
-              minHeight: "50vh",
               padding: "1rem",
+              background:
+                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
               width: "100%",
               textAlign: "center",
-              boxShadow: " 2px -18px 93px -5px rgba(0,0,0,0.1) inset",
+              boxShadow:
+                currentTheme.palette.type === "light"
+                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
+                  : "#2C2C2E",
             }}
           >
             <Box
@@ -706,7 +710,7 @@ const Cart = () => {
                   fontFamily: "raleWay",
                 }}
               >
-                Yes,Purchase
+                Yes, Purchase
               </Button>
               <Button
                 onClick={() => handleClose()}
@@ -731,7 +735,7 @@ const Cart = () => {
                 }}
                 variant="outlined"
               >
-                No,Go back
+                No, Go back
               </Button>
             </Card>
           </Modal>
@@ -933,8 +937,8 @@ const Cart = () => {
                         sx={{
                           fontFamily: "raleWay",
                           fontSize: "13px",
-                          fontWeight: 600,
-                          color: "#d7d7d7",
+                          fontWeight: 1000,
+                          color: "#000",
                         }}
                       >
                         Don't have a pin yet?
@@ -1113,12 +1117,17 @@ const Cart = () => {
                       currentTheme.palette.type === "light"
                         ? "#dc0019"
                         : "#dc0019",
-                    width: "95%",
+                    width: {
+                      xs: "300px",
+                      sm: "333px",
+                      md: "333px",
+                      lg: "333px",
+                    },
                     padding: "10px, 16px, 10px, 16px",
-                    width: "333px",
                     height: "48px",
                     fontSize: "16px",
                     borderRadius: "8px",
+                    textTransform: "capitalize",
                     color: "#fff",
                     "&:hover": {
                       backgroundColor:
@@ -1134,9 +1143,14 @@ const Cart = () => {
                 <Button
                   onClick={() => handleClose3()}
                   sx={{
-                    width: "95%",
+                    width: {
+                      xs: "300px",
+                      sm: "333px",
+                      md: "333px",
+                      lg: "333px",
+                    },
                     padding: "10px, 16px, 10px, 16px",
-                    width: "333px",
+                    textTransform: "capitalize",
                     height: "48px",
                     fontSize: "16px",
                     borderRadius: "8px",
@@ -1191,6 +1205,7 @@ const Cart = () => {
                     fontWeight: 900,
                     fontSize: "16px",
                     lineHeight: "18.78px",
+                    textAlign: "center",
                     marginY: "1rem",
                     color:
                       currentTheme.palette.type === "light" ? "#000" : "#fff",
@@ -1359,9 +1374,13 @@ const Cart = () => {
                       currentTheme.palette.type === "light"
                         ? "#dc0019"
                         : "#dc0019",
-                    width: "95%",
+                    width: {
+                      xs: "300px",
+                      sm: "333px",
+                      md: "333px",
+                      lg: "333px",
+                    },
                     padding: "10px, 16px, 10px, 16px",
-                    width: "333px",
                     height: "48px",
                     fontSize: "16px",
                     borderRadius: "8px",
@@ -1390,6 +1409,12 @@ const Cart = () => {
                     height: "48px",
                     fontSize: "16px",
                     borderRadius: "8px",
+                    width: {
+                      xs: "300px",
+                      sm: "333px",
+                      md: "333px",
+                      lg: "333px",
+                    },
                     color:
                       currentTheme.palette.type === "light" ? "#000" : "#fff",
                     borderColor: "#dc0019",
@@ -1528,6 +1553,7 @@ const Cart = () => {
                       currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
                   },
                   fontFamily: "raleWay",
+                  fontWeight: "700",
                 }}
               >
                 Yes, Clear Cart
@@ -1542,6 +1568,8 @@ const Cart = () => {
                     currentTheme.palette.type === "light" ? "#000" : "#fff",
                   borderColor: "#dc0019",
                   fontFamily: "raleWay",
+                  fontWeight: "700",
+
                   "&:hover": {
                     borderColor:
                       currentTheme.palette === "light" ? "#dc0019" : "#dc0019",

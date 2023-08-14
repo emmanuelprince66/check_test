@@ -19,6 +19,7 @@ import TestScanner from "../TestScanner";
 import { Link } from "react-router-dom";
 import "./Scanner.css";
 const Scanner = ({ companyName, companyLocation }) => {
+  console.log("Scanner comp has re-rendered");
   const cart = useSelector((state) => state.cart);
 
   const [result, setResult] = useState("");

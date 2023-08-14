@@ -10,6 +10,7 @@ import plusLogo from "../../images/plusLogo.svg";
 import { Link } from "react-router-dom";
 import notiLogo from "../../images/notiLogo.svg";
 import vcart from "../../images/practise/vcart.svg";
+
 import { Button } from "@mui/material";
 
 import {
@@ -28,8 +29,10 @@ import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import FormattedPrice from "../../components/FormattedPrice";
 import useUser from "../../hooks/useUser";
+import Acctbox from "../../components/acctbox/Acctbox";
 
 const Scan = () => {
+  console.log("Scan comp has re-rendered");
   const cart = useSelector((state) => state.cart);
   const user = useUser();
 
@@ -62,7 +65,7 @@ const Scan = () => {
     if (val) {
       setSuperMarketKey(val);
       setSuperMarketEntry(true);
-    }
+    } else setSuperMarketEntry(false);
   }, []);
 
   return (
@@ -88,129 +91,7 @@ const Scan = () => {
             marginBottom: "4rem",
           }}
         >
-          <Card
-            sx={{
-              height: "92px",
-              width: "100%",
-              borderRadius: "16px",
-              padding: "0.5rem",
-              backgroundColor:
-                currentTheme.palette.type === "light" ? "#FFEDED" : "#FFEDED",
-            }}
-          >
-            <Box
-              sx={{
-                width: "100%",
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "start",
-              }}
-            >
-              <Box>
-                {!isTextVisible ? (
-                  <Typography
-                    sx={{
-                      fontFamily: "raleWay",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                    }}
-                  >
-                    ******************
-                  </Typography>
-                ) : (
-                  <Typography
-                    sx={{
-                      fontFamily: "raleWay",
-                      fontWeight: "600",
-                      fontSize: "18px",
-                    }}
-                  >
-                    {user.data ? (
-                      <FormattedPrice amount={user.data.balance} />
-                    ) : (
-                      <CircularProgress />
-                    )}
-                  </Typography>
-                )}
-              </Box>
-
-              <Box
-                sx={{
-                  display: "flex",
-                  justifyContent: "center",
-                  flexDirection: "column",
-                  alignItems: "end",
-                  width: "100%",
-                }}
-              >
-                <Box
-                  sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "0.5rem",
-                    borderRadius: "8px",
-                    backgroundColor: "rgba(220, 0, 25, 0.1)",
-                    padding: "4px 8px 4px 8px",
-                  }}
-                >
-                  {isTextVisible ? (
-                    <Visibility
-                      sx={{ color: "#C57600", fontSize: "15px" }}
-                      onClick={() => setIsTextVisible(false)}
-                    />
-                  ) : (
-                    <VisibilityOff
-                      sx={{ color: "#C57600", fontSize: "15px" }}
-                      onClick={() => setIsTextVisible(true)}
-                    />
-                  )}
-                  <Typography
-                    sx={{
-                      fontWeight: "400",
-                      fontSize: "10px",
-                      color:
-                        currentTheme.palette.type === "light"
-                          ? "#1e1e1e"
-                          : "#ffff",
-                      letterSpacing: "-0.24px",
-                      fontFamily: "raleWay",
-                      paddingTop: "1px",
-                    }}
-                  >
-                    Show Balance
-                  </Typography>
-                </Box>
-                <Box
-                  sx={{
-                    height: "36px",
-                    background:
-                      "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
-                    borderRadius: "8px",
-                    display: "flex",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    gap: "0.5rem",
-                    width: "103px",
-                    marginTop: "1rem",
-                  }}
-                >
-                  <img src={plusLogo} alt="plus-logo" />
-                  <Link to="/fwallet">
-                    <Typography
-                      sx={{
-                        color: "#fff",
-                        fontSize: "12px",
-                        fontFamily: "raleWay",
-                      }}
-                    >
-                      Fund Wallet
-                    </Typography>
-                  </Link>
-                </Box>
-              </Box>
-            </Box>
-          </Card>
-
+          <Acctbox />
           {superMarketEntry ? (
             <Card
               sx={{
@@ -229,7 +110,7 @@ const Scan = () => {
                 backgroundColor:
                   currentTheme.palette.type === "light"
                     ? "rgba(232, 229, 229, 1)"
-                    : "rgba(232, 229, 229, 1)",
+                    : "#2C2C2E",
               }}
             >
               <Typography
@@ -263,7 +144,6 @@ const Scan = () => {
               }}
             ></Box>
           )}
-
           <Box
             sx={{
               minWidth: "100%",

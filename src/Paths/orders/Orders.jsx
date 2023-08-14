@@ -325,7 +325,7 @@ const Orders = () => {
                   <Typography
                     sx={{
                       fontFamily: "raleWay",
-                      fontWeight: 400,
+                      fontWeight: 1000,
                       fontSize: "16px",
                       lineHeight: "18.78px",
                       marginY: "1rem",
@@ -346,11 +346,12 @@ const Orders = () => {
                   sx={{
                     width: "95%",
                     padding: "10px",
+                    borderColor: "#DC2A12",
+                    fontWeight: "1000",
                     borderRadius: "8px",
                     my: "2rem",
                     color:
                       currentTheme.palette.type === "light" ? "#000" : "#fff",
-                    borderColor: "2px solid  #000",
                     fontFamily: "raleWay",
                     "&:hover": {
                       borderColor:
@@ -359,7 +360,7 @@ const Orders = () => {
                   }}
                   variant="outlined"
                 >
-                  No,Go back
+                  No, Go back
                 </Button>
               </Card>
             </Modal>

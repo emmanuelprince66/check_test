@@ -1,4 +1,5 @@
 import React from "react";
+
 import {
   Card,
   Box,
@@ -30,17 +31,36 @@ import FormattedPrice from "./FormattedPrice";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../util/slice/CartSlice";
 import { useNavigate } from "react-router-dom";
+import SharedReceipt from "./SharedReceipt";
 
 const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const value = JSON.stringify(orderLoad, null, 2);
-  console.log(value);
+  // console.log(value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
-  console.log(value);
   const currentTheme = useTheme();
   const [superMarketKey, setSuperMarketKey] = useState("");
+  const [handleSharedModal, setHandleSharedModal] = useState(false);
+  const [pdfBlob, setPdfBlob] = useState(null);
 
+  const generatePDF = async () => {
+    const receiptContent = document.querySelector("#receipt");
+    const canvas = await html2canvas(receiptContent);
+    const imgData = canvas.toDataURL("image/png");
+    const doc = new jsPDF();
+
+    doc.addImage(imgData, "PNG", 10, 10, 190, 150);
+    const blob = doc.output("jpeg");
+    const pdfImageDataURL = URL.createObjectURL(blob);
+
+    setPdfBlob(pdfImageDataURL);
+    console.log(pdfBlob);
+  };
+
+  const shareModal = () => {
+    setHandleSharedModal(true);
+  };
   const handleDownload2 = () => {
     // Select the element with ID "receipt"
     const receipt = document.querySelector("#receipt");
@@ -87,6 +107,8 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
   useEffect(() => {
     const val = localStorage.getItem("myData");
     if (val) {
+      console.log(val);
+      generatePDF();
       setSuperMarketKey(val);
     } else {
       navigate("/home");
@@ -95,8 +117,10 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
 
   const handleClearCart = () => {
     dispatch(clearCart());
-    navigate("/scan");
+    localStorage.clear();
+    navigate("/home");
   };
+
   return (
     <Box
       sx={{
@@ -546,6 +570,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             Download receipt
           </Button>
           <Button
+            onClick={() => shareModal()}
             sx={{
               width: "100%",
               padding: "10px, 16px, 10px, 16px",
@@ -600,6 +625,15 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             Back to Scan
           </Button>
         </Box>
+
+        {/* share modal starts */}
+
+        <SharedReceipt
+          handleSharedModal={handleSharedModal}
+          setHandleSharedModal={setHandleSharedModal}
+          pdfBlob={pdfBlob}
+        />
+        {/* share modal ends */}
       </Container>
     </Box>
   );

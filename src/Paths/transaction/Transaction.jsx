@@ -141,8 +141,8 @@ const Transaction = () => {
                     <img
                       src={
                         item.transactionStatus === "SUCCESS"
-                          ? rightSuccess
-                          : rightWrong
+                          ? rightWrong
+                          : rightSuccess
                       }
                       alt="img"
                     />
@@ -179,7 +179,7 @@ const Transaction = () => {
                           lineHeight: "16.18px",
                         }}
                       >
-                        {item.transferFrom.firstName}
+                        {item.transferTo.firstName}
                       </Typography>
 
                       <Typography

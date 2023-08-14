@@ -172,7 +172,7 @@ const Login = () => {
       <Box
         sx={{
           bgcolor: currentTheme.palette.type === "light" ? "#fff" : "#121212",
-          height: "100vh",
+          height: "100%",
           mx: "auto",
         }}
       >
