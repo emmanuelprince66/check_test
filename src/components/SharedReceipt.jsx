@@ -70,7 +70,7 @@ const SharedReceipt = ({
               padding: "1rem",
             }}
           >
-            <FacebookMessengerShareButton>
+            <FacebookMessengerShareButton  url={URL.createObjectURL(pdfBlob)}>
               <FacebookMessengerIcon size={32} round />
             </FacebookMessengerShareButton>
 

@@ -177,7 +177,8 @@ const Home = () => {
             padding: "0.3rem",
             gap: "7px",
             borderRadius: "11px",
-            width: "100%",
+            width: "85%",
+            mx: "auto",
             marginBottom: "2rem",
             marginTop: "1rem",
             backgroundColor:

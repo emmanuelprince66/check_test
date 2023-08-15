@@ -82,7 +82,7 @@ const Scanner = ({ companyName, companyLocation }) => {
 
       setShowProgress(false);
       notifyWarn("Something went wrong please try again");
-    }, 5000);
+    }, 3000);
   };
 
   const defaultComputedPrice = !superMarketP?.price || !count ? 0 : null;

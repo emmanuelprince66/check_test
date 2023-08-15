@@ -2,6 +2,7 @@ import React, { useEffect, useState } from "react";
 import Navbar from "../../components/navbar/Navbar";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useNavigate } from "react-router-dom";
+import InvalidPin from "../../components/InvalidPin";
 import {
   Card,
   Box,
@@ -45,6 +46,7 @@ import CheckRoundedIcon from "@mui/icons-material/CheckRounded";
 import CartReceipt from "../../components/CartReceipt";
 import FormattedPrice from "../../components/FormattedPrice";
 import { useRef } from "react";
+import InsufficientFund from "../../components/InsufficientFund";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -95,8 +97,17 @@ const Cart = () => {
   const [orderData, setOrderData] = useState();
   const pinRefs = [useRef(), useRef(), useRef(), useRef()];
   const pinReffs = [useRef(), useRef(), useRef(), useRef()];
+  const [showInvalidPin, setShowInvalidPin] = useState(false);
+  const [showInsufficientBalance, setShowInsufficientBalance] = useState(false);
+  const [showOrderText, setShowOrderText] = useState(true);
 
   const superMarket = useSuperMarket(superMarketKey);
+
+  const handleShowOrderText = () => {
+    setShowInsufficientBalance(false);
+    setShowInvalidPin(false);
+    setShowOrderText(true);
+  };
 
   const calculateTotalPrice = () => {
     if (cart.length === 0) {
@@ -254,8 +265,12 @@ const Cart = () => {
       return response.data;
     } catch (error) {
       const noti = error.response.data.message;
+
       setTimeout(() => {
-        notify(noti);
+        if (noti === "Invalid pin") {
+          setShowInvalidPin(true);
+          setShowOrderText(false);
+        }
       }, 1000);
       throw new Error(error.response);
     }
@@ -280,8 +295,14 @@ const Cart = () => {
       const noti = Array.isArray(error.response.data.message)
         ? error.response.data.message[0]
         : error.response.data.message;
+      console.log(noti);
+
       setTimeout(() => {
-        notify(noti);
+        if (noti === "Insufficient Funds") {
+          setShowInsufficientBalance(true);
+          setShowOrderText(false);
+          setPins(["", "", "", ""]);
+        }
       }, 1000);
       throw new Error(error.response);
     }
@@ -765,21 +786,36 @@ const Cart = () => {
                 gap: "15px",
               }}
             >
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  fontWeight: 600,
-                  fontSize: "13px",
-                  lineHeight: "18.78px",
-                  textAlign: "center",
-                  marginY: "1rem",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                }}
-                id="modal-modal-title"
-              >
-                Enter your transaction pin to complete your order.
-              </Typography>
+              {showOrderText && (
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: 600,
+                    fontSize: "13px",
+                    lineHeight: "18.78px",
+                    textAlign: "center",
+                    marginY: "1rem",
+                    color:
+                      currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  }}
+                  id="modal-modal-title"
+                >
+                  Enter your transaction pin to complete your order.
+                </Typography>
+              )}
+
+              {/* invalid pin info starts  */}
+
+              {showInvalidPin && <InvalidPin />}
+
+              {/* invalid pin info ends   */}
+
+              {/* insufficient funds start */}
+
+              {showInsufficientBalance && (
+                <InsufficientFund totalPrice={totalPrice} />
+              )}
+              {/* insufficient funds ends */}
 
               <Box
                 sx={{
@@ -811,6 +847,7 @@ const Cart = () => {
                   >
                     {pins.map((pin, index) => (
                       <TextField
+                        onFocus={() => handleShowOrderText()}
                         sx={{
                           "& input": {
                             fontSize: "3rem",

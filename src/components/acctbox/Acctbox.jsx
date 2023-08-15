@@ -86,7 +86,9 @@ const Acctbox = () => {
               sx={{
                 display: "flex",
                 alignItems: "center",
-                gap: "0.5rem",
+                gap: "8px",
+                width: "103px",
+                height: "28px",
                 borderRadius: "8px",
                 backgroundColor: "rgba(220, 0, 25, 0.1)",
                 padding: "4px 8px 4px 8px",
@@ -113,7 +115,7 @@ const Acctbox = () => {
             </Box>
             <Box
               sx={{
-                height: "36px",
+                height: "28px",
                 background: "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
                 borderRadius: "8px",
                 display: "flex",

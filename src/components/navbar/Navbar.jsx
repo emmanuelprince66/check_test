@@ -76,7 +76,7 @@ const Navbar = () => {
             <Link
               sx={{
                 color: scanMatch || homeMatch ? "#DC2A12" : "",
-                fontWeight: scanMatch || homeMatch ? "1000" : "",
+                fontWeight: scanMatch || homeMatch ? "1000" : ",",
               }}
               to="/scan"
               className={scanMatch || homeMatch ? "active-link" : ""}
