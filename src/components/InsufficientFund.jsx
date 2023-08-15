@@ -32,7 +32,6 @@ const InsufficientFund = ({ totalPrice }) => {
             color:
               currentTheme.palette.type === "light" ? "#dc0019" : "#dc0019",
           }}
-          id="modal-modal-title"
         >
           Insufficent Balance
         </Typography>
