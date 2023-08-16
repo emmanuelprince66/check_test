@@ -159,7 +159,7 @@ const Transaction = () => {
                         sx={{
                           fontFamily: "raleWay",
                           color:
-                            item.transactionStatus === "SUCCESS"
+                            item.transactionType != "DEBIT"
                               ? "#008000"
                               : "#DC0019",
                         }}
