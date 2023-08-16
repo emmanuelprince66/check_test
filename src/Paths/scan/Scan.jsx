@@ -98,7 +98,7 @@ const Scan = () => {
                 textAlign: "center",
                 alignItems: "center",
                 justifyContent: "center",
-                width: "58%",
+                width: { xs: "69%", sm: "58%", md: "58%", lg: "58%" },
                 mx: "auto",
                 padding: "0.3rem",
                 gap: "7px",

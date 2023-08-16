@@ -28,7 +28,7 @@ const Acctbox = () => {
       <Card
         sx={{
           height: "92px",
-          minWidth: "100%",
+          maxWidth: "100%",
           borderRadius: "16px",
           padding: "0.5rem",
           marginY: "1rem",
@@ -44,7 +44,12 @@ const Acctbox = () => {
             alignItems: "start",
           }}
         >
-          <Box>
+          <Box
+            sx={{
+              flex: "1",
+              width: "100%",
+            }}
+          >
             {!isTextVisible ? (
               <Typography
                 sx={{
@@ -78,7 +83,6 @@ const Acctbox = () => {
               justifyContent: "center",
               flexDirection: "column",
               alignItems: "end",
-              width: "100%",
             }}
           >
             <Box
