@@ -90,7 +90,14 @@ const Scan = () => {
             marginBottom: "4rem",
           }}
         >
-          <Acctbox />
+          <Box
+            sx={{
+              minWidth: "100%",
+            }}
+          >
+            <Acctbox />
+          </Box>
+
           {superMarketEntry ? (
             <Card
               sx={{
