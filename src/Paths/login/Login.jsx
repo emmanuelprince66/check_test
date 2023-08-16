@@ -84,8 +84,8 @@ const Login = () => {
       const authToken = data.access_token;
       const currentTime = new Date();
 
-      // const expiryTime = new Date(currentTime.getTime() + 2 * 60 * 60 * 1000);
-      setCookie("authToken", authToken);
+      const expiryTime = new Date(currentTime.getTime() + 4 * 60 * 60 * 1000);
+      setCookie("authToken", authToken, { expires: expiryTime });
       navigate("/home");
     },
     onError(err) {
