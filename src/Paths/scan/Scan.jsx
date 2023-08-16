@@ -32,7 +32,6 @@ import useUser from "../../hooks/useUser";
 import Acctbox from "../../components/acctbox/Acctbox";
 
 const Scan = () => {
-  console.log("Scan comp has re-rendered");
   const cart = useSelector((state) => state.cart);
   const user = useUser();
 
@@ -99,12 +98,11 @@ const Scan = () => {
                 textAlign: "center",
                 alignItems: "center",
                 justifyContent: "center",
-                maxWidth: "15rem",
+                width: "58%",
                 mx: "auto",
                 padding: "0.3rem",
                 gap: "7px",
                 borderRadius: "11px",
-                width: "100%",
                 marginBottom: "2rem",
                 marginTop: "1rem",
                 backgroundColor:

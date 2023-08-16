@@ -47,15 +47,23 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const generatePDF = async () => {
     const receiptContent = document.querySelector("#receipt");
     const canvas = await html2canvas(receiptContent);
-    const imgData = canvas.toDataURL("image/png");
-    const doc = new jsPDF();
+    const imgData = canvas.toDataURL("image/jpeg"); // Corrected "toDataUrl" to "toDataURL"
 
-    doc.addImage(imgData, "PNG", 10, 10, 190, 150);
-    const blob = doc.output("jpeg");
-    const pdfImageDataURL = URL.createObjectURL(blob);
+    const blob = dataURLtoBlob(imgData);
+    setPdfBlob(blob);
+  };
 
-    setPdfBlob(pdfImageDataURL);
-    console.log(pdfBlob);
+  const dataURLtoBlob = (dataURL) => {
+    const parts = dataURL.split(",");
+    const byteString = atob(parts[1]); // Corrected "parst" to "parts"
+    const mimeString = parts[0].split(":")[1]; // Corrected mimeString extraction
+
+    const byteArray = new Uint8Array(byteString.length);
+    for (let i = 0; i < byteString.length; i++) {
+      byteArray[i] = byteString.charCodeAt(i);
+    }
+
+    return new Blob([byteArray], { type: mimeString });
   };
 
   const shareModal = () => {
@@ -570,7 +578,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
             Download receipt
           </Button>
           <Button
-            onClick={() => shareModal()}
+            onClick={shareModal}
             sx={{
               width: "100%",
               padding: "10px, 16px, 10px, 16px",
@@ -631,7 +639,7 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
         <SharedReceipt
           handleSharedModal={handleSharedModal}
           setHandleSharedModal={setHandleSharedModal}
-          pdfBlob={pdfBlob}
+          pdfBlob={pdfBlob ? pdfBlob : ""}
         />
         {/* share modal ends */}
       </Container>

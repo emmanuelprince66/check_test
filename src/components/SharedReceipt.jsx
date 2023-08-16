@@ -30,12 +30,14 @@ const SharedReceipt = ({
 }) => {
   const currentTheme = useTheme();
   const handleClose = () => setHandleSharedModal(false);
-  console.log(pdfBlob);
 
-  //   const FaceBookIcon = generateShareIcon("facebook");
-  //   const Whatsapp = generateShareIcon("whatsapp");
-  const shareUrl = "http://github.com";
-  const title = "GitHub";
+  const getPdfUrl = () => {
+    if (pdfBlob) {
+      const dataUrl = URL.createObjectURL(pdfBlob);
+      return dataUrl;
+    }
+    return "";
+  };
   return (
     <>
       <Modal
@@ -50,6 +52,7 @@ const SharedReceipt = ({
             position: "absolute",
             borderTopLeftRadius: "10px",
             borderTopRightRadius: "10px",
+            height: "20%",
             bottom: 0,
             width: { xs: "100%", sm: "70%", lg: "31%" },
             left: { xs: "0", sm: "14%", lg: "34%" },
@@ -70,11 +73,11 @@ const SharedReceipt = ({
               padding: "1rem",
             }}
           >
-            <FacebookMessengerShareButton  url={URL.createObjectURL(pdfBlob)}>
+            <FacebookMessengerShareButton>
               <FacebookMessengerIcon size={32} round />
             </FacebookMessengerShareButton>
 
-            <WhatsappShareButton>
+            <WhatsappShareButton url={getPdfUrl()}>
               <WhatsappIcon size={32} round />
             </WhatsappShareButton>
 

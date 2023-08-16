@@ -95,6 +95,7 @@ const Cart = () => {
   const [deleteCart, setDeleteCart] = useState(false);
   const [openReceipt, setOpenReceipt] = useState(false);
   const [orderData, setOrderData] = useState();
+  const pinRef = [useRef(), useRef(), useRef(), useRef()];
   const pinRefs = [useRef(), useRef(), useRef(), useRef()];
   const pinReffs = [useRef(), useRef(), useRef(), useRef()];
   const [showInvalidPin, setShowInvalidPin] = useState(false);
@@ -159,13 +160,15 @@ const Cart = () => {
     setPins(newPins);
 
     // Automatically focus on the next TextField if not already at the last one
-    if (index < pinRefs.length - 1) {
-      pinRefs[index + 1].current.focus();
+    if (index < pinRef.length - 1) {
+      pinRef[index + 1].current.focus();
     }
   };
   const handleNewPinChange = (index, value) => {
     // Ensure that the value is only one digit
     if (value.length > 1) return;
+    if (!/^\d*$/.test(value)) return;
+
     const firstNewPins = [...newPins];
     firstNewPins[index] = value;
     setNewPins(firstNewPins);
@@ -177,6 +180,8 @@ const Cart = () => {
   const handleConfirmNewPins = (index, value) => {
     // Ensure that the value is only one digit
     if (value.length > 1) return;
+    if (!/^\d*$/.test(value)) return;
+
     const newPins = [...confirmNewPins];
     newPins[index] = value;
     setConfirmNewPins(newPins);
@@ -874,7 +879,7 @@ const Cart = () => {
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
-                        inputRef={pinRefs[index]}
+                        inputRef={pinRef[index]}
                       />
                     ))}
                   </Box>

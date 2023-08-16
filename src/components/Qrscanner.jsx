@@ -43,7 +43,6 @@ const Qrscanner = () => {
 
   const playNotificationSound = () => {
     const audioFile = "/notification.mp3";
-    console.log(audioFile);
     notificationSound = new Audio(audioFile);
     notificationSound.onerror = () => {
       console.error("Failed to load audio:", audioFile);
