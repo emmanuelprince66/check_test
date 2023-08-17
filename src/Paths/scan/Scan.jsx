@@ -70,7 +70,7 @@ const Scan = () => {
 
     setTimeout(() => {
       setShowScanner(true);
-    }, 4000);
+    }, 2000);
   }, []);
 
   return (
