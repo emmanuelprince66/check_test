@@ -32,9 +32,16 @@ const Home = () => {
   const currentTheme = useTheme();
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
 
   const user = useUser();
   console.log(user.data);
+
+  useEffect(() => {
+    setTimeout(() => {
+      setShowScanner(true);
+    }, 3000);
+  }, []);
 
   return (
     <AuthProvider>
@@ -216,7 +223,17 @@ const Home = () => {
             padding: "1rem",
           }}
         >
-          <Qrscanner />
+          {showScanner ? (
+            <Qrscanner />
+          ) : (
+            <CircularProgress
+              size="3.5rem"
+              sx={{
+                marginTop: "3rem",
+              }}
+              color="error"
+            />
+          )}
         </Box>
 
         {/* Scanner */}

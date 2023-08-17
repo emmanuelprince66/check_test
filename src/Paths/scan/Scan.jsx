@@ -39,8 +39,10 @@ const Scan = () => {
   const [superMarketKey, setSuperMarketKey] = useState("");
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [superMarketEntry, setSuperMarketEntry] = useState(false);
+  const [showScanner, setShowScanner] = useState(false);
 
-  const superMarket = useSuperMarket(superMarketKey);
+  const { data: superMarket, isLoading: isLoading } =
+    useSuperMarket(superMarketKey);
 
   const currentTheme = useTheme();
 
@@ -65,6 +67,10 @@ const Scan = () => {
       setSuperMarketKey(val);
       setSuperMarketEntry(true);
     } else setSuperMarketEntry(false);
+
+    setTimeout(() => {
+      setShowScanner(true);
+    }, 2000);
   }, []);
 
   return (
@@ -124,8 +130,8 @@ const Scan = () => {
                   fontWeight: "600",
                 }}
               >
-                {superMarket.data ? (
-                  superMarket.data.companyName
+                {superMarket ? (
+                  superMarket.companyName
                 ) : (
                   <CircularProgress size="1.5rem" color="error" />
                 )}
@@ -155,6 +161,7 @@ const Scan = () => {
               minHeight: "100%",
               overflow: "hidden",
               borderRadius: "20px",
+              mx: "auto",
               borderTop: "20px",
               justifyContent: "center",
               alignItems: "center",
@@ -162,13 +169,31 @@ const Scan = () => {
             }}
           >
             {/* Bar code scanner starts */}
+            {showScanner && !isLoading ? (
+              <Scanner
+                companyName={superMarket ? superMarket.companyName : ""}
+                companyLocation={superMarket ? superMarket.location : ""}
+              />
+            ) : (
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  alignItems: "center",
+                }}
+              >
+                {" "}
+                <CircularProgress
+                  size="3rem"
+                  sx={{
+                    marginTop: "3rem",
+                    mx: "auto",
+                  }}
+                  color="error"
+                />
+              </Box>
+            )}
 
-            <Scanner
-              companyName={superMarket.data ? superMarket.data.companyName : ""}
-              companyLocation={
-                superMarket.data ? superMarket.data.location : ""
-              }
-            />
             {/* Bar code scanner stops */}
           </Box>
           <Box
