@@ -70,7 +70,7 @@ const Scan = () => {
 
     setTimeout(() => {
       setShowScanner(true);
-    }, 2000);
+    }, 4000);
   }, []);
 
   return (
@@ -186,7 +186,6 @@ const Scan = () => {
                 <CircularProgress
                   size="3rem"
                   sx={{
-                    marginTop: "3rem",
                     mx: "auto",
                   }}
                   color="error"
