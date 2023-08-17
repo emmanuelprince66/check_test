@@ -1324,6 +1324,7 @@ const Cart = () => {
                           handleNewPinChange(index, e.target.value)
                         }
                         inputProps={{
+                          inputMode: "numeric",
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
@@ -1390,6 +1391,7 @@ const Cart = () => {
                           handleConfirmNewPins(index, e.target.value)
                         }
                         inputProps={{
+                          inputMode: "numeric",
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
                         }}
