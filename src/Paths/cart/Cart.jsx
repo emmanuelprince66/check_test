@@ -871,12 +871,12 @@ const Cart = () => {
                           },
                         }}
                         key={index}
-                        inputMode="numeric"
                         variant="outlined"
                         type="password"
                         value={pin}
                         onChange={(e) => handleChange(index, e.target.value)}
                         inputProps={{
+                          inputMode: "numeric",
                           pattern: "[0-9]*", // Ensure only numeric input is allowed
                           maxLength: 1, // Limit input to one character
                           style: { textAlign: "center" }, // Center-align the input
