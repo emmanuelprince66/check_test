@@ -72,7 +72,7 @@ const SignUp = ({ setIsShown, setActive }) => {
   const notify = (message) => {
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -107,13 +107,19 @@ const SignUp = ({ setIsShown, setActive }) => {
           email,
         };
 
-        const response = await AuthAxios({
-          url: "/account/register",
-          method: "POST",
-          data: formData,
-        });
+        try {
+          const response = await AuthAxios({
+            url: "/account/register",
+            method: "POST",
+            data: formData,
+          });
 
-        return response.data;
+          return response.data;
+        } catch (error) {
+          setTimeout(() => {
+            notify(error.message);
+          }, 1000);
+        }
       }
     },
     onSuccess: (data) => {

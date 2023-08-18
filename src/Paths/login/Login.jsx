@@ -47,7 +47,7 @@ const Login = () => {
   const notify = (message) => {
     toast.error(message, {
       position: "top-center",
-      autoClose: 5000,
+      autoClose: 2000,
       hideProgressBar: false,
       closeOnClick: true,
       pauseOnHover: true,
@@ -60,6 +60,7 @@ const Login = () => {
   const {
     isLoading,
     data,
+    isError,
     mutate: handleSubmit,
   } = useMutation({
     mutationFn: async (event) => {
@@ -71,13 +72,19 @@ const Login = () => {
           password,
         };
 
-        const response = await AuthAxios({
-          url: "/auth/login",
-          method: "POST",
-          data: formData,
-        });
+        try {
+          const response = await AuthAxios({
+            url: "/auth/login",
+            method: "POST",
+            data: formData,
+          });
 
-        return response.data;
+          return response.data;
+        } catch (error) {
+          setTimeout(() => {
+            notify(error.message);
+          }, 1000);
+        }
       }
     },
     onSuccess: (data) => {

@@ -35,12 +35,11 @@ const Home = () => {
   const [showScanner, setShowScanner] = useState(false);
 
   const user = useUser();
-  console.log(user.data);
 
   useEffect(() => {
     setTimeout(() => {
       setShowScanner(true);
-    }, 5000);
+    }, 4000);
   }, []);
 
   return (
@@ -187,7 +186,7 @@ const Home = () => {
             width: { xs: "95%", sm: "48%", md: "70%", lg: "70%" },
             mx: "auto",
             marginBottom: "2rem",
-            marginTop: "1rem",
+            marginTop: "0.5rem",
             backgroundColor:
               currentTheme.palette.type === "light"
                 ? "rgba(232, 229, 229, 1)"
