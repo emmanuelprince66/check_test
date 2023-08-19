@@ -1,18 +1,30 @@
 import { useQuery } from "@tanstack/react-query";
 import { getSuperMarketP } from "../helpers/getSuperMarketP";
 
-export default function useSuperMarketP(eAN, companyName, companylocation) {
+export default function useSuperMarketP(
+  eAN,
+  companyName,
+  companylocation,
+  onSucess,
+  onError
+) {
   const fetcher = () => getSuperMarketP(eAN, companyName, companylocation);
 
-  const enabled = eAN !== undefined && eAN !== null;
+  const enabled = eAN !== undefined && eAN !== null && eAN.trim() !== "";
 
   const superMarketP = useQuery(
     ["superMarketP", eAN, companyName, companylocation],
     fetcher,
     {
-      // refetchOnReconnect: false,
-      // refetchOnWindowFocus: false,
-      // refetchInterval: 50000,
+      enabled,
+      retry: false,
+      refetchOnWindowFocus: false,
+      onSuccess(data) {
+        onSucess(data);
+      },
+      onError(err) {
+        onError(err);
+      },
     }
   );
 

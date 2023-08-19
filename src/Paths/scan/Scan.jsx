@@ -173,6 +173,7 @@ const Scan = () => {
               <Scanner
                 companyName={superMarket ? superMarket.companyName : ""}
                 companyLocation={superMarket ? superMarket.location : ""}
+                setShowScanner={setShowScanner}
               />
             ) : (
               <Box

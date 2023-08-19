@@ -18,9 +18,8 @@ import { useRef, useCallback, useState, useEffect } from "react";
 import TestScanner from "../TestScanner";
 import { Link } from "react-router-dom";
 import "./Scanner.css";
-const Scanner = ({ companyName, companyLocation }) => {
+const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const cart = useSelector((state) => state.cart);
-
   const [result, setResult] = useState("");
   const dispatch = useDispatch();
 
@@ -33,7 +32,6 @@ const Scanner = ({ companyName, companyLocation }) => {
   const scannerRef = useRef(null); // reference to the scanner element in the DOM
   const [showProgress, setShowProgress] = useState(false);
   const [showMarketEntryModal, setShowMarketEntryModal] = useState(false);
-
   // end test states
 
   const [open, setOpen] = React.useState(false);
@@ -42,46 +40,34 @@ const Scanner = ({ companyName, companyLocation }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleCloseMarketEntryModal = () => setShowMarketEntryModal(false);
-
-  const {
-    data: superMarketP,
-    error: superMarketPError,
-    isLoading: isLoading,
-  } = useSuperMarketP(result ? result : "", companyName, companyLocation);
-
+  const { data: superMarketP } = useSuperMarketP(
+    result,
+    companyName,
+    companyLocation,
+    onSuccess,
+    onError
+  );
   const currentTheme = useTheme();
   const decrement = () => {
     if (count > 1 && count != 0) {
       setCount(count - 1);
     }
   };
+
+  function onSuccess() {
+    setShowProgress(false);
+    setOpen(true);
+    setCount(1);
+  }
+
+  function onError() {
+    notifyErr("Error Fetching Product");
+    setShowProgress(false);
+    setOpen(false);
+  }
   const handleModal = (res) => {
-    if (!companyLocation || !companyName) {
-      setShowMarketEntryModal(true);
-      return;
-    }
-    setShowProgress(true);
     setResult(res);
-
-    setTimeout(() => {
-      if (superMarketPError) {
-        notifyErr("Error Fetching Product");
-        setShowProgress(false);
-        setOpen(false);
-        return;
-      } else if (isLoading) {
-        setShowProgress(true);
-        setOpen(false);
-      } else if (superMarketP && !isLoading) {
-        setShowProgress(false);
-        setCount(1);
-        setOpen(true);
-        return;
-      }
-
-      setShowProgress(false);
-      notifyWarn("Something went wrong please try again");
-    }, 3000);
+    setShowProgress(true);
   };
 
   const defaultComputedPrice = !superMarketP?.price || !count ? 0 : null;
@@ -144,6 +130,11 @@ const Scanner = ({ companyName, companyLocation }) => {
       theme: "dark",
     });
   };
+
+  useEffect(() => {
+    const val = localStorage.getItem("myData");
+    !val && setShowMarketEntryModal(true);
+  }, []);
 
   useEffect(() => {
     const enableCamera = async () => {
@@ -246,7 +237,9 @@ const Scanner = ({ companyName, companyLocation }) => {
               cameraId={cameraId}
               onDetected={(res) => handleModal(res)}
             />
-          ) : null}
+          ) : (
+            <CircularProgress />
+          )}
         </Box>
       </Box>
 
