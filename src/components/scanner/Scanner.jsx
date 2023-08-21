@@ -32,6 +32,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const scannerRef = useRef(null); // reference to the scanner element in the DOM
   const [showProgress, setShowProgress] = useState(false);
   const [showMarketEntryModal, setShowMarketEntryModal] = useState(false);
+  const [errState, setErrState] = useState(false);
   // end test states
 
   const [open, setOpen] = React.useState(false);
@@ -40,7 +41,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const handleOpen = () => setOpen(true);
   const handleClose = () => setOpen(false);
   const handleCloseMarketEntryModal = () => setShowMarketEntryModal(false);
-  const { data: superMarketP } = useSuperMarketP(
+  const { data: superMarketP, isError: isError } = useSuperMarketP(
     result,
     companyName,
     companyLocation,
@@ -56,18 +57,38 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
 
   function onSuccess() {
     setShowProgress(false);
+    setErrState(false);
+    console.log("success func");
     setOpen(true);
     setCount(1);
   }
 
   function onError() {
-    notifyErr("Error Fetching Product");
     setShowProgress(false);
     setOpen(false);
+    setErrState(true);
+    notifyErr("Error Fetching Product");
+    console.log("err func");
   }
   const handleModal = (res) => {
     setResult(res);
     setShowProgress(true);
+
+    setTimeout(() => {
+      console.log(errState);
+      setShowProgress(false);
+      if (superMarketP && onSuccess()) {
+        console.log(superMarketP);
+        // setOpen(true);
+        setShowProgress(false);
+        return;
+      } else if (errState) {
+        console.log(errState);
+        setOpen(false);
+        return;
+      }
+      setShowProgress(false);
+    }, 3000);
   };
 
   const defaultComputedPrice = !superMarketP?.price || !count ? 0 : null;
@@ -177,30 +198,30 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
       }}
     >
       {/* <Box>
-        {cameras.length === 0 ? (
-          <p>
-            Enumerating Cameras, browser may be prompting for permissions
-            beforehand
-          </p>
-        ) : (
-          <form>
-            <select onChange={(event) => setCameraId(event.target.value)}>
-              {cameras.map((camera) => (
-                <option key={camera.deviceId} value={camera.deviceId}>
-                  {camera.label || camera.deviceId}
-                </option>
-              ))}
-            </select>
-          </form>
-        )}
-      </Box> */}
+          {cameras.length === 0 ? (
+            <p>
+              Enumerating Cameras, browser may be prompting for permissions
+              beforehand
+            </p>
+          ) : (
+            <form>
+              <select onChange={(event) => setCameraId(event.target.value)}>
+                {cameras.map((camera) => (
+                  <option key={camera.deviceId} value={camera.deviceId}>
+                    {camera.label || camera.deviceId}
+                  </option>
+                ))}
+              </select>
+            </form>
+          )}
+        </Box> */}
       <Box>
         {/* <button onClick={onTorchClick}>
-          {torchOn ? "Disable Torch" : "Enable Torch"}
-        </button> */}
+            {torchOn ? "Disable Torch" : "Enable Torch"}
+          </button> */}
         {/* <button onClick={() => setScanning(!scanning)}>
-          {scanning ? "Stop" : "Start"}
-        </button> */}
+            {scanning ? "Stop" : "Start"}
+          </button> */}
       </Box>
 
       {showProgress ? (

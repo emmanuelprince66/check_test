@@ -43,7 +43,7 @@ const CartItem = ({ item }) => {
   };
 
   return (
-    <>
+    <Box sx={{ minWidth: "100%" }}>
       <Card
         sx={{
           display: "flex",
@@ -196,7 +196,7 @@ const CartItem = ({ item }) => {
           <DeleteForeverRoundedIcon sx={{ color: "#dc0019" }} />
         </Box>
       </Card>
-    </>
+    </Box>
   );
 };
 

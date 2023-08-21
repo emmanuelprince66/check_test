@@ -47,6 +47,8 @@ import CartReceipt from "../../components/CartReceipt";
 import FormattedPrice from "../../components/FormattedPrice";
 import { useRef } from "react";
 import InsufficientFund from "../../components/InsufficientFund";
+import checkLogo from "../../images/checkLogo.svg";
+import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -101,7 +103,8 @@ const Cart = () => {
   const [showInvalidPin, setShowInvalidPin] = useState(false);
   const [showInsufficientBalance, setShowInsufficientBalance] = useState(false);
   const [showOrderText, setShowOrderText] = useState(true);
-
+  const [openCreatePinSuccessModal, setOpenCreatePinSuccessModal] =
+    useState(false);
   const superMarket = useSuperMarket(superMarketKey);
 
   const handleShowOrderText = () => {
@@ -223,6 +226,11 @@ const Cart = () => {
   const mutation = useMutation(sendPasswordToEndpoint, {
     onSuccess: (response) => {
       console.log(response);
+      setOpenCreatePinSuccessModal(true);
+      setTimeout(() => {
+        setOpenCreatePinSuccessModal(false);
+        setOpen4(false);
+      }, 3000);
       queryClient.invalidateQueries("passwords"); // Optionally, invalidate relevant queries after the mutation
     },
     onError: (response) => {
@@ -269,12 +277,15 @@ const Cart = () => {
 
       return response.data;
     } catch (error) {
+      console.log(error);
       const noti = error.response.data.message;
 
       setTimeout(() => {
         if (noti === "Invalid pin") {
           setShowInvalidPin(true);
           setShowOrderText(false);
+        } else {
+          notify(error.response.data.message);
         }
       }, 1000);
       throw new Error(error.response);
@@ -511,6 +522,9 @@ const Cart = () => {
               alignItems: "center",
               gap: "10px",
               width: "100%",
+              paddingY: "10px",
+              maxHeight: "20rem",
+              overflowY: "scroll",
             }}
           >
             {cart.length === 0 ? (
@@ -579,6 +593,7 @@ const Cart = () => {
                 currentTheme.palette.type === "light"
                   ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
                   : "#2C2C2E",
+              marginBottom: "5rem",
             }}
           >
             <Box
@@ -814,13 +829,6 @@ const Cart = () => {
               {showInvalidPin && <InvalidPin />}
 
               {/* invalid pin info ends   */}
-
-              {/* insufficient funds start */}
-
-              {showInsufficientBalance && (
-                <InsufficientFund totalPrice={totalPrice} />
-              )}
-              {/* insufficient funds ends */}
 
               <Box
                 sx={{
@@ -1654,6 +1662,70 @@ const Cart = () => {
             </Box>
           </Dialog>
           {/* Modal 7 receipt dialog  ends*/}
+
+          {/* Modal 9 create pin success */}
+          <Dialog
+            fullScreen
+            open={openCreatePinSuccessModal}
+            onClose={setOpenCreatePinSuccessModal}
+            TransitionComponent={Transition}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                height: "100%",
+                width: "100%",
+                alignItems: "center",
+                justifyContent: "center",
+                flexDirection: "column",
+                gap: "1rem",
+              }}
+            >
+              <CheckRoundedIcon
+                sx={{
+                  fontSize: "4rem",
+                  background: "#008000",
+                  borderRadius: "50% ",
+                  padding: "1rem",
+                  color: "white",
+                  marginBottom: "1.7rem",
+                }}
+              />
+              <Box
+                sx={{
+                  marginBottom: "1rem",
+                }}
+              >
+                <Typography
+                  variant="h2"
+                  sx={{
+                    fontFamily: "raleWay",
+                    letterSpacing: "0.2em",
+                    lineHeight: "2em",
+                    textAlign: "center",
+                    color:
+                      currentTheme.palette.type === "light"
+                        ? "#000000"
+                        : "#EEEEEE",
+                    fontSize: "15px",
+                    fontWeight: "500",
+                  }}
+                >
+                  Your PIN has been created successfully...
+                </Typography>
+              </Box>
+            </Box>
+          </Dialog>
+          {/* Modal 9  create pin success  ends*/}
+
+          {/* insufficient funds modal 8  start */}
+
+          <InsufficientFund
+            totalPrice={totalPrice}
+            showInsufficientBalance={showInsufficientBalance}
+            setShowInsufficientBalance={setShowInsufficientBalance}
+          />
+          {/* insufficient funds ends */}
 
           <ToastContainer />
         </Container>
