@@ -71,6 +71,10 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     console.log("err func");
   }
   const handleModal = (res) => {
+    if (!companyLocation || !companyName) {
+      setShowMarketEntryModal(true);
+      return;
+    }
     setResult(res);
     setShowProgress(true);
 
