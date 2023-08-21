@@ -464,6 +464,7 @@ const Cart = () => {
             mx: "auto",
             width: { xs: "96%", sm: "70%", md: "100%" },
             minHeight: "100vh",
+            maxHeight: "100vh",
             padding: 0,
             position: "relative",
           }}
@@ -524,7 +525,7 @@ const Cart = () => {
               gap: "10px",
               width: "100%",
               paddingY: "10px",
-              maxHeight: "20rem",
+              maxHeight: "30rem",
               overflowY: "scroll",
             }}
           >
@@ -582,13 +583,13 @@ const Cart = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              position: "absolute",
+              position: "fixed",
               bottom: "10px",
-              width: "100%",
+              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
               padding: "1.5rem",
               gap: "2rem",
               justifyContent: "start",
-              right: { sm: "0.3rem", lg: "0.2rem" },
+              right: { xs: "1px", sm: "19%", lg: "35%" },
               background:
                 currentTheme.palette.type === "light" ? "" : "#2C2C2E",
               borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
