@@ -94,7 +94,7 @@ const Orders = () => {
               marginBottom: "1rem",
             }}
           >
-            My Orders
+            My Status
           </Typography>
 
           <Box

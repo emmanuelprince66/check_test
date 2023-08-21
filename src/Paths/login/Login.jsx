@@ -82,7 +82,7 @@ const Login = () => {
           return response.data;
         } catch (error) {
           setTimeout(() => {
-            notify(error.message);
+            notify(error.response.data.message);
           }, 1000);
         }
       }
