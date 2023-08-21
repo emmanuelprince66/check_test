@@ -17,7 +17,7 @@ export default function useSuperMarketP(
     fetcher,
     {
       enabled,
-      retry: 3,
+      retry: false,
       refetchOnWindowFocus: false,
       onSuccess(data) {
         onSucess(data);
