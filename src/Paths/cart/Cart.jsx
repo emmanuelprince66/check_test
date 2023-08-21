@@ -465,6 +465,7 @@ const Cart = () => {
             width: { xs: "96%", sm: "70%", md: "100%" },
             minHeight: "100vh",
             padding: 0,
+            position: "relative",
           }}
         >
           <Box
@@ -581,13 +582,16 @@ const Cart = () => {
             sx={{
               display: "flex",
               flexDirection: "column",
-              gap: "4rem",
+              position: "absolute",
+              bottom: "10px",
+              width: "100%",
+              padding: "1.5rem",
+              gap: "2rem",
               justifyContent: "start",
-              padding: "1rem",
+              right: { sm: "0.3rem", lg: "0.2rem" },
               background:
                 currentTheme.palette.type === "light" ? "" : "#2C2C2E",
               borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
-              width: "100%",
               textAlign: "center",
               boxShadow:
                 currentTheme.palette.type === "light"
