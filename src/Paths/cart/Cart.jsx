@@ -525,7 +525,7 @@ const Cart = () => {
               gap: "10px",
               width: "100%",
               paddingY: "10px",
-              maxHeight: "30rem",
+              maxHeight: "22rem",
               overflowY: "scroll",
             }}
           >
