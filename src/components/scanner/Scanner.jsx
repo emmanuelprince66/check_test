@@ -83,7 +83,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
       setShowProgress(false);
       if (superMarketP && onSuccess()) {
         console.log(superMarketP);
-        // setOpen(true);
+        setOpen(true);
         setShowProgress(false);
         return;
       } else if (errState) {
