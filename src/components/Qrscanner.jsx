@@ -22,10 +22,9 @@ const Qrscanner = () => {
     setShowProgress(false);
     setOpen(true);
 
-    setTimeout(() => {
-      handleClose();
-      navigate("/scan");
-    }, 3000);
+    // setTimeout(() => {
+    //   handleClose();
+    // }, 3000);
   };
 
   const handleQrScan = (data) => {

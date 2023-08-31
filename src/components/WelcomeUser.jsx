@@ -3,19 +3,64 @@ import { Card, Box, Typography } from "@mui/material";
 import CircularProgress from "@mui/material/CircularProgress";
 import checkLogo from "../images/checkLogo.svg";
 import { useTheme } from "@mui/material";
+import { useNavigate } from "react-router-dom";
 import { useState, useEffect } from "react";
+import { useDispatch } from "react-redux";
 import useSuperMarket from "../hooks/useSuperMarket";
-
+import useRestaurant from "../hooks/useRestaurant";
+import { populateMerchantDetails } from "../util/slice/merchantSlice";
 const WelcomeUser = () => {
+  // const currentTheme = useTheme();
+  // const [superMarketKey, setSuperMarketKey] = useState("");
+  // const superMarket = useSuperMarket(superMarketKey);
+
+  // useEffect(() => {
+  //   const val = localStorage.getItem("myData");
+  //   val ? setSuperMarketKey(val) : "";
+  // }, []);
+
+const navigate = useNavigate()
+const dispatch = useDispatch()
   const currentTheme = useTheme();
-  const [superMarketKey, setSuperMarketKey] = useState("");
-  const superMarket = useSuperMarket(superMarketKey);
+  const [key, setKey] = useState("");
+  const [info, setInfo] = useState([]);
+
+  const superMarket = useSuperMarket(key);
+  const restaurant = useRestaurant(key);
+
+
+
+  useEffect(() => {
+    if (superMarket.data) {
+      setInfo(superMarket.data);
+     dispatch( populateMerchantDetails(superMarket.data))
+      setTimeout(() => {
+        navigate("/scan");
+      }, 3000);
+    } else if (restaurant.data) {
+      setInfo(restaurant.data);
+    dispatch( populateMerchantDetails(restaurant?.data))
+      setTimeout(() => {
+        navigate("/restaurant");
+      }, 3000);
+
+    }
+    else{
+        console.log('No restaurant or supermarket found')
+    }
+
+  }, [superMarket.data, restaurant.data]);
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
-    val ? setSuperMarketKey(val) : "";
+   let data = JSON.parse(val)
+    data.id? setKey(data.id):setKey(val)
   }, []);
+
   return (
+
+
+
     <Box
       sx={{
         display: "flex",
@@ -89,8 +134,10 @@ const WelcomeUser = () => {
             fontWeight: "1000",
           }}
         >
-          {superMarket.data ? (
-            superMarket.data.companyName
+          {info ?
+          
+          (
+           info.restaurant? info.restaurant.companyName: info.companyName
           ) : (
             <CircularProgress size="1.5rem" color="error" />
           )}
