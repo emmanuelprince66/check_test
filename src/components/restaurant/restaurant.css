@@ -1,0 +1,43 @@
+
+.gpt3__restaurant {
+   width: 31%;
+   margin: auto;
+   display: flex;
+   flex-direction: column;
+   justify-content: center;
+   margin-top: 1rem;
+   margin-bottom: 5rem;
+   gap: 1em;
+   flex-grow: 1;
+}
+@media screen and (max-width:400px) {
+   .gpt3__restaurant {
+   min-width: 100%;
+   padding: 1rem;
+   }
+ }
+ 
+ @media screen and (min-width:400px) and (max-width:820px){
+     .gpt3__restaurant {
+     width: 80%;
+     margin-top: 25%;
+     }
+ }
+ 
+
+
+.restborder{
+   border: 1px solid #CDCDCD;
+   width: fit-content;
+   border-radius: .5em;
+   display: flex;
+   align-items: center;
+   padding: .6em;
+}
+.h1-text{
+   font-size: 1.5em;
+}
+.arrowright{
+   transform: rotate(180deg);
+   height: 15px;
+}

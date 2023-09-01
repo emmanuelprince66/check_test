@@ -23,10 +23,14 @@ import Suport from "../Paths/support/Suport";
 import Cpass from "../Paths/cpassword/Cpass";
 import Rlocation from "../Paths/rlocation/Rlocation";
 import Orders from "../Paths/orders/Orders";
-import Restaurant from "../Paths/restaurant";
+import Navbar from "../components/navbar/Navbar";
+import { useLocation } from "react-router-dom";
+import RestaurantMenu from "../Paths/cartMenu";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
+
+  const location = useLocation()
 
   const handleToggleDarkMode = () => {
     setDarkMode(!darkMode);
@@ -76,8 +80,12 @@ const Routess = () => {
             <Route path="/cpass" element={<Cpass />} />
             <Route path="/rlocation" element={<Rlocation />} />
             <Route path="/orders" element={<Orders />} />
-            <Route path="/restaurant" element={<Restaurant />} />
+            <Route path="/restaurant/menu" element={<RestaurantMenu />} />
           </Routes>
+
+         {
+          location.pathname !== '/'? <Navbar/>: null
+         } 
         </CssBaseline>
       </ThemeProvider>
     </div>

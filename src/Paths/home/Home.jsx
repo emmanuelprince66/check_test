@@ -238,7 +238,6 @@ const Home = () => {
         {/* Scanner */}
 
         {/* NAVBAR */}
-        <Navbar />
       </div>
     </AuthProvider>
   );

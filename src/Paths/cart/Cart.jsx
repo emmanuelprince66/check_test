@@ -3,6 +3,7 @@ import Navbar from "../../components/navbar/Navbar";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useNavigate } from "react-router-dom";
 import InvalidPin from "../../components/InvalidPin";
+import add from "../../assets/add-square.svg";
 import {
   Card,
   Box,
@@ -49,6 +50,7 @@ import { useRef } from "react";
 import InsufficientFund from "../../components/InsufficientFund";
 import checkLogo from "../../images/checkLogo.svg";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
+import Restaurant from "../../components/restaurant";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -446,6 +448,10 @@ const Cart = () => {
     }
   }, []);
 
+    const merchantDetails = useSelector((state) => state.merchantReducer.data);
+
+
+
   return (
     <AuthProvider>
       <Box
@@ -456,7 +462,13 @@ const Cart = () => {
           maxWidth: { xs: "100%", sm: "100%", md: "31%" },
         }}
       >
-        <Container
+        
+
+
+{ merchantDetails.restaurant?
+
+<Restaurant/>
+:      <Container
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -579,84 +591,6 @@ const Cart = () => {
             )}
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              position: "fixed",
-              bottom: "10px",
-              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
-              padding: "1.5rem",
-              gap: "2rem",
-              justifyContent: "start",
-              right: { xs: "1px", sm: "19%", lg: "35%" },
-              background:
-                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
-              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
-              textAlign: "center",
-              boxShadow:
-                currentTheme.palette.type === "light"
-                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
-                  : "#2C2C2E",
-              marginBottom: "5rem",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fomtWeight: "900",
-                  fontSize: "16px",
-                }}
-              >
-                Grand Total
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fomtWeight: "900",
-                  fontSize: "16px",
-                }}
-              >
-                <FormattedPrice amount={totalPrice} />
-              </Typography>
-            </Box>
-
-            <Box>
-              <Button
-                onClick={handleOpen}
-                sx={{
-                  background:
-                    currentTheme.palette.type === "light"
-                      ? "#dc0019"
-                      : "#dc0019",
-                  padding: "10px",
-                  fontWeight: "1000",
-                  width: "100%",
-                  textTransform: "capitalize",
-                  borderRadius: "8px",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor:
-                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                  },
-                  fontFamily: "raleWay",
-                }}
-              >
-                Proceed to payment
-              </Button>
-            </Box>
-          </Box>
 
           {/* Modal 1  modal for purchase*/}
           <Modal
@@ -1734,6 +1668,89 @@ const Cart = () => {
 
           <ToastContainer />
         </Container>
+
+}
+<Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              position: "fixed",
+              bottom: "0px",
+              backgroundColor:'white',
+              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
+              padding: "1.5rem",
+              gap: "2rem",
+                  zIndex:'99999',
+              justifyContent: "start",
+              right: { xs: "1px", sm: "19%", lg: "35%" },
+              background:
+                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
+              textAlign: "center",
+              boxShadow:
+                currentTheme.palette.type === "light"
+                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
+                  : "#2C2C2E",
+              marginBottom: "5rem",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fontWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                Grand Total
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fontWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                <FormattedPrice amount={totalPrice} />
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                onClick={handleOpen}
+                sx={{
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  padding: "10px",
+                  fontWeight: "1000",
+                  width: "100%",
+                  textTransform: "capitalize",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                Proceed to payment
+              </Button>
+            </Box>
+          </Box>
+
 
         {/* NAVBAR */}
 

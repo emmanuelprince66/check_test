@@ -41,7 +41,7 @@ const dispatch = useDispatch()
       setInfo(restaurant.data);
     dispatch( populateMerchantDetails(restaurant?.data))
       setTimeout(() => {
-        navigate("/restaurant");
+        navigate("/cart");
       }, 3000);
 
     }
