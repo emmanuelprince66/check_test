@@ -5,7 +5,7 @@ import { useNavigate } from "react-router-dom";
 import "./restaurant.css";
 import add from "../../assets/add-square.svg";
 import { Box, Button,Container } from "@mui/material";
-import { Navigate } from "react-router-dom";
+import useMenu from "../../hooks/useMenu";
 const Restaurant = () => {
   // const merchantDetails = useSelector((state) => state.merchantReducer.data);
   // console.log(merchantDetails)
@@ -21,6 +21,7 @@ amount:'',
 const updatedOrders = [...orders,newOrder]
 setOrders(updatedOrders)
   }
+  
 function handleClickMenu(id){
 navigate('/restaurant/menu')
 console.log(id)
@@ -35,6 +36,7 @@ console.log(id)
     marginBottom:'10em',
 
   }} >
+     
       <Button sx={{    border: '1px solid #CDCDCD',width: 'fit-content', minWidth:'50px', borderRadius: '.5em',display:'flex',alignItems:'center', padding: '.3em',}} >
         <svg
           width="24"

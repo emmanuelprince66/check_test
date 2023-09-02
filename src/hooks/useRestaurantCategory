@@ -1,0 +1,15 @@
+import { useQuery } from "@tanstack/react-query";
+import { getRestaurantCategory } from "../helpers/getRestaurantCategory";
+
+export default function useRestaurantCategory(id) {
+  const fetcher = () => getRestaurantCategory(id);
+  const enabled = id !== undefined && id !== null;
+
+  const restaurantCategory = useQuery(["restaurantCategory", id], fetcher, {
+    refetchOnReconnect: false,
+    refetchOnWindowFocus: false,
+    refetchInterval: 50000,
+  });
+
+  return restaurantCategory;
+}
