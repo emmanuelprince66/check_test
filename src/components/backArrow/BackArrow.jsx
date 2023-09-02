@@ -7,7 +7,7 @@ import { Link } from 'react-router-dom'
 
 const BackArrow = ( { destination }) => {
   return (
-    <div>
+    <div style={{display:'flex', alignItems:'self-end' }} >
     <Link to={destination}>
     <div className='gpt3__paybills_back'>
     <svg
