@@ -92,7 +92,7 @@ const RestaurantMenu = () => {
             gap: "1em",
             padding:'.6px 0',
             '&:-webkit-scrollbar':{display:'none'},
-            overflowX: "auto",
+            overflowX: "scroll",
             borderBottom: "1px solid #EAEAEA",
           }}
         >
