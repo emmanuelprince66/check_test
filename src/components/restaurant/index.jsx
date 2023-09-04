@@ -6,23 +6,28 @@ import "./restaurant.css";
 import add from "../../assets/add-square.svg";
 import { Box, Button,Container } from "@mui/material";
 import useMenu from "../../hooks/useMenu";
+import { useDispatch } from "react-redux";
+import { addOrders,setOrderInView } from "../../util/slice/merchantSlice";
+import options from '../../assets/MoreOptions.svg'
+import BackArrow from "../backArrow/BackArrow";
 const Restaurant = () => {
-  // const merchantDetails = useSelector((state) => state.merchantReducer.data);
+  const Orders = useSelector((state) => state.merchantReducer.orders);
   // console.log(merchantDetails)
-  const [orders,setOrders] = useState([{id:1,amount:'',}])
+  console.log(Orders)
   const navigate = useNavigate()
+  const dispatch = useDispatch()
   function handleNewOrders(){
-    const maxId = orders.length + 1
+    const maxId = Orders.length + 1
     console.log(maxId );
 let newOrder = {
   id:(maxId),
 amount:'',
 }
-const updatedOrders = [...orders,newOrder]
-setOrders(updatedOrders)
+dispatch(addOrders(newOrder))
   }
   
 function handleClickMenu(id){
+  dispatch(setOrderInView(id))
 navigate('/restaurant/menu')
 console.log(id)
 }
@@ -37,24 +42,13 @@ console.log(id)
 
   }} >
      
-      <Button sx={{    border: '1px solid #CDCDCD',width: 'fit-content', minWidth:'50px', borderRadius: '.5em',display:'flex',alignItems:'center', padding: '.3em',}} >
-        <svg
-          width="24"
-          height="24"
-          viewBox="0 0 24 24"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-        >
-          <path
-            d="M15 19.92L8.47997 13.4C7.70997 12.63 7.70997 11.37 8.47997 10.6L15 4.08002"
-            stroke="#1E1E1E"
-            stroke-width="1.5"
-            stroke-miterlimit="10"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          />
-        </svg>
-      </Button>
+      <Box sx={{  justifyContent:'space-between',display:'flex',alignItems:'center'}} >
+
+<BackArrow/>
+<Button sx={{border:'1px solid #CDCDCD',padding:'.7em',minWidth:'44px'}} >
+  <img src={options} />
+</Button>
+      </Box>
 
       <h1 className="h1-text">My Cart</h1>
 
@@ -63,7 +57,7 @@ console.log(id)
 <Box sx={{display:'flex',flexDirection:'column',gap:'1em'}} >
 {    
   
-  orders.map((order,i)=>{
+  Orders.map((order,i)=>{
     return(
       <Box
       key={i}
@@ -71,7 +65,14 @@ console.log(id)
         padding={"1em"}
         borderRadius={".5em"}
       >
+
+<Box display='flex' justifyContent='space-between' alignItems='center' >
+
         <h2 style={{fontSize:'16px'}} > Order {order.id}</h2>
+        <Button sx={{padding:'0.7em',minWidth:'44px'}} >
+  <img src={options} />
+</Button>
+  </Box>
 
         <div
           style={{
@@ -124,7 +125,7 @@ console.log(id)
 }
 
 </Box>
-      <Button    onClick={()=>handleNewOrders(orders.length)}       sx={{
+      <Button    onClick={()=>handleNewOrders(Orders.length)}       sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

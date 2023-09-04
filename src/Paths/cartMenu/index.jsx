@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import useMenu from "../../hooks/useMenu";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useState } from "react";
-import { Box, TextField,List,ListItem, Grid, InputAdornment } from "@mui/material";
+import { Box, TextField,List,Button, Grid, InputAdornment, Typography } from "@mui/material";
 import "../../components/restaurant/restaurant.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
@@ -15,16 +15,15 @@ const RestaurantMenu = () => {
   const [categoryNameInView, setCategoryNameInView] = useState();
   const [filteredMenu, setFilteredMenu] = useState([]);
 
-  const merchantDetails = useSelector((state)=>state.merchantReducer.data)
-
+  const {merchantDetails,orderInView,totalAmount} = useSelector((state)=>state.merchantReducer)
   // console.log(merchantDetails.restaurant.id)
   useEffect(() => {
     // const id = JSON.parse(localStorage.getItem("myData")).id;
     // console.log(id);
     // setId(id);
   }, []);
-  const menu = useMenu(merchantDetails?.restaurant?.id);
-  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
+  const menu = useMenu(10);
+  const category = useRestaurantCategory(10);
   useEffect(() => {
     setCategoryNameInView(category?.data?.categories[categoryInView].name);
     let filteredResult = menu?.data?.menu.filter(
@@ -56,7 +55,7 @@ const RestaurantMenu = () => {
       </Box>
 
       <Box display="flex" gap="1em" justifyContent="space-between">
-        <span>Order 1</span>
+        <span>Order {orderInView}</span>
         <div style={{}}>
           <span
             style={{
@@ -122,9 +121,34 @@ const RestaurantMenu = () => {
 
       <Grid container justifyContent="space-between" rowGap="1em">
         {filteredMenu?.map((item, i) => {
-          return <CartBox key={i} name={item.name} unitPrice={item.price} img={item.image} />;
+          return <CartBox key={i} name={item.name} id={orderInView} unitPrice={item.price} img={item.image} />;
         })}
       </Grid>
+
+      <Box sx={{background:'var(--grey-cart-btn)', display:'flex',insetInline:'0', alignItems:'center',          width: { md: "33%", sm: "100%", xs: "100%" },
+          position: "fixed",
+          left: { xs: 0, sm: 0, md: "33.5%" },
+          bottom: 0,
+          height:'70px',
+          fontSize: "10px",
+          padding: "1rem",
+ justifyContent:'space-between',}} bottom='0'  > 
+      <Typography  sx={{fontWeight:'700',fontSize:'2em'}} >{totalAmount}</Typography>  
+      <Button
+            sx={{
+              backgroundColor: "#EB001B",
+              height: "30px",
+              color: "white",
+              textTransform:'none',
+              "&:hover": { backgroundColor: "#EB001B" },
+              width: "100px",
+              minWidth: "auto",
+            }}
+          >
+            {" "}
+            Save{" "}
+          </Button>
+      </Box>
     </div>
   );
 };

@@ -1,7 +1,12 @@
 import { useState } from "react";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
-export const CartBox = ({ img, unitPrice,name }) => {
+import { useSelector } from "react-redux";
+import { useDispatch } from "react-redux";
+import {addItemsToCart} from '../../util/slice/merchantSlice'
+export const CartBox = ({id, img, unitPrice,name }) => {
   const [count, setCount] = useState(0);
+  const {orderInView,orders} = useSelector(state=>state.merchantReducer)
+  const dispatch=useDispatch()
   function changeCount(type) {
     if(type === 'add'){
       setCount(count + 1)
@@ -16,7 +21,19 @@ export const CartBox = ({ img, unitPrice,name }) => {
   }
     }
     }
-  
+  function addToCart(){
+let order ={
+  name:name,
+  count:count,
+  price:(Number(unitPrice) * Number(count) ),
+  status:'added'
+}
+console.log(orders[id])
+
+  console.log(orderInView,orders)
+    dispatch(addItemsToCart({order,id}))
+    console.log(orders)
+  }
   return (
     <Grid sx={{ width: "48%" }} item>
       <Box position='relative' >
@@ -80,7 +97,19 @@ export const CartBox = ({ img, unitPrice,name }) => {
               +{" "}
             </span>
           </Box>
-          <Button
+
+
+
+
+{
+  orders[id]?.status === 'added'?
+  <Box display='flex' >
+  <Button>Remove</Button>
+  <Button>Edit</Button>
+</Box>
+:
+<Button
+          onClick={addToCart}
             sx={{
               backgroundColor: "#EB001B",
               height: "30px",
@@ -94,6 +123,11 @@ export const CartBox = ({ img, unitPrice,name }) => {
             {" "}
             Add{" "}
           </Button>
+
+}
+
+
+
         </Box>
       </Box>
     </Grid>

@@ -84,7 +84,7 @@ const Routess = () => {
           </Routes>
 
          {
-          location.pathname !== '/'? <Navbar/>: null
+          location.pathname !== '/' && location.pathname !== '/restaurant/menu'  ? <Navbar/>: null
          } 
         </CssBaseline>
       </ThemeProvider>
