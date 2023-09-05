@@ -32,17 +32,17 @@ console.log(orders)
     // console.log(orders)
   }),[orders]
   return (
-    <Grid sx={{ width: "48%" ,display:category === itemInfo.category.name ?'block':'none' }}  item>
-      <Box position='relative' >
+    <Grid sx={{ width: "48%" ,height:'200px' ,display:category === itemInfo.category.name ?'block':'none' }}  item>
+      <Box position='relative' sx={{height:'140px', width:'100%'}} >
         <Avatar
           src={itemInfo.image}
-          sx={{ width: "100%",borderRadius:'4px 4px 0 0', height: "90px" }}
+          sx={{ width:'100%',maxHeight:'100%',position:'absolute', borderRadius:'4px 4px 0 0',height:'100%' }}
           variant="rounded"
           alt="Menu Item Image"
         
         />
 
-<span style={{backgroundColor:' rgba(0, 0, 0, 0.5)',padding:'0 .3em' ,position:'absolute', bottom:'0',left:'0',right:'0',color:'white'}} >{ name}</span>
+<span style={{backgroundColor:' rgba(0, 0, 0, 0.5)',padding:'0 .3em' ,position:'absolute', bottom:'0',left:'0', height:'30px',right:'0',color:'white'}} >{itemInfo.name}</span>
 
       </Box>
 
