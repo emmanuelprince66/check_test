@@ -1,44 +1,41 @@
-import { useState } from "react";
+import { useState,useEffect } from "react";
 import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
-import {addItemsToCart} from '../../util/slice/merchantSlice'
-export const CartBox = ({id, img, unitPrice,name }) => {
-  const [count, setCount] = useState(0);
+import {addItemsToCart,handleCountChange} from '../../util/slice/merchantSlice'
+export const CartBox = ({itemInfo,id,category }) => {
   const {orderInView,orders} = useSelector(state=>state.merchantReducer)
+  let orderObject = orders[orderInView - 1]?.cart?.find((item)=>item.name === name)
+  // const [count, setCount] = useState(0);
   const dispatch=useDispatch()
+  // const [newOrder, setNewOrder] = useState({...itemInfo, subTotal:(Number(itemInfo.unitPrice) * Number(itemInfo.count)),
+  // })
   function changeCount(type) {
-    if(type === 'add'){
-      setCount(count + 1)
-    }
-    else{
-
-  if(count > 0){
-    setCount(count - 1)
+    let newOrder ={
+      ...itemInfo,
+    }    
+    dispatch(handleCountChange({newOrder,type}))
   }
-  else{
-    setCount(0)
-  }
-    }
-    }
   function addToCart(){
 let order ={
-  name:name,
-  count:count,
-  price:(Number(unitPrice) * Number(count) ),
+  ...itemInfo,
+  subTotal:(parseFloat(itemInfo.price) * itemInfo.count ),
   status:'added'
 }
-console.log(orders[id])
+console.log(orders)
 
   console.log(orderInView,orders)
     dispatch(addItemsToCart({order,id}))
     console.log(orders)
   }
+  useEffect(()=>{
+    // console.log(orders)
+  }),[orders]
   return (
-    <Grid sx={{ width: "48%" }} item>
+    <Grid sx={{ width: "48%" ,display:category === itemInfo.category.name ?'block':'none' }}  item>
       <Box position='relative' >
         <Avatar
-          src={img}
+          src={itemInfo.image}
           sx={{ width: "100%",borderRadius:'4px 4px 0 0', height: "90px" }}
           variant="rounded"
           alt="Menu Item Image"
@@ -61,7 +58,7 @@ console.log(orders[id])
         }}
       >
         <div  style={{ fontSize:'12px' }}>
-          <span style={{ fontWeight: "700" }}> N{unitPrice} </span>
+          <span style={{ fontWeight: "700" }}> N {Number(itemInfo.price)} </span>
           <span style={{color:'#727272'}} >/PORTION</span>
         </div>
         <Box
@@ -88,7 +85,7 @@ console.log(orders[id])
               {" "}
               -{" "}
             </span>
-            <Typography> {count} </Typography>
+            <Typography> {itemInfo.count} </Typography>
             <span
               onClick={() => changeCount("add")}
               style={{ fontSize: "2em", cursor: "pointer" }}

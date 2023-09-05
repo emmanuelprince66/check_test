@@ -6,28 +6,32 @@ import "./restaurant.css";
 import add from "../../assets/add-square.svg";
 import { Box, Button,Container } from "@mui/material";
 import useMenu from "../../hooks/useMenu";
+import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import { useDispatch } from "react-redux";
 import { addOrders,setOrderInView } from "../../util/slice/merchantSlice";
 import options from '../../assets/MoreOptions.svg'
 import BackArrow from "../backArrow/BackArrow";
 const Restaurant = () => {
-  const Orders = useSelector((state) => state.merchantReducer.orders);
+  const {orders} = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails)
-  console.log(Orders)
   const navigate = useNavigate()
   const dispatch = useDispatch()
+  const menu = useMenu(10);
+  const category = useRestaurantCategory(10);
+
   function handleNewOrders(){
-    const maxId = Orders.length + 1
+    const maxId = orders.length + 1
     console.log(maxId );
 let newOrder = {
   id:(maxId),
-amount:'',
+amount: 0.00,
 }
 dispatch(addOrders(newOrder))
   }
   
 function handleClickMenu(id){
   dispatch(setOrderInView(id))
+
 navigate('/restaurant/menu')
 console.log(id)
 }
@@ -57,7 +61,7 @@ console.log(id)
 <Box sx={{display:'flex',flexDirection:'column',gap:'1em'}} >
 {    
   
-  Orders.map((order,i)=>{
+  orders.map((order,i)=>{
     return(
       <Box
       key={i}
@@ -82,7 +86,7 @@ console.log(id)
             padding: "2px 4px",
           }}
         >
-          <div style={{ color: "#008000", fontWeight: "600" }}>N 0.00</div>
+          <div style={{ color: "#008000", fontWeight: "600" }}>N {orders[order.id - 1].amount}  </div>
           <div>
             <Button
               sx={{
@@ -125,7 +129,7 @@ console.log(id)
 }
 
 </Box>
-      <Button    onClick={()=>handleNewOrders(Orders.length)}       sx={{
+      <Button    onClick={()=>handleNewOrders(orders.length)}       sx={{
             display: "flex",
             justifyContent: "center",
             alignItems: "center",

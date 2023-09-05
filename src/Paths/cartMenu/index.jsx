@@ -7,15 +7,18 @@ import "../../components/restaurant/restaurant.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
 import useRestaurantCategory from "../../hooks/useRestaurantCategory";
+import { setOrderCart } from "../../util/slice/merchantSlice";
 import CartBox from "../../components/cartBox/cartBox";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
 const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
-  const [categoryNameInView, setCategoryNameInView] = useState();
+  const [categoryNameInView, setCategoryNameInView] = useState('');
   const [filteredMenu, setFilteredMenu] = useState([]);
-
-  const {merchantDetails,orderInView,totalAmount} = useSelector((state)=>state.merchantReducer)
+const dispatch =useDispatch()
+  const {merchantDetails,orderInView,orderCart,totalAmount} = useSelector((state)=>state.merchantReducer)
   // console.log(merchantDetails.restaurant.id)
   useEffect(() => {
     // const id = JSON.parse(localStorage.getItem("myData")).id;
@@ -24,18 +27,35 @@ const RestaurantMenu = () => {
   }, []);
   const menu = useMenu(10);
   const category = useRestaurantCategory(10);
-  useEffect(() => {
-    setCategoryNameInView(category?.data?.categories[categoryInView].name);
-    let filteredResult = menu?.data?.menu.filter(
-      (item) => item.category.name === categoryNameInView
-    );
-    setFilteredMenu(filteredResult);
-  }, [menu, id, category, categoryNameInView, categoryInView]);
-  function checkCategory(i, name) {
-    setCategoryInView(i);
-    setCategoryNameInView(name);
-  }
+  const navigate = useNavigate()
 
+  useEffect(() => {
+    const selectedCategoryName = category?.data?.categories[categoryInView]?.name;
+  
+    setCategoryNameInView(selectedCategoryName);
+      // Filter menu items based on the selected category name
+      const filteredResult = menu?.data?.menu.map(((order)=>{
+        return { ...order, count:0 }
+      }))
+  if (categoryNameInView && orderCart.length === 0 ){
+    setFilteredMenu(filteredResult)
+    dispatch(setOrderCart(filteredResult));
+  }
+      // Dispatch the filtered results to the store
+  }, [dispatch, categoryNameInView, categoryInView]);
+    function checkCategory(i, name) {
+    setCategoryInView((prevCategoryInView) => {
+      if (prevCategoryInView !== i) {
+        setCategoryNameInView(name);
+      }
+      return i;
+
+    });
+    
+  }
+  function handleSaveToCart(){
+    navigate('/cart')
+    }
   return (
     <div className="gpt3__restaurant">
       <Box display="flex" gap="1em">
@@ -120,8 +140,8 @@ const RestaurantMenu = () => {
       </Box>
 
       <Grid container justifyContent="space-between" rowGap="1em">
-        {filteredMenu?.map((item, i) => {
-          return <CartBox key={i} name={item.name} id={orderInView} unitPrice={item.price} img={item.image} />;
+        {orderCart?.map((item, i) => {
+          return <CartBox key={i} category={categoryNameInView} itemInfo={item} id={orderInView} />;
         })}
       </Grid>
 
@@ -135,6 +155,7 @@ const RestaurantMenu = () => {
  justifyContent:'space-between',}} bottom='0'  > 
       <Typography  sx={{fontWeight:'700',fontSize:'2em'}} >{totalAmount}</Typography>  
       <Button
+      onClick={handleSaveToCart}
             sx={{
               backgroundColor: "#EB001B",
               height: "30px",
