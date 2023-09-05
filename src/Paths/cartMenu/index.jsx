@@ -18,15 +18,15 @@ const RestaurantMenu = () => {
   const [categoryNameInView, setCategoryNameInView] = useState('');
   const [filteredMenu, setFilteredMenu] = useState([]);
 const dispatch =useDispatch()
-  const {merchantDetails,orderInView,orderCart,totalAmount} = useSelector((state)=>state.merchantReducer)
+  const {data:merchantDetails,orderInView,orderCart,totalAmount} = useSelector((state)=>state.merchantReducer)
   // console.log(merchantDetails.restaurant.id)
   useEffect(() => {
     // const id = JSON.parse(localStorage.getItem("myData")).id;
     // console.log(id);
     // setId(id);
   }, []);
-  const menu = useMenu(10);
-  const category = useRestaurantCategory(10);
+  const menu = useMenu(merchantDetails?.restaurant?.id);
+  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
   const navigate = useNavigate()
 
   useEffect(() => {

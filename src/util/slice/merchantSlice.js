@@ -12,7 +12,6 @@ const merchantSlice = createSlice({
   reducers: {
     populateMerchantDetails: (state, action) => {
       state.data = action.payload;
-      console.log(action.payload, "layisade");
     },
     addOrders: (state, action) => {
       state.orders.push(action.payload);
@@ -50,7 +49,6 @@ console.log(state.orders)
             curr?.cart?.reduce((subTotal, item) => (subTotal += item.subTotal), 0),
           0
         );
-
         state.orders[state.orderInView - 1].amount = amount;
         state.totalAmount = amount;
        console.log(amount,JSON.parse(JSON.stringify(state.orders[state.orderInView - 1])))

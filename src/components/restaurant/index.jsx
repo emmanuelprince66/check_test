@@ -12,12 +12,10 @@ import { addOrders,setOrderInView } from "../../util/slice/merchantSlice";
 import options from '../../assets/MoreOptions.svg'
 import BackArrow from "../backArrow/BackArrow";
 const Restaurant = () => {
-  const {orders} = useSelector((state) => state.merchantReducer);
+  const {orders,data:merchantDetails} = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails)
   const navigate = useNavigate()
   const dispatch = useDispatch()
-  const menu = useMenu(10);
-  const category = useRestaurantCategory(10);
 
   function handleNewOrders(){
     const maxId = orders.length + 1

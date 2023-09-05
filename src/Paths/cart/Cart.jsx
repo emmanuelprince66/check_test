@@ -448,7 +448,7 @@ const Cart = () => {
     }
   }, []);
 
-    const merchantDetails = useSelector((state) => state.merchantReducer.data);
+  const {data:merchantDetails} = useSelector((state) => state.merchantReducer);
 
 
 
@@ -465,7 +465,7 @@ const Cart = () => {
         
 
 
-{ showOrderText?
+{ merchantDetails?.restaurant ?
 
 <Restaurant/>
 :      <Container
