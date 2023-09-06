@@ -7,7 +7,7 @@ import "../../components/restaurant/restaurant.css";
 import SearchIcon from "@mui/icons-material/Search";
 import { useSelector } from "react-redux";
 import useRestaurantCategory from "../../hooks/useRestaurantCategory";
-import { setOrderCart } from "../../util/slice/merchantSlice";
+import { setOrderCart,setCategoryNameInView } from "../../util/slice/merchantSlice";
 import CartBox from "../../components/cartBox/cartBox";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
@@ -15,43 +15,40 @@ const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
-  const [categoryNameInView, setCategoryNameInView] = useState('');
-  const [filteredMenu, setFilteredMenu] = useState([]);
 const dispatch =useDispatch()
-  const {data:merchantDetails,orderInView,orderCart,totalAmount} = useSelector((state)=>state.merchantReducer)
+  const {data:merchantDetails,categoryNameInView,orderInView,orderCart,totalAmount} = useSelector((state)=>state.merchantReducer)
   // console.log(merchantDetails.restaurant.id)
-  useEffect(() => {
-    // const id = JSON.parse(localStorage.getItem("myData")).id;
-    // console.log(id);
-    // setId(id);
-  }, []);
-  const menu = useMenu(merchantDetails?.restaurant?.id);
-  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
+  const menu = useMenu(10);
+  const category = useRestaurantCategory(10);
   const navigate = useNavigate()
 
-  useEffect(() => {
-    const selectedCategoryName = category?.data?.categories[categoryInView]?.name;
-  
-    setCategoryNameInView(selectedCategoryName);
-      // Filter menu items based on the selected category name
-      const filteredResult = menu?.data?.menu.map(((order)=>{
-        return { ...order, count:0 }
-      }))
-  if (categoryNameInView && orderCart.length === 0 ){
-    setFilteredMenu(filteredResult)
-    dispatch(setOrderCart(filteredResult));
-  }
-      // Dispatch the filtered results to the store
-  }, [dispatch, categoryNameInView, categoryInView]);
-    function checkCategory(i, name) {
-    setCategoryInView((prevCategoryInView) => {
-      if (prevCategoryInView !== i) {
-        setCategoryNameInView(name);
-      }
-      return i;
 
-    });
-    
+  useEffect(() => {
+    const filteredResult = menu?.data?.menu?.map(((order)=>{
+      return { ...order, count:0 }
+    }))
+    if (!orderCart || orderCart.length === 0) {
+      dispatch(setOrderCart(filteredResult));
+    }
+  
+  }, [orderCart,dispatch,menu?.data?.menu])
+  
+
+
+useEffect(() => {
+  
+  const selectedCategoryName = category?.data?.categories[categoryInView]?.name;
+  console.log(categoryNameInView)
+
+  console.log(orderCart)
+dispatch(setCategoryNameInView(selectedCategoryName))
+}, [category,orderCart,dispatch,categoryInView,categoryNameInView,])
+
+
+
+    function checkCategory(i, name) {
+   dispatch( setCategoryNameInView(name));
+   setCategoryInView(i)
   }
   function handleSaveToCart(){
     navigate('/cart')
@@ -140,9 +137,10 @@ const dispatch =useDispatch()
       </Box>
 
       <Grid container justifyContent="space-between" rowGap="1em">
-        {orderCart?.map((item, i) => {
+        {   
+          orderCart?.map((item, i) => {
           return <CartBox key={i} category={categoryNameInView} itemInfo={item} id={orderInView} />;
-        })}
+        })  }
       </Grid>
 
       <Box sx={{background:'var(--grey-cart-btn)', display:'flex',insetInline:'0', alignItems:'center',          width: { md: "33%", sm: "100%", xs: "100%" },

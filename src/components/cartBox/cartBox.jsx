@@ -4,9 +4,10 @@ import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {addItemsToCart,handleCountChange} from '../../util/slice/merchantSlice'
 export const CartBox = ({itemInfo,id,category }) => {
-  const {orderInView,orders} = useSelector(state=>state.merchantReducer)
+  const {orderInView,orderCart,orders} = useSelector(state=>state.merchantReducer)
   let orderObject = orders[orderInView - 1]?.cart?.find((item)=>item.name === name)
   // const [count, setCount] = useState(0);
+  console.log(category,orderCart)
   const dispatch=useDispatch()
   // const [newOrder, setNewOrder] = useState({...itemInfo, subTotal:(Number(itemInfo.unitPrice) * Number(itemInfo.count)),
   // })

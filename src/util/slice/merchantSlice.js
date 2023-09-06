@@ -7,11 +7,15 @@ const merchantSlice = createSlice({
     orderCart:[],
     orders: [{ id: 1, amount: 0.00, cart: [] }],
     orderInView: null,
+    categoryNameInView:'',
     totalAmount: 0,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
       state.data = action.payload;
+    },
+    setCategoryNameInView: (state, action) => {
+      state.categoryNameInView = action.payload;
     },
     addOrders: (state, action) => {
       state.orders.push(action.payload);
@@ -87,6 +91,7 @@ export const {
   addItemsToCart,
   setOrderInView,
   handleCountChange,
+  setCategoryNameInView,
   setOrderCart,
 } = merchantSlice.actions;
 export default merchantSlice.reducer;
