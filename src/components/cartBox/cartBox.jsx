@@ -1,5 +1,5 @@
 import { useState,useEffect } from "react";
-import { Avatar, Box, Button, Grid, Typography } from "@mui/material";
+import { Avatar, Box,Skeleton, Button, Grid, Typography } from "@mui/material";
 import { useSelector } from "react-redux";
 import { useDispatch } from "react-redux";
 import {addItemsToCart,handleCountChange} from '../../util/slice/merchantSlice'
@@ -35,14 +35,27 @@ console.log(orders)
   return (
     <Grid sx={{ width: "48%" ,height:'200px' ,display:category === itemInfo.category.name ?'block':'none' }}  item>
       <Box position='relative' sx={{height:'140px', width:'100%'}} >
-        <Avatar
+        
+
+{    
+
+
+  !itemInfo.image ? (
+  <Skeleton variant="circular">
+    <Avatar />
+  </Skeleton>
+) : (
+  <Avatar
           src={itemInfo.image}
           sx={{ width:'100%',maxHeight:'100%',position:'absolute', borderRadius:'4px 4px 0 0',height:'100%' }}
           variant="rounded"
           alt="Menu Item Image"
         
         />
+)
 
+
+}
 <span style={{backgroundColor:' rgba(0, 0, 0, 0.5)',padding:'0 .3em' ,position:'absolute', bottom:'0',left:'0', height:'30px',right:'0',color:'white'}} >{itemInfo.name}</span>
 
       </Box>
