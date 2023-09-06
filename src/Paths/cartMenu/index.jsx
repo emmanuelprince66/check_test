@@ -36,8 +36,8 @@ const RestaurantMenu = () => {
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails.restaurant.id)
-  const menu = useMenu(10);
-  const category = useRestaurantCategory(10);
+  const menu = useMenu(merchantDetails.restaurant.id);
+  const category = useRestaurantCategory(merchantDetails.restaurant.id);
   const navigate = useNavigate();
 
   useEffect(() => {

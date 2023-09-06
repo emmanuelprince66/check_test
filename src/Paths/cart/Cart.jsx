@@ -465,7 +465,7 @@ const Cart = () => {
         
 
 
-{ showOrderText ?
+{ merchantDetails.restaurant ?
 
 <Restaurant/>
 :      <Container
