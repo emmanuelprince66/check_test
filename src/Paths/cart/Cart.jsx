@@ -465,7 +465,7 @@ const Cart = () => {
         
 
 
-{ merchantDetails.restaurant ?
+{ merchantDetails?.restaurant ?
 
 <Restaurant/>
 :      <Container

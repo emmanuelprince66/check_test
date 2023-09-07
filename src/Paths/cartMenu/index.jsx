@@ -18,11 +18,13 @@ import { useSelector } from "react-redux";
 import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import {
   setOrderCart,
+  addMenu,
   setCategoryNameInView,
 } from "../../util/slice/merchantSlice";
 import CartBox from "../../components/cartBox/cartBox";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
+
 const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
@@ -30,32 +32,42 @@ const RestaurantMenu = () => {
   const dispatch = useDispatch();
   const {
     data: merchantDetails,
+    orders,
     categoryNameInView,
     orderInView,
     orderCart,
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails.restaurant.id)
-  const menu = useMenu(merchantDetails.restaurant.id);
-  const category = useRestaurantCategory(merchantDetails.restaurant.id);
+  const menu = useMenu(merchantDetails?.restaurant?.id);
+  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
   const navigate = useNavigate();
+  useEffect(() => {
+    const filteredResult = menu?.data?.menu?.map((order) => {
+      return { ...order, count: 0 };
+    });
+
+    if (!orderCart || orderCart.length === 0) {
+      dispatch(setOrderCart(filteredResult));
+    }
+  }, [orderInView, dispatch]);
 
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 0 };
     });
-    if (!orderCart || orderCart.length === 0) {
-      dispatch(setOrderCart(filteredResult));
+
+    if (!orders[orderInView - 1]?.menu) {
+      dispatch(addMenu(filteredResult));
     }
-  }, [orderCart, dispatch, menu?.data?.menu]);
+  }, [orderInView,menu?.data?.menu]);
 
   useEffect(() => {
     const selectedCategoryName =
       category?.data?.categories[categoryInView]?.name;
-    console.log(categoryNameInView);
-
-    console.log(orderCart);
-    dispatch(setCategoryNameInView(selectedCategoryName));
+    if (selectedCategoryName) {
+      dispatch(setCategoryNameInView(selectedCategoryName));
+    }
   }, [category, orderCart, dispatch, categoryInView, categoryNameInView]);
 
   function checkCategory(i, name) {
@@ -149,10 +161,10 @@ const RestaurantMenu = () => {
       </Box>
 
       <Grid container justifyContent="space-between" rowGap="1em">
-        {!orderCart ? (
+        {!orders[orderInView - 1]?.menu ? (
           <Skeleton variant="rectangular" width={210} height={118} />
         ) : (
-          orderCart?.map((item, i) => {
+          orders[orderInView - 1]?.menu.map((item, i) => {
             return (
               <CartBox
                 key={i}
