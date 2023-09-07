@@ -1,4 +1,4 @@
-import React, { useState,useEffect } from "react";
+import React, { useState, useEffect } from "react";
 import { useSelector } from "react-redux";
 import arrowleft from "../../assets/arrow-left.svg";
 import { useNavigate } from "react-router-dom";
@@ -8,9 +8,14 @@ import { Box, Button, Container } from "@mui/material";
 import useMenu from "../../hooks/useMenu";
 import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import { useDispatch } from "react-redux";
-import { addOrders, setOrderInView } from "../../util/slice/merchantSlice";
+import {
+  addOrders,
+  removeOrder,
+  setOrderInView,
+} from "../../util/slice/merchantSlice";
 import options from "../../assets/MoreOptions.svg";
 import BackArrow from "../backArrow/BackArrow";
+import RestaurantOrderModal from "../restaurantOrderModal";
 const Restaurant = () => {
   const {
     orders,
@@ -20,33 +25,39 @@ const Restaurant = () => {
   // console.log(merchantDetails)
   const navigate = useNavigate();
   const dispatch = useDispatch();
+  const [openOrderOptions, setOpenOrderOptions] = useState({
+    id: null,
+    status: false,
+  });
+  const [allCartOptions, setAllCartOptions] = useState(false);
 
-useEffect(()=>{
-  let firstOrder = { id: 1, amount: 0.0, cart: [] }
-    dispatch(addOrders(firstOrder))
-},[orderCart,orders])
-
+  useEffect(() => {
+    let firstOrder = { id: 1, amount: 0.0, cart: [] };
+    dispatch(addOrders(firstOrder));
+  }, [orderCart, orders]);
 
   function handleNewOrders() {
     const maxId = orders.length + 1;
-    console.log(maxId);
     let newOrder = {
       id: maxId,
       amount: 0.0,
       cart: [],
     };
-    console.log(orderCart)
     dispatch(addOrders(newOrder));
   }
 
   function handleClickMenu(id) {
     dispatch(setOrderInView(id));
-
-    
-
     navigate("/restaurant/menu");
-    console.log(id);
   }
+  function handleRemoveOrder(id) {
+    dispatch(removeOrder(id));
+    setOpenOrderOptions({ id: null, status: false });
+  }
+  function handleViewOptions(id) {
+    setOpenOrderOptions({ id: id, status: true });
+  }
+
   return (
     <Container
       sx={{
@@ -103,7 +114,10 @@ useEffect(()=>{
                   alignItems="center"
                 >
                   <h2 style={{ fontSize: "16px" }}> Order {order?.id}</h2>
-                  <Button sx={{ padding: "0.7em", minWidth: "44px" }}>
+                  <Button
+                    onClick={() => handleViewOptions(order.id)}
+                    sx={{ padding: "0.7em", minWidth: "44px" }}
+                  >
                     <img src={options} />
                   </Button>
                 </Box>
@@ -177,6 +191,16 @@ useEffect(()=>{
           <span style={{ fontWeight: "600" }}> Add New Orders </span>
         </Button>
       </div>
+      {openOrderOptions.status ? (
+        <RestaurantOrderModal
+          onDelButtonClick={() => handleRemoveOrder(openOrderOptions.id)}
+          delText={"Delete Order"}
+          closeModal={() => setOpenOrderOptions(false)}
+        />
+      ) : null}
+      {/* {allCartOptions ? 
+      <RestaurantOrderModal onDelButtonClick={handleClearCart} delText={'Clear Cart'} closeModal={()=>setOpenOrderOptions(false)} /> 
+      : null } */}
     </Container>
   );
 };

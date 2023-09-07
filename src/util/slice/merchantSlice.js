@@ -4,7 +4,7 @@ const merchantSlice = createSlice({
   name: "merchantDetails",
   initialState: {
     data: [],
-    orderCart:[],
+    orderCart: [],
     orders: [],
     orderInView: 0,
     categoryNameInView: "",
@@ -18,19 +18,18 @@ const merchantSlice = createSlice({
       state.categoryNameInView = action.payload;
     },
     addOrders: (state, action) => {
-      let itemExists = state.orders.find(item=>item.id === action.payload.id)
-      if (!itemExists){
-        let addMenuObject = {...action.payload} 
+      let itemExists = state.orders.find(
+        (item) => item.id === action.payload.id
+      );
+      if (!itemExists) {
+        let addMenuObject = { ...action.payload };
         state.orders.push(addMenuObject);
-        console.log(JSON.parse(JSON.stringify(state.orders)), 'inexist scope')
       }
-      console.log(action.payload)
     },
     addItemsToCart: (state, action) => {
       const orderIndex = state.orders.findIndex(
         (item) => item.id === state.orderInView
       );
-      console.log(orderIndex, action.payload, "ayaga");
       let existingItem = state.orders[orderIndex]?.cart?.find(
         (item) => item.name === action.payload.order.name
       );
@@ -44,11 +43,8 @@ const merchantSlice = createSlice({
         );
         state.orders[orderIndex].cart[itemIndex] = updatedItem;
       } else {
-        console.log(state.orders);
         state.orders[orderIndex]?.cart?.push(action.payload.order);
       }
-
-        console.log(JSON.parse(JSON.stringify(state.orders[orderIndex])));
 
       if (state.orders[orderIndex]?.cart.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
@@ -58,7 +54,7 @@ const merchantSlice = createSlice({
           );
           return acc + subTotal;
         }, 0);
-    
+
         // Update the amount and totalAmount
         state.orders[orderIndex].amount = amount;
         state.totalAmount = amount;
@@ -73,38 +69,42 @@ const merchantSlice = createSlice({
     },
     setOrderCart: (state, action) => {
       state.orderCart = action.payload;
-
     },
-    addMenu:(state,action)=>
-    {
+    addMenu: (state, action) => {
       const orderIndex = state.orders.findIndex(
         (item) => item.id === state.orderInView
       );
 
-      state.orders[orderIndex] = {...state.orders[orderIndex],menu:action.payload}
-    
-      return state
+      state.orders[orderIndex] = {
+        ...state.orders[orderIndex],
+        menu: action.payload,
+      };
 
-
-    }
-    ,
-
+      return state;
+    },
     handleCountChange: (state, action) => {
       const orderIndex = state.orders.findIndex(
         (item) => item.id === state.orderInView
-      )
-      state.orders[orderIndex].menu = state.orders[orderIndex].menu?.map((item) => {
-        if (item.id === action.payload.newOrder.id) {
-          // Update the count when the condition is met
-          return {
-            ...item,
-            count: item.count + 1,
-          };
+      );
+      state.orders[orderIndex].menu = state.orders[orderIndex].menu?.map(
+        (item) => {
+          if (item.id === action.payload.newOrder.id) {
+            // Update the count when the condition is met
+            return {
+              ...item,
+              count: item.count + 1,
+            };
+          }
+          // Return the original item if the condition isn't met
+          return item;
         }
-        // Return the original item if the condition isn't met
-        return item;
-      });
+      );
       return state;
+    },
+    removeOrder: (state, action) => {
+      state.orders = state.orders.filter(
+        (order) => order.id !== action.payload
+      );
     },
   },
 });
@@ -112,6 +112,7 @@ const merchantSlice = createSlice({
 export const {
   populateMerchantDetails,
   addOrders,
+  removeOrder,
   addMenu,
   addItemsToCart,
   setOrderInView,

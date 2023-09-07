@@ -35,7 +35,6 @@ import SharedReceipt from "./SharedReceipt";
 
 const CartReceipt = ({ cart, orderData, orderLoad }) => {
   const value = JSON.stringify(orderLoad, null, 2);
-  // console.log(value);
   const dispatch = useDispatch();
   const navigate = useNavigate();
 
@@ -115,7 +114,6 @@ const CartReceipt = ({ cart, orderData, orderLoad }) => {
   useEffect(() => {
     const val = localStorage.getItem("myData");
     if (val) {
-      console.log(val);
       generatePDF();
       setSuperMarketKey(val);
     } else {
