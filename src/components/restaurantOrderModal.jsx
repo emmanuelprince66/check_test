@@ -30,10 +30,10 @@ const RestaurantOrderModal = ({ onDelButtonClick, delText, closeModal }) => {
           flexDirection: "column",
           gap: "1em",
           width: "100%",
-          padding: "1em",
+          padding: "1.5em 1em 1em 1em ",
         }}
       >
-        <Typography fontWeight={600}>More Options</Typography>
+        <Typography fontSize={'1.3em'} fontWeight={600}>More Options</Typography>
         <Button
           onClick={onDelButtonClick}
           sx={{
@@ -41,6 +41,8 @@ const RestaurantOrderModal = ({ onDelButtonClick, delText, closeModal }) => {
             justifyContent: "flex-start",
             textTransform: "none",
             paddingLeft: "0",
+            fontSize:'1.2em',
+            fontWeight:'600'
           }}
         >
           {" "}
@@ -50,12 +52,14 @@ const RestaurantOrderModal = ({ onDelButtonClick, delText, closeModal }) => {
         <Button
           sx={{
             display: "flex",
-            padding: ".5em .2em .5em .4em",
+            padding: "10px .2em 10px .4em",
             textTransform: "none",
             alignItems: "center",
             border: "1px solid var(--primary-red)",
             color: "var(--primary-red)",
             width: "100%",
+            fontWeight:'bold',
+            fontSize:'1em'
           }}
           onClick={closeModal}
         >

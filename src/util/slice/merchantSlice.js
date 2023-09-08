@@ -49,14 +49,18 @@ const merchantSlice = createSlice({
       if (state.orders[orderIndex]?.cart.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
           const subTotal = curr?.cart?.reduce(
-            (subTotal, item) => (subTotal += item.subTotal),
+            (subTotal, item) =>{
+
+              return subTotal += item.subTotal
+            },
             0
           );
+          state.orders[orderIndex].amount = subTotal;
+          console.log(subTotal)
           return acc + subTotal;
         }, 0);
 
         // Update the amount and totalAmount
-        state.orders[orderIndex].amount = amount;
         state.totalAmount = amount;
       } else {
         // Handle the case where there are no orders
@@ -104,7 +108,17 @@ const merchantSlice = createSlice({
     removeOrder: (state, action) => {
       state.orders = state.orders.filter(
         (order) => order.id !== action.payload
-      );
+      )
+.map((item,i)=>{
+  return{
+    ...item,id:i + 1
+  }
+})
+    },
+    clearRestaurantCart: (state, action) => {
+      state.orders = state.orders.filter(
+        (order) => order.id === 1
+      )
     },
   },
 });
@@ -118,6 +132,7 @@ export const {
   setOrderInView,
   handleCountChange,
   setCategoryNameInView,
+  clearRestaurantCart,
   setOrderCart,
 } = merchantSlice.actions;
 export default merchantSlice.reducer;

@@ -11,6 +11,7 @@ import { useDispatch } from "react-redux";
 import {
   addOrders,
   removeOrder,
+  clearRestaurantCart,
   setOrderInView,
 } from "../../util/slice/merchantSlice";
 import options from "../../assets/MoreOptions.svg";
@@ -45,7 +46,11 @@ const Restaurant = () => {
     };
     dispatch(addOrders(newOrder));
   }
-
+function clearCart(){
+  dispatch(clearRestaurantCart())
+  setAllCartOptions(false)
+  
+}
   function handleClickMenu(id) {
     dispatch(setOrderInView(id));
     navigate("/restaurant/menu");
@@ -83,6 +88,7 @@ const Restaurant = () => {
             padding: ".7em",
             minWidth: "44px",
           }}
+          onClick={()=>setAllCartOptions(true)}
         >
           <img src={options} />
         </Button>
@@ -104,7 +110,7 @@ const Restaurant = () => {
             return (
               <Box
                 key={i}
-                sx={{ backgroundColor: "var(--cart-bg-color)" }}
+                sx={{ backgroundColor: "var(--cart-bg-color)", display:'flex',flexDirection:'column',gap:'.5em' }}
                 padding={"1em"}
                 borderRadius={".5em"}
               >
@@ -113,7 +119,7 @@ const Restaurant = () => {
                   justifyContent="space-between"
                   alignItems="center"
                 >
-                  <h2 style={{ fontSize: "16px" }}> Order {order?.id}</h2>
+                  <h2 style={{ fontSize: "1.3em" }}> Order {order?.id}</h2>
                   <Button
                     onClick={() => handleViewOptions(order.id)}
                     sx={{ padding: "0.7em", minWidth: "44px" }}
@@ -178,7 +184,7 @@ const Restaurant = () => {
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            padding: "8px 0px",
+            padding: "10px 0px",
             marginTop: "4em",
             gap: ".7em",
             width: "100%",
@@ -198,9 +204,9 @@ const Restaurant = () => {
           closeModal={() => setOpenOrderOptions(false)}
         />
       ) : null}
-      {/* {allCartOptions ? 
-      <RestaurantOrderModal onDelButtonClick={handleClearCart} delText={'Clear Cart'} closeModal={()=>setOpenOrderOptions(false)} /> 
-      : null } */}
+      {allCartOptions ? 
+      <RestaurantOrderModal onDelButtonClick={clearCart} delText={'Clear Cart'} closeModal={()=>setAllCartOptions(false)} /> 
+      : null }
     </Container>
   );
 };
