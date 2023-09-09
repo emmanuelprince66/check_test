@@ -144,6 +144,19 @@ const merchantSlice = createSlice({
         (order) => order.id === 1
       )
     },
+    editStatusUpdate: (state, action) => {
+      let neil = state.orders[state.orderInView - 1].menu
+
+      state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map(
+(item)=>{
+  if(item.id === action.payload){
+    return{...item,added:false}
+  }
+  return item
+}
+      )
+      console.log(JSON.parse(JSON.stringify(neil)))
+    },
   },
 });
 
@@ -155,6 +168,7 @@ export const {
   addItemsToCart,
   setOrderInView,
   handleCountChange,
+  editStatusUpdate,
   setCategoryNameInView,
   clearRestaurantCart,
   setOrderCart,

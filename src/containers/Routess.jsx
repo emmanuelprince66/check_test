@@ -26,6 +26,7 @@ import Orders from "../Paths/orders/Orders";
 import Navbar from "../components/navbar/Navbar";
 import { useLocation } from "react-router-dom";
 import RestaurantMenu from "../Paths/cartMenu";
+import OrderSummary from "../Paths/orderSummary";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -81,6 +82,7 @@ const Routess = () => {
             <Route path="/rlocation" element={<Rlocation />} />
             <Route path="/orders" element={<Orders />} />
             <Route path="/restaurant/menu" element={<RestaurantMenu />} />
+            <Route path="/order/:id" element={<OrderSummary />} />
           </Routes>
 
          {

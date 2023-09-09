@@ -136,10 +136,14 @@ function clearCart(){
                     padding: "2px 4px",
                   }}
                 >
-                  <div style={{ color: "#008000", fontWeight: "600" }}>
+                  <div style={{ color: "var(--currency-green)", fontWeight: "600" }}>
                     N {orders[order?.id - 1]?.amount}{" "}
                   </div>
-                  <div>
+
+{              
+  orders[order?.id - 1]?.cart.length === 0 ?
+  
+      <div>
                     <Button
                       sx={{
                         color: "var(--primary-red)",
@@ -171,7 +175,10 @@ function clearCart(){
                       </svg>
                     </Button>
                   </div>
-                </div>
+:null
+                  
+}         
+       </div>
 
                 <div></div>
               </Box>
@@ -184,7 +191,7 @@ function clearCart(){
             display: "flex",
             justifyContent: "center",
             alignItems: "center",
-            padding: "10px 0px",
+            padding: "15px 0px",
             marginTop: "4em",
             gap: ".7em",
             width: "100%",
@@ -201,6 +208,8 @@ function clearCart(){
         <RestaurantOrderModal
           onDelButtonClick={() => handleRemoveOrder(openOrderOptions.id)}
           delText={"Delete Order"}
+          id={openOrderOptions.id}
+          ordersIn={ orders[openOrderOptions.id - 1 ].cart.length > 0 }
           closeModal={() => setOpenOrderOptions(false)}
         />
       ) : null}

@@ -16,6 +16,7 @@
   --primary-red:#dc0019 ;
   --cart-deep-red:#EB001B;
   --grey-cart-btn:#E8E5E5;
+  --currency-green:#008000;
 }
 .max_width {
   display: flex;

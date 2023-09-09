@@ -5,6 +5,7 @@ import { useDispatch } from "react-redux";
 import {
   addItemsToCart,
   handleCountChange,
+  editStatusUpdate
 } from "../../util/slice/merchantSlice";
 export const CartBox = ({ itemInfo, id,index, category }) => {
   const { orderInView, orderCart, orders } = useSelector(
@@ -19,6 +20,8 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
     const id  = itemInfo.id
     dispatch(handleCountChange({ id, type }));
   }
+  function editStatus(){
+   dispatch(editStatusUpdate(itemInfo.id)) }
   function addToCart() {
     let order = {
       ...itemInfo,
@@ -96,12 +99,12 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
           alignItems="center"
         >
 
-          {orders[id - 1]?.menu[index]?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
-            <Box display="flex">
-              <Button>Remove</Button>
-              <Button>Edit</Button>
+          {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
+            <Box display="flex" gap={'.3em'} justifyContent={'space-between'} >
+              <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} >Remove</Button>
+              <Button  sx={{backgroundColor:"grey", minWidth:'30px', width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
             </Box>
-          ) : (
+          ) : !itemInfo.added  ?(
             <>
             <Box
             display="flex"
@@ -147,7 +150,9 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
             </Button>
 
             </>
-          )}
+          )
+          : null
+          }
         </Box>
       </Box>
     </Grid>
