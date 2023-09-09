@@ -44,7 +44,7 @@ const RestaurantMenu = () => {
   const navigate = useNavigate();
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
-      return { ...order, count: 0 };
+      return { ...order, count: 1,   subTotal: parseFloat(order.price),      };
     });
 
     if (!orderCart || orderCart.length === 0) {
@@ -54,7 +54,7 @@ const RestaurantMenu = () => {
 
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
-      return { ...order, count: 0 };
+      return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
 
     if (!orders[orderInView - 1]?.menu) {

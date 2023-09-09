@@ -112,6 +112,7 @@ const merchantSlice = createSlice({
               return {
                 ...item,
                 count: item.count + 1,
+                subTotal:Number(item.price) * (item.count + 1)
               };
   
             }
@@ -119,6 +120,7 @@ const merchantSlice = createSlice({
               return {
                 ...item,
                 count: item.count - 1,
+                subTotal:Number(item.price) * (item.count - 1)
               };
 
             }
@@ -157,6 +159,19 @@ const merchantSlice = createSlice({
       )
       console.log(JSON.parse(JSON.stringify(neil)))
     },
+    removeItemFromCart:(state,action)=>{
+      state.orders[state.orderInView - 1].cart = state.orders[state.orderInView - 1].cart.filter((item)=> item.id !== action.payload.id )
+      state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map((item)=> {
+        if (item.id === action.payload.id){
+          return {
+            ...item,count:1, added:false, subTotal:item.price
+          }
+        }
+        return item
+      } )
+
+      state.orders[state.orderInView - 1].amount -= action.payload.subTotal
+    }
   },
 });
 
@@ -167,6 +182,7 @@ export const {
   addMenu,
   addItemsToCart,
   setOrderInView,
+  removeItemFromCart,
   handleCountChange,
   editStatusUpdate,
   setCategoryNameInView,

@@ -5,13 +5,15 @@ import { useDispatch } from "react-redux";
 import {
   addItemsToCart,
   handleCountChange,
-  editStatusUpdate
+  editStatusUpdate,
+  removeItemFromCart,
 } from "../../util/slice/merchantSlice";
+import RemoveOrderModal from "../removeOrderModal";
 export const CartBox = ({ itemInfo, id,index, category }) => {
   const { orderInView, orderCart, orders } = useSelector(
     (state) => state.merchantReducer
   );
-  // const [count, setCount] = useState(0);
+  const [showRemoveModal, setShowRemoveModal] = useState(false);
   const dispatch = useDispatch();
   // const [newOrder, setNewOrder] = useState({...itemInfo, subTotal:(Number(itemInfo.unitPrice) * Number(itemInfo.count)),
   // })
@@ -29,6 +31,16 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
       subTotal: parseFloat(itemInfo.price) * itemInfo.count,
     };
     dispatch(addItemsToCart({ order, id }));
+  }
+  function handleRemoveItemFromCart(){
+   
+    let payload = {
+      id:itemInfo.id,
+      subTotal:itemInfo.subTotal,
+    }
+
+dispatch(removeItemFromCart(payload))
+setTimeout(()=>setShowRemoveModal(false),300)
   }
   return (
     <Grid
@@ -88,9 +100,9 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
         <div style={{ fontSize: "12px" }}>
           <span style={{ fontWeight: "700" }}>
             {" "}
-            N {Number(itemInfo.price)}{" "}
+            N { itemInfo.subTotal}{" "}
           </span>
-          <span style={{ color: "#727272" }}>/PORTION</span>
+          <span style={{ color: "#727272" }}> /{itemInfo.count} PORTION</span>
         </div>
         <Box
           display="flex"
@@ -101,7 +113,7 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
 
           {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
             <Box display="flex" gap={'.3em'} justifyContent={'space-between'} >
-              <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} >Remove</Button>
+              <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} onClick={()=>setShowRemoveModal(true)} >Remove</Button>
               <Button  sx={{backgroundColor:"grey", minWidth:'30px', width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
             </Box>
           ) : !itemInfo.added  ?(
@@ -155,6 +167,7 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
           }
         </Box>
       </Box>
+      {showRemoveModal ? <RemoveOrderModal onRemoveClick={handleRemoveItemFromCart} closeModal={()=>setShowRemoveModal(false)} /> : null }
     </Grid>
   );
 };
