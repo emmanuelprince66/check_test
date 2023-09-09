@@ -6,7 +6,7 @@ import {
   addItemsToCart,
   handleCountChange,
 } from "../../util/slice/merchantSlice";
-export const CartBox = ({ itemInfo, id, category }) => {
+export const CartBox = ({ itemInfo, id,index, category }) => {
   const { orderInView, orderCart, orders } = useSelector(
     (state) => state.merchantReducer
   );
@@ -14,18 +14,16 @@ export const CartBox = ({ itemInfo, id, category }) => {
   const dispatch = useDispatch();
   // const [newOrder, setNewOrder] = useState({...itemInfo, subTotal:(Number(itemInfo.unitPrice) * Number(itemInfo.count)),
   // })
+  
   function changeCount(type) {
-    let newOrder = {
-      ...itemInfo,
-    };
-    dispatch(handleCountChange({ newOrder, type }));
+    const id  = itemInfo.id
+    dispatch(handleCountChange({ id, type }));
   }
   function addToCart() {
     let order = {
       ...itemInfo,
 
       subTotal: parseFloat(itemInfo.price) * itemInfo.count,
-      status: "added",
     };
     dispatch(addItemsToCart({ order, id }));
   }
@@ -97,7 +95,15 @@ export const CartBox = ({ itemInfo, id, category }) => {
           gap=".2em"
           alignItems="center"
         >
-          <Box
+
+          {orders[id - 1]?.menu[index]?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
+            <Box display="flex">
+              <Button>Remove</Button>
+              <Button>Edit</Button>
+            </Box>
+          ) : (
+            <>
+            <Box
             display="flex"
             justifyContent="space-between"
             width="60%"
@@ -124,14 +130,7 @@ export const CartBox = ({ itemInfo, id, category }) => {
               +{" "}
             </span>
           </Box>
-
-          {orders[id]?.status === "added" ? (
-            <Box display="flex">
-              <Button>Remove</Button>
-              <Button>Edit</Button>
-            </Box>
-          ) : (
-            <Button
+          <Button
               onClick={addToCart}
               sx={{
                 backgroundColor: "#EB001B",
@@ -146,6 +145,8 @@ export const CartBox = ({ itemInfo, id, category }) => {
               {" "}
               Add{" "}
             </Button>
+
+            </>
           )}
         </Box>
       </Box>

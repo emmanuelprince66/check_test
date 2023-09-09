@@ -33,10 +33,17 @@ const merchantSlice = createSlice({
       let existingItem = state.orders[orderIndex]?.cart?.find(
         (item) => item.name === action.payload.order.name
       );
+      state.orders[orderIndex].menu = state.orders[orderIndex].menu.map((item)=>{
+        if(item.id === action.payload.order.id ){
+          return {...item,'added':true }
+
+        }
+        return item;
+      })
 
       if (existingItem) {
         const updatedItem = { ...existingItem };
-        updatedItem.price += action.payload.order.price;
+        updatedItem.subTotal = action.payload.order.subTotal;
 
         const itemIndex = state.orders[orderIndex].cart.findIndex(
           (item) => item.name === action.payload.order.name
@@ -55,12 +62,19 @@ const merchantSlice = createSlice({
             },
             0
           );
-          state.orders[orderIndex].amount = subTotal;
-          console.log(subTotal)
           return acc + subTotal;
         }, 0);
 
         // Update the amount and totalAmount
+        const subTotal = state.orders[orderIndex]?.cart?.reduce(
+          (subTotal, item) =>{
+            return subTotal += item.subTotal
+          },
+          0
+        );
+        console.log(subTotal,JSON.parse(JSON.stringify( state.orders[orderIndex])))
+        state.orders[orderIndex] = {...state.orders[orderIndex],amount:subTotal} ;
+
         state.totalAmount = amount;
       } else {
         // Handle the case where there are no orders
@@ -92,12 +106,22 @@ const merchantSlice = createSlice({
       );
       state.orders[orderIndex].menu = state.orders[orderIndex].menu?.map(
         (item) => {
-          if (item.id === action.payload.newOrder.id) {
+          if (item.id === action.payload.id) {
             // Update the count when the condition is met
-            return {
-              ...item,
-              count: item.count + 1,
-            };
+            if(action.payload.type === 'add'){
+              return {
+                ...item,
+                count: item.count + 1,
+              };
+  
+            }
+            else{
+              return {
+                ...item,
+                count: item.count - 1,
+              };
+
+            }
           }
           // Return the original item if the condition isn't met
           return item;
