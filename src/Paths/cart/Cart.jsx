@@ -61,7 +61,8 @@ const Cart = () => {
   const dispatch = useDispatch();
 
   const cart = useSelector((state) => state.cart);
-
+  const supermarketCart = useSelector((state) => state.cart);
+  
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
 
@@ -116,21 +117,32 @@ const Cart = () => {
   };
 
   const calculateTotalPrice = () => {
-    if (cart.length === 0) {
+    if (supermarketCart.length === 0) {
       return 0;
     }
 
     let totalPrice = 0;
 
-    cart.forEach((cartItem) => {
+    supermarketCart.forEach((cartItem) => {
       totalPrice += cartItem.price;
     });
 
     return totalPrice;
   };
-  const totalPrice = calculateTotalPrice();
+const {data:merchantDetails,orders,totalAmount} = useSelector((state) => state.merchantReducer);
+const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPrice();
+
+
   const handleOpen = () => {
-    cart.length !== 0 ? setOpen(true) : notify("you have no item in your cart");
+    // calling the modals if its restaurant or supermarket...
+    // checking if there are any items in cart...
+    let itemInCart = orders.some((order)=>order.items.length > 0)
+    if (merchantDetails.restaurant){
+  itemInCart ? setOpen(true) : notify('No items in your cart!')
+    }
+    else{
+      supermarketCart.length !== 0 ? setOpen(true) : notify("you have no item in your cart");
+  }
   };
   const handleOpen2 = () => setOpen2(true);
   const handleOpen3 = () => {
@@ -325,11 +337,62 @@ const Cart = () => {
       throw new Error(error.response);
     }
   };
+  const ordersToSend = orders.filter((order)=>order.items.length > 0).map((item)=> {
+    const {menu,...rest} = item
+    return rest;
+  } )
+  
+
+console.log(ordersToSend)
+  const sendRestaurantDataToEndpoint = async (payLoad) => {
+    // const result = JSON.stringify(payLoad, null, 2);
+const result = JSON.stringify(payLoad,null,2)
+    const objData = { payload: result };
+    const token = getCookie("authToken");
+    try {
+      const response = await AuthAxios({
+        url: "/cart",
+        method: "POST",
+        data: objData,
+        headers: {
+          Authorization: `Bearer ${token}`,
+        },
+      });
+
+      return response.data;
+    } catch (error) {
+      const noti = Array.isArray(error.response.data.message)
+        ? error.response.data.message[0]
+        : error.response.data.message;
+      console.log(noti);
+
+      setTimeout(() => {
+        if (noti === "Insufficient Funds") {
+          setShowInsufficientBalance(true);
+          setShowOrderText(false);
+          setPins(["", "", "", ""]);
+        }
+      }, 1000);
+      throw new Error(error.response);
+    }
+  };
+  const commissionCal = (0.5 / 100) * totalPrice;
+  const commission = commissionCal.toFixed(2);
+  const superMarketId = superMarket.data ? superMarket.data.id : "";
+
+  const restaurantPayLoad = {
+    commission: commission,
+    category: "restaurant",
+    restaurantId:10,
+    totalAmount: totalPrice,
+    paymentType: "WALLET",
+    orders: ordersToSend,
+  };
 
   const mutationOrder = useMutation(sendPinToEndpoint, {
     onSuccess: (response) => {
       // api to save cart
-      mutationData.mutate(payLoad);
+     merchantDetails.restaurant ?mutationRestaurantData.mutate(restaurantPayLoad) : mutationData.mutate(payLoad);
       queryClient.invalidateQueries("pins"); // Optionally, invalidate relevant queries after the mutation
     },
     onError: (response) => {
@@ -356,6 +419,26 @@ const Cart = () => {
       setConfirmNewPins(["", "", "", ""]);
     },
   });
+  const mutationRestaurantData = useMutation(sendRestaurantDataToEndpoint, {
+    onSuccess: (response) => {
+      console.log(response);
+      setOrderData(response);
+      setSuccessResponse(true);
+
+      setTimeout(() => {
+        setSuccessResponse(false);
+        // setOpenReceipt(true);
+        navigate('/orders')
+
+      }, 3000);
+    },
+    onError: (response) => {
+      console.log(response);
+
+      setNewPins(["", "", "", ""]);
+      setConfirmNewPins(["", "", "", ""]);
+    },
+  });
 
   const handleSubmit = () => {
     // Check if all the PINs have been entered
@@ -372,7 +455,7 @@ const Cart = () => {
 
   // Dara to send to complete order endpoint start
 
-  const productId = cart.map((item) => {
+  const productId = supermarketCart.map((item) => {
     return {
       EAN: item.EAN,
       quantity: item.quantity,
@@ -380,9 +463,9 @@ const Cart = () => {
     };
   });
 
-  const commissionCal = (0.5 / 100) * totalPrice;
-  const commission = commissionCal.toFixed(2);
-  const superMarketId = superMarket.data ? superMarket.data.id : "";
+  // const commissionCal = (0.5 / 100) * totalPrice;
+  // const commission = commissionCal.toFixed(2);
+  // const superMarketId = superMarket.data ? superMarket.data.id : "";
   // test
 
   const payLoad = {
@@ -394,7 +477,7 @@ const Cart = () => {
     orders: productId,
   };
 
-  const orderItemsList = cart.map((item) => {
+  const orderItemsList = supermarketCart.map((item) => {
     return {
       productId: item.productId,
       quantity: item.quantity,
@@ -407,15 +490,15 @@ const Cart = () => {
 
   const orderLoad = [
     {
-      id: orderData ? orderData.orderInfo.id : "",
+      id: orderData ? orderData?.orderInfo?.id : "",
       commission: commission,
       supermarketId: superMarketId,
       total: totalPrice.toString(),
       order: orderItemsList,
       customerName: orderData
-        ? orderData.orderInfo.user.firstName +
+        ? orderData?.orderInfo?.user?.firstName +
           " " +
-          orderData.orderInfo.user.lastName
+          orderData?.orderInfo?.user?.lastName
         : "",
     },
   ];
@@ -448,7 +531,6 @@ const Cart = () => {
     }
   }, []);
 
-  const {data:merchantDetails} = useSelector((state) => state.merchantReducer);
 
 
 
@@ -465,10 +547,12 @@ const Cart = () => {
         
 
 
-{ merchantDetails?.restaurant ?
+{merchantDetails?.restaurant ?
 
 <Restaurant/>
-:      <Container
+:  
+
+<Container
           sx={{
             display: "flex",
             flexDirection: "column",
@@ -501,7 +585,7 @@ const Cart = () => {
               My Cart
             </Typography>
 
-            {cart.length != 0 && (
+            {supermarketCart.length != 0 && (
               <Button
                 onClick={() => setDeleteCart(true)}
                 sx={{
@@ -541,7 +625,7 @@ const Cart = () => {
               overflowY: "scroll",
             }}
           >
-            {cart.length === 0 ? (
+            {supermarketCart.length === 0 ? (
               <NoResult
                 notification="You have no item in your cart"
                 smallText="proceed to scan to add items"
@@ -549,12 +633,17 @@ const Cart = () => {
                 linkText="/scan"
               />
             ) : (
-              cart.map((item) => <CartItem item={item} key={item.id} />)
+              supermarketCart.map((item) => <CartItem item={item} key={item.id} />)
             )}
           </Box>
           {/* Card end */}
 
-          <Box
+          <ToastContainer />
+        </Container>
+
+}
+
+<Box
             sx={{
               width: "100%",
               display: "flex",
@@ -564,7 +653,7 @@ const Cart = () => {
               my: "1.5rem",
             }}
           >
-            {cart.length != 0 && (
+            {supermarketCart.length != 0 && (
               <Button
                 onClick={() => navigate("/scan")}
                 sx={{
@@ -591,6 +680,85 @@ const Cart = () => {
             )}
           </Box>
 
+          <Box
+            sx={{
+              display: "flex",
+              flexDirection: "column",
+              position: "fixed",
+              bottom: "10px",
+              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
+              padding: "1.5rem",
+              gap: "2rem",
+              justifyContent: "start",
+              background:'white',
+              right: { xs: "1px", sm: "19%", lg: "35%" },
+              // background:
+              //   currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
+              textAlign: "center",
+              boxShadow:
+                currentTheme.palette.type === "light"
+                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
+                  : "#2C2C2E",
+              marginBottom: "5rem",
+            }}
+          >
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                Grand Total
+              </Typography>
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  color:
+                    currentTheme.palette.type === "light" ? "#000" : "#fff",
+                  fomtWeight: "900",
+                  fontSize: "16px",
+                }}
+              >
+                <FormattedPrice amount={totalPrice} />
+              </Typography>
+            </Box>
+
+            <Box>
+              <Button
+                onClick={handleOpen}
+                sx={{
+                  background:
+                    currentTheme.palette.type === "light"
+                      ? "#dc0019"
+                      : "#dc0019",
+                  padding: "10px",
+                  fontWeight: "1000",
+                  width: "100%",
+                  textTransform: "capitalize",
+                  borderRadius: "8px",
+                  color: "#fff",
+                  "&:hover": {
+                    backgroundColor:
+                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
+                  },
+                  fontFamily: "raleWay",
+                }}
+              >
+                Proceed to payment
+              </Button>
+            </Box>
+          </Box>
 
           {/* Modal 1  modal for purchase*/}
           <Modal
@@ -1596,7 +1764,8 @@ const Cart = () => {
               <CartReceipt
                 orderData={orderData ? orderData : ""}
                 orderLoad={orderLoad ? orderLoad : []}
-                cart={cart ? cart : []}
+                // cart={supermarketCart ? supermarketCart : []}
+                cart={supermarketCart ? supermarketCart : ordersToSend }
               />
             </Box>
           </Dialog>
@@ -1666,90 +1835,6 @@ const Cart = () => {
           />
           {/* insufficient funds ends */}
 
-          <ToastContainer />
-        </Container>
-
-}
-<Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              position: "fixed",
-              bottom: "0px",
-              backgroundColor:'white',
-              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
-              padding: "1.5rem",
-              gap: "2rem",
-                  zIndex:'99999',
-              justifyContent: "start",
-              right: { xs: "1px", sm: "19%", lg: "35%" },
-              background:
-                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
-              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
-              textAlign: "center",
-              boxShadow:
-                currentTheme.palette.type === "light"
-                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
-                  : "#2C2C2E",
-              marginBottom: "5rem",
-            }}
-          >
-            <Box
-              sx={{
-                display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
-              }}
-            >
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fontWeight: "900",
-                  fontSize: "16px",
-                }}
-              >
-                Grand Total
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fontWeight: "900",
-                  fontSize: "16px",
-                }}
-              >
-                <FormattedPrice amount={totalPrice} />
-              </Typography>
-            </Box>
-
-            <Box>
-              <Button
-                onClick={handleOpen}
-                sx={{
-                  background:
-                    currentTheme.palette.type === "light"
-                      ? "#dc0019"
-                      : "#dc0019",
-                  padding: "10px",
-                  fontWeight: "1000",
-                  width: "100%",
-                  textTransform: "capitalize",
-                  borderRadius: "8px",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor:
-                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                  },
-                  fontFamily: "raleWay",
-                }}
-              >
-                Proceed to payment
-              </Button>
-            </Box>
-          </Box>
 
 
         {/* NAVBAR */}

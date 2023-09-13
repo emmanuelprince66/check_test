@@ -26,8 +26,10 @@ export const CartBox = ({ itemInfo, id,index, category }) => {
    dispatch(editStatusUpdate(itemInfo.id)) }
   function addToCart() {
     let order = {
-      ...itemInfo,
-
+      menuId : itemInfo.id,
+      quantity:itemInfo.count,
+      name:itemInfo.name,
+      price:itemInfo.price,
       subTotal: parseFloat(itemInfo.price) * itemInfo.count,
     };
     dispatch(addItemsToCart({ order, id }));
@@ -97,27 +99,30 @@ setTimeout(()=>setShowRemoveModal(false),300)
           borderRadius: "0 0 .3em .3em ",
         }}
       >
-        <div style={{ fontSize: "12px" }}>
+        <div style={{ fontSize: "12px",whiteSpace:'nowrap' }}>
           <span style={{ fontWeight: "700" }}>
             {" "}
             N { itemInfo.subTotal}{" "}
           </span>
-          <span style={{ color: "#727272" }}> /{itemInfo.count} PORTION</span>
+          <span style={{ color: "#727272",fontSize:'10px' }}> /{itemInfo.count} PORTION</span>
         </div>
         <Box
           display="flex"
           justifyContent="space-between"
           gap=".2em"
+          width={'100%'}
           alignItems="center"
         >
 
           {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
-            <Box display="flex" gap={'.3em'} justifyContent={'space-between'} >
+            <Box display="flex" sx={{width:'100%'}} gap={'.3em'} justifyContent={'space-between'} >
               <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} onClick={()=>setShowRemoveModal(true)} >Remove</Button>
-              <Button  sx={{backgroundColor:"grey", minWidth:'30px', width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
+              <Button  sx={{backgroundColor:"grey", minWidth:'30px',  '&:hover': {
+          backgroundColor: 'rgb(11 13 14 / 43%)',
+        }, '&.:focus':{backgroundColor:"grey"}, width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
             </Box>
           ) : !itemInfo.added  ?(
-            <>
+            <Box sx={{width:'100%' ,display:'flex'}} >
             <Box
             display="flex"
             justifyContent="space-between"
@@ -131,7 +136,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
           >
             <span
               onClick={() => changeCount("remove")}
-              style={{ fontSize: "2em", cursor: "pointer" }}
+              style={{ fontSize: "2em", display:'flex', alignItems:'center', height:'100%', cursor: "pointer" }}
             >
               {" "}
               -{" "}
@@ -139,7 +144,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
             <Typography> {itemInfo.count} </Typography>
             <span
               onClick={() => changeCount("add")}
-              style={{ fontSize: "2em", cursor: "pointer" }}
+              style={{ fontSize: "2em",height:'100%',display:'flex', alignItems:'center', cursor: "pointer" }}
             >
               {" "}
               +{" "}
@@ -161,7 +166,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
               Add{" "}
             </Button>
 
-            </>
+            </Box>
           )
           : null
           }

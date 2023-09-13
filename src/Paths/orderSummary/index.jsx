@@ -17,7 +17,7 @@ let orderIndex = Number(params.id) - 1
 console.log(orderIndex)
    const {orders}  = useSelector((state)=>state.merchantReducer)
 
-   const orderSummary = orders[orderIndex].cart
+   const orderSummary = orders[orderIndex].items
    const amount = orders[orderIndex].amount
 console.log(orderSummary)
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
@@ -60,7 +60,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
               <StyledTableCell component="th" scope="item">
                 {item.name}
               </StyledTableCell>
-              <StyledTableCell align="right">{item.count}</StyledTableCell>
+              <StyledTableCell align="right">{item.quantity}</StyledTableCell>
               <StyledTableCell align="right">{item.price}</StyledTableCell>
             </StyledTableRow>
           ))}

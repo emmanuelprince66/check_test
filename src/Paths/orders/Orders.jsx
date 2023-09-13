@@ -30,15 +30,19 @@ import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import OrderReciept from "../../components/OrderReciept";
 import FormattedPrice from "../../components/FormattedPrice";
+import useRestaurantOrders from "../../hooks/useRestaurantOrders";
+import { useSelector } from "react-redux";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
 });
 
 const Orders = () => {
-  const orders = useOrders();
+  // const orders = useOrders();
   // console.log(orders.data);
-
+  const restaurantOrders =  useRestaurantOrders()
+  const {data:merchantDetails} = useSelector(state=>state.merchantReducer)
+console.log(restaurantOrders)
   const [ordersItem, setOrdersItem] = useState();
   const [open, setOpen] = React.useState(false);
   const [open2, setOpen2] = useState(false);
@@ -51,9 +55,9 @@ const Orders = () => {
 
   const handleOpen = (item) => {
     setOpen(true);
-    const ordersFromId = orders.data.find((data) => data.id === item);
+    // const ordersFromId = orders.data.find((data) => data.id === item);
 
-    setOrdersItem(ordersFromId.id);
+    // setOrdersItem(ordersFromId.id);
   };
 
   const currentTheme = useTheme();
@@ -105,7 +109,7 @@ const Orders = () => {
               marginBottom: "5rem",
             }}
           >
-            {orders.data ? (
+            {/* {orders.data ? (
               orders.data == 0 ? (
                 <NoResult
                   notification="You currenty have no orders!"
@@ -272,7 +276,180 @@ const Orders = () => {
               >
                 <CircularProgress size="4rem" color="error" />
               </Box>
+            )} */}
+
+
+            {restaurantOrders.data ? 
+            (
+              restaurantOrders.data == 0 ? (
+                <NoResult
+                  notification="You currenty have no orders!"
+                  smallText="Proceed to scan to add more orders"
+                  buttonText="Scan to add new orders"
+                  linkText="/home"
+                />
+              ) : (
+                restaurantOrders.data.map((item) => (
+                  <Card
+                    onClick={() => handleOpen(item.id)}
+                    key={item.id}
+                    sx={{
+                      display: "flex",
+                      cursor: "pointer",
+                      justifyContent: "space-between",
+                      alignItems: "start",
+                      padding: "0.6rem",
+                    }}
+                  >
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        justifyContent: "center",
+                        gap: "5px",
+                        alignItems: "start",
+                      }}
+                    >
+                      <Typography
+                        sx={{
+                          fontFamily: "raleWay",
+                          fontWeight: "900",
+                          fontSize: "16px",
+                          color:
+                            currentTheme.palette.type === "light"
+                              ? "#000"
+                              : "#ffff",
+                        }}
+                      >
+                        {item.restaurant.companyName}
+                      </Typography>
+
+                      <Typography
+                        sx={{
+                          fontFamily: "raleWay",
+                          fontWeight: "900",
+                          fontSize: "15px",
+                          color:
+                            item.status === "COMPLETED"
+                              ? "#008000"
+                              : item.status === "PENDING" 
+                              ? "#C57600"
+                              : item.status === "CANCELLED"
+                              ? "red"
+                              : "#727272",
+                        }}
+                      >
+                        <FormattedPrice amount={item.totalAmount} />
+                      </Typography>
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          justifyContent: "start",
+                          alignItems: "center",
+                          gap: "2px",
+                        }}
+                      >
+                        <CheckCircleOutlineRoundedIcon
+                          sx={{
+                            fontSize: "15px",
+                            paddingTop: "2px",
+                            color:
+                              item.status === "COMPLETED"
+                                ? "#008000"
+                                : item.status === "PENDING"
+                                ? "#C57600"
+                                : item.status === "CANCELLED"
+                                ? "red"
+                                : "#727272",
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            fontWeight: "900",
+                            fontSize: "15px",
+                            color:
+                              item.status === "COMPLETED"
+                                ? "#008000"
+                                : item.status === "PENDING"
+                                ? "#C57600"
+                                : item.status === "CANCELLED"
+                                ? "red"
+                                : "#727272",
+                          }}
+                        >
+                          {item.status.toLowerCase()}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+                    <Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "end",
+                        gap: "2rem",
+                      }}
+                    >
+                      <MoreVertRoundedIcon />
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "3px",
+                        }}
+                      >
+                        <CheckCircleOutlineRoundedIcon
+                          sx={{
+                            color:
+                              item.status === "COMPLETED"
+                                ? "#008000"
+                                : item.status === "PENDING"
+                                ? "#727272"
+                                : item.status === "CANCELLED"
+                                ? "red"
+                                : "#727272",
+                            fontSize: "13px",
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            fontWeight: "900",
+                            fontSize: "15px",
+                            color:
+                              item.status === "COMPLETED"
+                                ? "#008000"
+                                : item.status === "PENDING"
+                                ? "#727272"
+                                : item.status === "CANCELLED"
+                                ? "red"
+                                : "#727272",
+                          }}
+                        >
+                          completed
+                        </Typography>
+                      </Box>
+                    </Box>
+                  </Card>
+                ))
+              )
+            ) : (
+              <Box
+                sx={{
+                  width: "100%",
+                  display: "flex",
+                  justifyContent: "center",
+                  marginTop: "10rem",
+                }}
+              >
+                <CircularProgress size="4rem" color="error" />
+              </Box>
             )}
+
+
 
             <Modal
               open={open}
@@ -375,7 +552,7 @@ const Orders = () => {
               <OrderReciept
                 handleClose2={handleClose2}
                 orderId={ordersItem ? ordersItem : ""}
-                orders={orders.data ? orders.data : ""}
+                // orders={orders.data ? orders.data : ""}
               />
             </Dialog>
 

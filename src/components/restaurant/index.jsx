@@ -33,7 +33,7 @@ const Restaurant = () => {
   const [allCartOptions, setAllCartOptions] = useState(false);
 
   useEffect(() => {
-    let firstOrder = { id: 1, amount: 0.0, cart: [] };
+    let firstOrder = { id: 1, amount: 0.0,orderType:'eat-in', items: [] };
     dispatch(addOrders(firstOrder));
   }, [orderCart, orders]);
 
@@ -42,7 +42,8 @@ const Restaurant = () => {
     let newOrder = {
       id: maxId,
       amount: 0.0,
-      cart: [],
+      orderType:'eat-in',
+      items: [],
     };
     dispatch(addOrders(newOrder));
   }
@@ -141,7 +142,7 @@ function clearCart(){
                   </div>
 
 {              
-  orders[order?.id - 1]?.cart.length === 0 ?
+  orders[order?.id - 1]?.items.length === 0 ?
   
       <div>
                     <Button
@@ -209,7 +210,7 @@ function clearCart(){
           onDelButtonClick={() => handleRemoveOrder(openOrderOptions.id)}
           delText={"Delete Order"}
           id={openOrderOptions.id}
-          ordersIn={ orders[openOrderOptions.id - 1 ].cart.length > 0 }
+          ordersIn={ orders[openOrderOptions.id - 1 ].items.length > 0 }
           closeModal={() => setOpenOrderOptions(false)}
         />
       ) : null}

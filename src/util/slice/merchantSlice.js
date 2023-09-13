@@ -30,11 +30,11 @@ const merchantSlice = createSlice({
       const orderIndex = state.orders.findIndex(
         (item) => item.id === state.orderInView
       );
-      let existingItem = state.orders[orderIndex]?.cart?.find(
+      let existingItem = state.orders[orderIndex]?.items?.find(
         (item) => item.name === action.payload.order.name
       );
       state.orders[orderIndex].menu = state.orders[orderIndex].menu.map((item)=>{
-        if(item.id === action.payload.order.id ){
+        if(item.id === action.payload.order.menuId ){
           return {...item,'added':true }
 
         }
@@ -45,17 +45,17 @@ const merchantSlice = createSlice({
         const updatedItem = { ...existingItem };
         updatedItem.subTotal = action.payload.order.subTotal;
 
-        const itemIndex = state.orders[orderIndex].cart.findIndex(
+        const itemIndex = state.orders[orderIndex].items.findIndex(
           (item) => item.name === action.payload.order.name
         );
-        state.orders[orderIndex].cart[itemIndex] = updatedItem;
+        state.orders[orderIndex].items[itemIndex] = updatedItem;
       } else {
-        state.orders[orderIndex]?.cart?.push(action.payload.order);
+        state.orders[orderIndex]?.items?.push(action.payload.order);
       }
 
-      if (state.orders[orderIndex]?.cart.length > 0) {
+      if (state.orders[orderIndex]?.items.length > 0) {
         const amount = state.orders.reduce((acc, curr) => {
-          const subTotal = curr?.cart?.reduce(
+          const subTotal = curr?.items?.reduce(
             (subTotal, item) =>{
 
               return subTotal += item.subTotal
@@ -66,7 +66,7 @@ const merchantSlice = createSlice({
         }, 0);
 
         // Update the amount and totalAmount
-        const subTotal = state.orders[orderIndex]?.cart?.reduce(
+        const subTotal = state.orders[orderIndex]?.items?.reduce(
           (subTotal, item) =>{
             return subTotal += item.subTotal
           },
@@ -160,7 +160,7 @@ const merchantSlice = createSlice({
       console.log(JSON.parse(JSON.stringify(neil)))
     },
     removeItemFromCart:(state,action)=>{
-      state.orders[state.orderInView - 1].cart = state.orders[state.orderInView - 1].cart.filter((item)=> item.id !== action.payload.id )
+      state.orders[state.orderInView - 1].items = state.orders[state.orderInView - 1].items.filter((item)=> item.id !== action.payload.id )
       state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map((item)=> {
         if (item.id === action.payload.id){
           return {
