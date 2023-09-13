@@ -19,6 +19,7 @@ console.log(orderIndex)
 
    const orderSummary = orders[orderIndex].items
    const amount = orders[orderIndex].amount
+   const type = orders[orderIndex].orderType
 console.log(orderSummary)
 const StyledTableCell = styled(TableCell)(({ theme }) => ({
   [`&.${tableCellClasses.head}`]: {
@@ -44,8 +45,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
   return (
     <div className="gpt3__restaurant" >
     <BackArrow/>
-    <Typography fontWeight={700} fontSize={'1.5em'} > Order {params.id} </Typography>
-    <TableContainer component={Paper}>
+    <Typography fontWeight={700} fontSize={'1.5em'} > Order {params.id }  ( {type} ) </Typography>
+    <TableContainer sx={{boxShadow:'none'}} component={Paper}>
       <Table sx={{  }} aria-label="customized table">
         <TableHead>
           <TableRow>

@@ -51,6 +51,7 @@ import InsufficientFund from "../../components/InsufficientFund";
 import checkLogo from "../../images/checkLogo.svg";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
+import { resetState } from "../../util/slice/merchantSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -428,7 +429,8 @@ const result = JSON.stringify(payLoad,null,2)
       setTimeout(() => {
         setSuccessResponse(false);
         // setOpenReceipt(true);
-        navigate('/orders')
+        navigate('/orders') 
+        dispatch(resetState()) 
 
       }, 3000);
     },
@@ -547,7 +549,7 @@ const result = JSON.stringify(payLoad,null,2)
         
 
 
-{merchantDetails?.restaurant ?
+{merchantDetails.restaurant ?
 
 <Restaurant/>
 :  

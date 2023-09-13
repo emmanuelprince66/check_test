@@ -9,7 +9,7 @@ import {
   removeItemFromCart,
 } from "../../util/slice/merchantSlice";
 import RemoveOrderModal from "../removeOrderModal";
-export const CartBox = ({ itemInfo, id,index, category }) => {
+export const CartBox = ({ itemInfo,preview, id,index, category }) => {
   const { orderInView, orderCart, orders } = useSelector(
     (state) => state.merchantReducer
   );
@@ -49,7 +49,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
       sx={{
         width: "48%",
         height: "200px",
-        display: category === itemInfo.category.name ? "block" : "none",
+        display: category === itemInfo.category.name ? "block" : preview ? 'block': "none",
       }}
       item
     >
@@ -114,7 +114,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
           alignItems="center"
         >
 
-          {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id ? (
+          {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id || preview ? (
             <Box display="flex" sx={{width:'100%'}} gap={'.3em'} justifyContent={'space-between'} >
               <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} onClick={()=>setShowRemoveModal(true)} >Remove</Button>
               <Button  sx={{backgroundColor:"grey", minWidth:'30px',  '&:hover': {

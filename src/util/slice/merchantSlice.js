@@ -88,6 +88,9 @@ const merchantSlice = createSlice({
     setOrderCart: (state, action) => {
       state.orderCart = action.payload;
     },
+    updateOrderType: (state, action) => {
+      state.orders[state.orderInView - 1].orderType = action.payload;
+    },
     addMenu: (state, action) => {
       const orderIndex = state.orders.findIndex(
         (item) => item.id === state.orderInView
@@ -171,6 +174,16 @@ const merchantSlice = createSlice({
       } )
 
       state.orders[state.orderInView - 1].amount -= action.payload.subTotal
+    },
+    resetState:(state,action)=>{
+      return {
+        data: [],
+        orderCart: [],
+        orders: [],
+        orderInView: 0,
+        categoryNameInView: "",
+        totalAmount: 0,
+      };
     }
   },
 });
@@ -185,7 +198,9 @@ export const {
   removeItemFromCart,
   handleCountChange,
   editStatusUpdate,
+  updateOrderType,
   setCategoryNameInView,
+  resetState,
   clearRestaurantCart,
   setOrderCart,
 } = merchantSlice.actions;

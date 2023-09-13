@@ -19,6 +19,7 @@ import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import {
   setOrderCart,
   addMenu,
+  updateOrderType,
   setCategoryNameInView,
 } from "../../util/slice/merchantSlice";
 import CartBox from "../../components/cartBox/cartBox";
@@ -29,6 +30,7 @@ const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
+  const [preview, setPreview] = useState(false);
   const dispatch = useDispatch();
   const {
     data: merchantDetails,
@@ -39,12 +41,12 @@ const RestaurantMenu = () => {
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails.restaurant.id)
-  const menu = useMenu(merchantDetails?.restaurant?.id);
-  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
+  const menu = useMenu(merchantDetails.restaurant.id);
+  const category = useRestaurantCategory(merchantDetails.restaurant.id);
   const navigate = useNavigate();
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
-      return { ...order, count: 1,   subTotal: parseFloat(order.price),      };
+      return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
 
     if (!orderCart || orderCart.length === 0) {
@@ -60,7 +62,7 @@ const RestaurantMenu = () => {
     if (!orders[orderInView - 1]?.menu) {
       dispatch(addMenu(filteredResult));
     }
-  }, [orderInView,menu?.data?.menu]);
+  }, [orderInView, menu?.data?.menu]);
 
   useEffect(() => {
     const selectedCategoryName =
@@ -77,6 +79,15 @@ const RestaurantMenu = () => {
   function handleSaveToCart() {
     navigate("/cart");
   }
+  function handleOrderType(type) {
+    dispatch(updateOrderType(type));
+  }
+  function showPreview() {
+    let me = orders[orderInView - 1].menu.filter((item) => item.added);
+    console.log(me);
+    setPreview(true);
+  }
+
   return (
     <div className="gpt3__restaurant">
       <Box display="flex" gap="1em">
@@ -96,28 +107,59 @@ const RestaurantMenu = () => {
       </Box>
 
       <Box display="flex" gap="1em" justifyContent="space-between">
-        <span>Order {orderInView}</span>
+        <div style={{ display: "flex", flexDirection: "column", gap: ".5em" }}>
+          <span>Order {orderInView}</span>
+          {orders[orderInView - 1].items.length > 0 && !preview ?  (
+            <Button
+              onClick={showPreview}
+              sx={{
+                cursor: "pointer",
+                borderRadius: ".5em",
+                padding: ".5em .8em",
+                color:'grey',
+                border: "1px solid var(--primary-red)",
+              }}
+            >
+              {" "}
+              Preview Items{" "}
+            </Button>
+          ) : null}{" "}
+        </div>
         <div style={{}}>
           <span
             style={{
               width: "50%",
-              color: mode === "eat-in" ? "white" : "black",
+              color:
+                orders[orderInView - 1].orderType === "eat-in"
+                  ? "white"
+                  : "black",
+              cursor: "pointer",
               backgroundColor:
-                mode === "eat-in" ? "var(--cart-deep-red)" : "#EDEDED",
+                orders[orderInView - 1].orderType === "eat-in"
+                  ? "var(--cart-deep-red)"
+                  : "#EDEDED",
               padding: ".5em .8em",
               borderRadius: ".5em",
             }}
+            onClick={() => handleOrderType("eat-in")}
           >
             Eat-In
           </span>
           <span
             style={{
-              color: mode === "eat-in" ? "black" : "white",
+              color:
+                orders[orderInView - 1].orderType === "eat-in"
+                  ? "black"
+                  : "white",
+              cursor: "pointer",
               backgroundColor:
-                mode === "takeaway" ? "var(--cart-deep-red)" : "#EDEDED",
+                orders[orderInView - 1].orderType === "take-away"
+                  ? "var(--cart-deep-red)"
+                  : "#EDEDED",
               padding: ".5em .8em",
               borderRadius: "0em .5em .5em 0",
             }}
+            onClick={() => handleOrderType("take-away")}
           >
             {" "}
             Takeaway
@@ -125,45 +167,48 @@ const RestaurantMenu = () => {
         </div>
       </Box>
 
-      <Box>
-        <List
-          sx={{
-            display: "flex",
-            gap: "1em",
-            padding: ".6px 0",
-            "&:-webkit-scrollbar": { display: "none" },
-            overflowX: "scroll",
-            borderBottom: "1px solid #EAEAEA",
-          }}
-        >
-          {category?.data?.categories?.map((item, i) => {
-            return (
-              <li
-                onClick={() => checkCategory(i, item.name)}
-                style={{
-                  whiteSpace: "noWrap",
-                  cursor: "pointer",
-                  listStyleType: " none",
-                  color: categoryInView === i ? "var(--cart-deep-red)" : "",
-                  borderBottom:
-                    categoryInView === i
-                      ? "1px solid var(--cart-deep-red)"
-                      : "",
-                  transition: "color 0.3s ease-in-out",
-                }}
-                key={i}
-              >
-                {item.name}
-              </li>
-            );
-          })}
-        </List>
-      </Box>
+      {/* Category List   */}
+      {!preview ? (
+        <Box>
+          <List
+            sx={{
+              display: "flex",
+              gap: "1em",
+              padding: ".6px 0",
+              "&:-webkit-scrollbar": { display: "none" },
+              overflowX: "scroll",
+              borderBottom: "1px solid #EAEAEA",
+            }}
+          >
+            {category?.data?.categories?.map((item, i) => {
+              return (
+                <li
+                  onClick={() => checkCategory(i, item.name)}
+                  style={{
+                    whiteSpace: "noWrap",
+                    cursor: "pointer",
+                    listStyleType: " none",
+                    color: categoryInView === i ? "var(--cart-deep-red)" : "",
+                    borderBottom:
+                      categoryInView === i
+                        ? "1px solid var(--cart-deep-red)"
+                        : "",
+                    transition: "color 0.3s ease-in-out",
+                  }}
+                  key={i}
+                >
+                  {item.name}
+                </li>
+              );
+            })}
+          </List>
+        </Box>
+      ) : null}
 
       <Grid container justifyContent="space-between" rowGap="1em">
         {!orders[orderInView - 1]?.menu ? (
           <Skeleton variant="rectangular" width={210} height={118} />
-        ) : (
+        ) : !preview ? (
           orders[orderInView - 1]?.menu.map((item, i) => {
             return (
               <CartBox
@@ -172,9 +217,25 @@ const RestaurantMenu = () => {
                 itemInfo={item}
                 index={i}
                 id={orderInView}
+                preview={false}
               />
             );
           })
+        ) : (
+          orders[orderInView - 1]?.menu
+            .filter((item) => item.added)
+            .map((item, i) => {
+              return (
+                <CartBox
+                  key={i}
+                  // category={categoryNameInView}
+                  preview={true}
+                  itemInfo={item}
+                  index={i}
+                  id={orderInView}
+                />
+              );
+            })
         )}
       </Grid>
 
@@ -196,7 +257,7 @@ const RestaurantMenu = () => {
         bottom="0"
       >
         <Typography sx={{ fontWeight: "700", fontSize: "2em" }}>
-          {orders[orderInView - 1 ]?.amount}
+          {orders[orderInView - 1]?.amount}
         </Typography>
         <Button
           onClick={handleSaveToCart}

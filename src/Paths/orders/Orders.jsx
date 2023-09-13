@@ -38,13 +38,14 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 });
 
 const Orders = () => {
-  // const orders = useOrders();
-  // console.log(orders.data);
+  const orders = useOrders();
+  console.log(orders.data);
   const restaurantOrders =  useRestaurantOrders()
   const {data:merchantDetails} = useSelector(state=>state.merchantReducer)
 console.log(restaurantOrders)
   const [ordersItem, setOrdersItem] = useState();
   const [open, setOpen] = React.useState(false);
+  const [view, setView] = useState('restaurant');
   const [open2, setOpen2] = useState(false);
   const handleClose = () => setOpen(false);
   const handleClose2 = () => setOpen2(false);
@@ -101,6 +102,13 @@ console.log(restaurantOrders)
             My Status
           </Typography>
 
+          <Box sx={{borderBottom:"1px solid grey", justifyContent:"center",display:'flex',gap:'2em'}} >
+            <Button onClick={()=>setView('restaurant')} sx={{color:"var(--primary-red)",textTransform:"none"
+,'&:focus':{borderBottom:"1px solid var(--primary-red)"}}} >Restaurant</Button>
+            <Button onClick={()=>setView('supermarket')} sx={{color:"var(--primary-red)"
+,textTransform:"none",'&:focus':{borderBottom:"1px solid var(--primary-red)"}}}>Supermarket </Button>
+          </Box>
+
           <Box
             sx={{
               display: "flex",
@@ -109,7 +117,7 @@ console.log(restaurantOrders)
               marginBottom: "5rem",
             }}
           >
-            {/* {orders.data ? (
+            { view === 'supermarket' && orders?.data ? (
               orders.data == 0 ? (
                 <NoResult
                   notification="You currenty have no orders!"
@@ -276,7 +284,7 @@ console.log(restaurantOrders)
               >
                 <CircularProgress size="4rem" color="error" />
               </Box>
-            )} */}
+            )}
 
 
             {restaurantOrders.data ? 
@@ -289,7 +297,7 @@ console.log(restaurantOrders)
                   linkText="/home"
                 />
               ) : (
-                restaurantOrders.data.map((item) => (
+                view === 'restaurant' && restaurantOrders.data.map((item) => (
                   <Card
                     onClick={() => handleOpen(item.id)}
                     key={item.id}
@@ -321,7 +329,7 @@ console.log(restaurantOrders)
                               : "#ffff",
                         }}
                       >
-                        {item.restaurant.companyName}
+                        {item?.restaurant?.companyName}
                       </Typography>
 
                       <Typography
