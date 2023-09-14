@@ -19,6 +19,7 @@ import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import {
   setOrderCart,
   addMenu,
+  setTakeAwayPrice,
   updateOrderType,
   setCategoryNameInView,
   handlePreview,
@@ -59,7 +60,7 @@ const RestaurantMenu = () => {
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
-
+dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price))
     if (!orders[orderInView - 1]?.menu) {
       dispatch(addMenu(filteredResult));
     }
@@ -112,7 +113,7 @@ const RestaurantMenu = () => {
         />
       </Box>
 
-      <Box display="flex" gap="1em" justifyContent="space-between">
+      <Box display="flex" sx={{}} gap="1em" justifyContent="space-between">
         <div style={{ display: "flex", flexDirection: "column", gap: ".5em" }}>
           <span>Order {orderInView}</span>
           {orders[orderInView - 1].items.length > 0 && !preview ?  (
@@ -127,14 +128,14 @@ const RestaurantMenu = () => {
               }}
             >
               {" "}
-              Preview Items{" "}
+              Preview {" "}
             </Button>
           ) : null}{" "}
         </div>
-        <div style={{}}>
+        <div style={{ display:'grid', gap:'.5em',gridTemplateColumns:'1fr 1fr' }}>
           <span
             style={{
-              width: "50%",
+              width: "100%",
               color:
                 orders[orderInView - 1].orderType === "eat-in"
                   ? "white"
@@ -153,13 +154,14 @@ const RestaurantMenu = () => {
           </span>
           <span
             style={{
+              width:'100%',
               color:
-                orders[orderInView - 1].orderType === "eat-in"
+                orders[orderInView - 1].orderType !== "eat-out"
                   ? "black"
                   : "white",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "eat-out"
+                orders[orderInView - 1].orderType === 'eat-out'
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
@@ -169,6 +171,44 @@ const RestaurantMenu = () => {
           >
             {" "}
             Takeaway
+          </span>
+          <span
+            style={{
+              color:
+                orders[orderInView - 1].orderType !== "delivery"
+                  ? "black"
+                  : "white",
+              cursor: "pointer",
+              backgroundColor:
+                orders[orderInView - 1].orderType === "delivery"
+                  ? "var(--cart-deep-red)"
+                  : "#EDEDED",
+              padding: ".5em .8em",
+              borderRadius: "0em .5em .5em 0",
+            }}
+            onClick={() => handleOrderType("delivery")}
+          >
+            {" "}
+            Delivery
+          </span>
+          <span
+            style={{
+              color:
+                orders[orderInView - 1].orderType !== "pick-up"
+                  ? "black"
+                  : "white",
+              cursor: "pointer",
+              backgroundColor:
+                orders[orderInView - 1].orderType === "pick-up"
+                  ? "var(--cart-deep-red)"
+                  : "#EDEDED",
+              padding: ".5em .8em",
+              borderRadius: "0em .5em .5em 0",
+            }}
+            onClick={() => handleOrderType("pick-up")}
+          >
+            {" "}
+            Pick-Up
           </span>
         </div>
       </Box>

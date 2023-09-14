@@ -130,8 +130,13 @@ const Cart = () => {
 
     return totalPrice;
   };
-const {data:merchantDetails,orders,totalAmount} = useSelector((state) => state.merchantReducer);
-const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPrice();
+const {data:merchantDetails,orders,takeAwayPrice,totalAmount} = useSelector((state) => state.merchantReducer);
+
+const  ordersDelivery = orders.filter(order=>order.orderType === 'delivery')
+
+let packCost = takeAwayPrice * ordersDelivery.length
+let restaurantAmount = ordersDelivery.length > 0 ? totalAmount + packCost : totalAmount
+const totalPrice =  merchantDetails.restaurant ? restaurantAmount: calculateTotalPrice();
 
 
   const handleOpen = () => {
@@ -240,7 +245,6 @@ const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPric
 
   const mutation = useMutation(sendPasswordToEndpoint, {
     onSuccess: (response) => {
-      console.log(response);
       setOpenCreatePinSuccessModal(true);
       setTimeout(() => {
         setOpenCreatePinSuccessModal(false);
@@ -249,7 +253,6 @@ const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPric
       queryClient.invalidateQueries("passwords"); // Optionally, invalidate relevant queries after the mutation
     },
     onError: (response) => {
-      console.log(response);
 
       setNewPins(["", "", "", ""]);
       setConfirmNewPins(["", "", "", ""]);
@@ -326,7 +329,6 @@ const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPric
       const noti = Array.isArray(error.response.data.message)
         ? error.response.data.message[0]
         : error.response.data.message;
-      console.log(noti);
 
       setTimeout(() => {
         if (noti === "Insufficient Funds") {
@@ -343,8 +345,6 @@ const totalPrice =  merchantDetails.restaurant ? totalAmount: calculateTotalPric
     return rest;
   } )
   
-
-console.log(ordersToSend)
   const sendRestaurantDataToEndpoint = async (payLoad) => {
     // const result = JSON.stringify(payLoad, null, 2);
 const result = JSON.stringify(payLoad,null,2)
@@ -705,6 +705,13 @@ const result = JSON.stringify(payLoad,null,2)
               marginBottom: "5rem",
             }}
           >
+          { merchantDetails.restaurant && ordersDelivery.length > 0 ?
+          <Box sx={{display:'flex',justifyContent:'space-between'}} >
+            <Typography> Take-Away Pack(+1) </Typography>
+            <Typography> {takeAwayPrice} x {ordersDelivery.length }  </Typography>
+          </Box>
+          : null
+           }
             <Box
               sx={{
                 display: "flex",

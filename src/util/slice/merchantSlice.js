@@ -12,6 +12,7 @@ const merchantSlice = createSlice({
     categoryNameInView: "",
     totalAmount: 0,
     receiptInView:null,
+    takeAwayPrice:0,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
@@ -177,15 +178,12 @@ const merchantSlice = createSlice({
       state.orders[state.orderInView - 1].amount -= action.payload.subTotal
     },
     resetState:(state,action)=>{
-      return {
-        data: [],
-        orderCart: [],
-        orders: [],
-        orderInView: 0,
-        categoryNameInView: "",
-        totalAmount: 0,
-      };
+       state.orders =  []
+        state.orderInView =  0
+        state.categoryNameInView = ""
+        state.totalAmount = 0
     },
+
     handlePreview:(state,action)=>{
       state.previewOrders  = state.orders[state.orderInView - 1]?.menu?.filter(item=>item.canPreview)
     },
@@ -194,6 +192,9 @@ const merchantSlice = createSlice({
     },
     fillUserDetails:(state,action)=>{
       state.userDetails  = action.payload
+    },
+    setTakeAwayPrice:(state,action)=>{
+      state.takeAwayPrice  = action.payload
     }
 
   },
@@ -206,6 +207,7 @@ export const {
   removeOrder,
   showReceiptInView,
   addMenu,
+  setTakeAwayPrice,
   handlePreview,
   addItemsToCart,
   setOrderInView,
