@@ -1,5 +1,5 @@
 import React from "react";
-import { Typography, Box, Card, Container } from "@mui/material";
+import { Typography, Box, Card, Container, Checkbox } from "@mui/material";
 import { useTheme } from "@mui/material";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useNavigate } from "react-router-dom";
@@ -27,11 +27,13 @@ import { CircularProgress } from "@mui/material";
 import CheckCircleOutlineRoundedIcon from "@mui/icons-material/CheckCircleOutlineRounded";
 import MoreVertRoundedIcon from "@mui/icons-material/MoreVertRounded";
 import { Dialog } from "@mui/material";
+import { useDispatch } from "react-redux";
 import { Slide } from "@mui/material";
 import OrderReciept from "../../components/OrderReciept";
 import FormattedPrice from "../../components/FormattedPrice";
 import useRestaurantOrders from "../../hooks/useRestaurantOrders";
 import { useSelector } from "react-redux";
+import { showReceiptInView } from "../../util/slice/merchantSlice";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -47,8 +49,19 @@ console.log(restaurantOrders)
   const [ordersItem, setOrdersItem] = useState();
   const [open, setOpen] = React.useState(false);
   const [view, setView] = useState('restaurant');
+  const [orderToView, setOrderToView] = useState(null);
   const [open2, setOpen2] = useState(false);
-  const handleClose = () => setOpen(false);
+  const [openConfirmModal, setOpenConfirmModal] = useState(false);
+  const [resOptionsOpen, setResOptionsOpen] = useState(false);
+  const handleClose = () => {
+    if( view === 'restaurant'){
+      setResOptionsOpen(false)
+     } 
+     else{
+      setOpen(false);
+     }
+  
+  } 
   const handleClose2 = () => setOpen2(false);
 
   const handleOpen2 = (item) => {
@@ -56,7 +69,17 @@ console.log(restaurantOrders)
   };
 
   const handleOpen = (item) => {
+    // setOpen(true);
+
+   if( view === 'restaurant'){
+    setResOptionsOpen(true)
+    console.log(item)
+    setOrderToView(item)
+    dispatch(showReceiptInView(item))
+   } 
+   else{
     setOpen(true);
+   }
     // const ordersFromId = orders.data.find((data) => data.id === item);
 
     // setOrdersItem(ordersFromId.id);
@@ -64,6 +87,7 @@ console.log(restaurantOrders)
 
   const currentTheme = useTheme();
   const navigate = useNavigate();
+  const dispatch = useDispatch();
 
   return (
     <AuthProvider>
@@ -300,7 +324,7 @@ textTransform:"none", fontSize:'1.2em',fontWeight:'600', '&:focus':{borderBottom
               ) : (
                  view === 'restaurant' && restaurantOrders.data.map((item) => (
                   <Card
-                    onClick={() => handleOpen(item.id)}
+                    onClick={() => handleOpen(item)}
                     key={item.id}
                     sx={{
                       display: "flex",
@@ -522,11 +546,197 @@ textTransform:"none", fontSize:'1.2em',fontWeight:'600', '&:focus':{borderBottom
                     }}
                     id="modal-modal-title"
                   >
-                    Veiw Order
+                    View Order
                   </Typography>
 
                   <img src={arrowLeft} alt="arr-left" />
                 </Box>
+                <Button
+                  onClick={handleClose}
+                  sx={{
+                    width: "95%",
+                    padding: "10px",
+                    borderColor: "#DC2A12",
+                    fontWeight: "1000",
+                    borderRadius: "8px",
+                    my: "2rem",
+                    color:
+                      currentTheme.palette.type === "light" ? "#000" : "#fff",
+                    fontFamily: "raleWay",
+                    "&:hover": {
+                      borderColor:
+                        currentTheme.palette === "light" ? "#000" : "#eeee",
+                    },
+                  }}
+                  variant="outlined"
+                >
+                  No, Go back
+                </Button>
+              </Card>
+            </Modal>
+            <Modal
+              open={resOptionsOpen}
+              onClose={handleClose}
+              aria-labelledby="modal-modal-title"
+              aria-describedby="modal-modal-description"
+            >
+              <Card
+                sx={{
+                  position: "absolute",
+                  borderTopLeftRadius: "10px",
+                  borderTopRightRadius: "10px",
+                  bottom: 0,
+                  width: { xs: "100%", sm: "70%", lg: "25%" },
+                  left: { xs: "0", sm: "14%", lg: "37%" },
+                  padding: "1rem",
+                  display: "flex",
+                  flexDirection: "column",
+                  justifyContent: "start",
+                  alignItems: "start",
+                }}
+              >
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: 600,
+                    fontSize: "16px",
+                    lineHeight: "18.78px",
+                    marginY: "1rem",
+                    color:
+                      currentTheme.palette.type === "light"
+                        ? "#1E1E1E"
+                        : "#EEEEEE",
+                  }}
+                  id="modal-modal-title"
+                >
+                  More Options
+                </Typography>
+
+                <Button
+                  onClick={() => navigate(`/restaurant-receipt/${orderToView?.id}`)}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                                        textTransform:'none',
+                    color:'black',
+                    width: "100%",
+                    borderBottom: "1px solid #CDCDCD",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: 1000,
+                      fontSize: "16px",
+                      lineHeight: "18.78px",
+                      marginY: "1rem",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1E1E1"
+                          : "#EEEEEE",
+                    }}
+                    id="modal-modal-title"
+                  >
+                    View Order
+                  </Typography>
+
+                  <img src={arrowLeft} alt="arr-left" />
+                </Button>
+                <Button
+                  onClick={() => setOpenConfirmModal(true)}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    textTransform:'none',
+                    color:'black',
+                    alignItems: "center",
+                    width: "100%",
+                    borderBottom: "1px solid #CDCDCD",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: 1000,
+                      fontSize: "16px",
+                      lineHeight: "18.78px",
+                      marginY: "1rem",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1E1E1"
+                          : "#EEEEEE",
+                    }}
+                    id="modal-modal-title"
+                  >
+                    Confirm Order
+                  </Typography>
+
+                  <img src={arrowLeft} alt="arr-left" />
+                </Button>
+                <Button
+                  onClick={() => handleOpen2(ordersItem ? ordersItem.id : "")}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    textTransform:'none',
+                    color:'black',
+                    width: "100%",
+                    borderBottom: "1px solid #CDCDCD",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: 1000,
+                      fontSize: "16px",
+                      lineHeight: "18.78px",
+                      marginY: "1rem",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1E1E1"
+                          : "#EEEEEE",
+                    }}
+                    id="modal-modal-title"
+                  >
+                    Repeat Order
+                  </Typography>
+
+                  <img src={arrowLeft} alt="arr-left" />
+                </Button>
+                <Button
+                  onClick={() => handleOpen2(ordersItem ? ordersItem.id : "")}
+                  sx={{
+                    display: "flex",
+                    justifyContent: "space-between",
+                    alignItems: "center",
+                    width: "100%",
+                    textTransform:'none',
+                    color:'black',
+                    borderBottom: "1px solid #CDCDCD",
+                  }}
+                >
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: 1000,
+                      fontSize: "16px",
+                      lineHeight: "18.78px",
+                      marginY: "1rem",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1E1E1"
+                          : "#EEEEEE",
+                    }}
+                    id="modal-modal-title"
+                  >
+                    Cancel Order
+                  </Typography>
+
+                  <img src={arrowLeft} alt="arr-left" />
+                </Button>
+
                 <Button
                   onClick={handleClose}
                   sx={{
@@ -563,6 +773,27 @@ textTransform:"none", fontSize:'1.2em',fontWeight:'600', '&:focus':{borderBottom
                 orderId={ordersItem ? ordersItem : ""}
                 // orders={orders.data ? orders.data : ""}
               />
+            </Dialog>
+            <Dialog
+              open={openConfirmModal}
+              onClose={()=>setOpenConfirmModal(false)}
+sx={{ '& .MuiPaper-root':{ display:'flex',position:'absolute',bottom:'0', margin:{xs:'0'} ,padding:'1em',flexDirection:'column',alignItems:'center',justifyContent:'center'}}}
+              TransitionComponent={Transition}
+            >
+          
+          <Box sx={{display:'flex',gap:'1em',flexDirection:'column'}} >
+            <Typography fontSize={'1.3em'} textAlign={'center'} fontWeight={800}  >Confirm Order</Typography>
+          <Typography fontSize={'1.1em'} textAlign={'center'} fontWeight={600}> Kindly Confirm that you have received your order. </Typography>
+<Typography textAlign={'center'} > Ensure you have received your order before confirming.You cannot undo this.</Typography>
+          </Box>
+<Box>
+  <Checkbox/> <span> I have received my order </span>
+</Box>
+
+<Box sx={{display:'flex', width:{xs:'90%' , sm:'80%',md:'70%'},gap:'1em',flexDirection:'column'}} >
+  <Button sx={{backgroundColor:'var(--primary-red)', textTransform:'none',padding:'.5em 0',color:'white'}} > Confirm Order </Button>
+  <Button sx={{border:'1px solid var(--primary-red)', textTransform:'none',padding:'.5em 0',color:'var(--primary-red)'}} onClick={()=>setOpenConfirmModal(false)} > Close </Button>
+</Box>
             </Dialog>
 
             {/* Dialouge full screen modal start end */}

@@ -144,7 +144,7 @@ const RestaurantMenu = () => {
                   : "black",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "eat-in"
+                orders[orderInView - 1].orderType === "eat-out"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
@@ -157,7 +157,7 @@ const RestaurantMenu = () => {
           <span
             style={{
               color:
-                orders[orderInView - 1].orderType === "eat-in"
+                orders[orderInView - 1].orderType === "eat-out"
                   ? "black"
                   : "white",
               cursor: "pointer",
@@ -168,7 +168,7 @@ const RestaurantMenu = () => {
               padding: ".5em .8em",
               borderRadius: "0em .5em .5em 0",
             }}
-            onClick={() => handleOrderType("take-away")}
+            onClick={() => handleOrderType("eat-out")}
           >
             {" "}
             Takeaway
