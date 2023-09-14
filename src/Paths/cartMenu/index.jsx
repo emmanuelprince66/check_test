@@ -42,7 +42,6 @@ const RestaurantMenu = () => {
     totalAmount,
     previewOrders,
   } = useSelector((state) => state.merchantReducer);
-  // console.log(merchantDetails.restaurant.id)
   const menu = useMenu(merchantDetails.restaurant.id);
   const category = useRestaurantCategory(merchantDetails.restaurant.id);
   const navigate = useNavigate();
@@ -92,8 +91,6 @@ const RestaurantMenu = () => {
     dispatch(updateOrderType(type));
   }
   function showPreview() {
-    let me = orders[orderInView - 1].menu.filter((item) => item.added);
-    console.log(me);
     setPreview(true);
   }
 

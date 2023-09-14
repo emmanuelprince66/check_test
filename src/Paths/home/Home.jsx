@@ -25,18 +25,27 @@ import { AuthProvider } from "../../util/AuthContext";
 import useUser from "../../hooks/useUser";
 import Scanner from "../../components/scanner/Scanner";
 import Qrscanner from "../../components/Qrscanner";
+import { fillUserDetails } from "../../util/slice/merchantSlice";
 import { Link } from "react-router-dom";
 import Acctbox from "../../components/acctbox/Acctbox";
+import {useDispatch} from 'react-redux'
 
 const Home = () => {
   const currentTheme = useTheme();
+  const dispatch = useDispatch()
   const navigate = useNavigate();
   const [isTextVisible, setIsTextVisible] = useState(false);
   const [showScanner, setShowScanner] = useState(false);
 
   const user = useUser();
 
+  
   useEffect(() => {
+   dispatch(fillUserDetails(user.data))
+  }, [user,dispatch]);
+
+  useEffect(() => {
+  
     setTimeout(() => {
       setShowScanner(true);
     }, 4000);

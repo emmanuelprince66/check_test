@@ -10,6 +10,7 @@ import TableRow from '@mui/material/TableRow';
 import Paper from '@mui/material/Paper';
 import BackArrow from '../../components/backArrow/BackArrow';
 import { useSelector } from 'react-redux'
+import { date } from '../../hooks/useDateForm';
 const RestaurantReceipt = () => {
    const StyledTableCell = styled(TableCell)(({ theme }) => ({
       [`&.${tableCellClasses.head}`]: {
@@ -31,7 +32,7 @@ const RestaurantReceipt = () => {
       },
     }));
     
-   const {receiptInView}= useSelector(state=>state.merchantReducer)
+   const {receiptInView,userDetails}= useSelector(state=>state.merchantReducer)
   return (
    <Container sx={{padding:'1em 1em'}} >
       <BackArrow/>
@@ -44,16 +45,16 @@ const RestaurantReceipt = () => {
    <Typography> ID</Typography>
 </Box>
 <Box sx={{display:'flex',justifyContent:'space-between'}} >
-   <span>DATE & TIME </span>
-   <span> </span>
+   <span>DATE & TIME: </span>
+   <span style={{fontWeight:'600'}}> {date(receiptInView?.createdAt)} </span>
 </Box>
 <Box sx={{display:'flex',justifyContent:'space-between'}} >
-   <span>MERCHANT </span>
-   <span>{receiptInView?.restaurant?.companyName} </span>
+   <span>MERCHANT: </span>
+   <span style={{fontWeight:'600'}}>{receiptInView?.restaurant?.companyName} </span>
 </Box>
 <Box sx={{display:'flex',justifyContent:'space-between'}} >
-   <span>CUSTOMER </span>
-   <span> </span>
+   <span>CUSTOMER:</span>
+   <span style={{fontWeight:'600'}} > {userDetails?.firstName} &nbsp;{userDetails?.lastName} </span>
 </Box>
    </Box>
 
@@ -99,8 +100,8 @@ const RestaurantReceipt = () => {
 
 </Box>
 <Box sx={{display:'flex', margin:'auto', width:{xs:'90%' , sm:'80%',md:'70%'},gap:'1em',flexDirection:'column'}} >
-  <Button sx={{backgroundColor:'var(--primary-red)', textTransform:'none',padding:'.5em 0',color:'white'}} > Download </Button>
-  <Button sx={{border:'1px solid var(--primary-red)', textTransform:'none',padding:'.5em 0',color:'var(--primary-red)'}} > Share </Button>
+  <Button sx={{backgroundColor:'var(--primary-red)', textTransform:'none',padding:'1em 0',color:'white'}} > Download </Button>
+  <Button sx={{border:'1px solid var(--primary-red)', textTransform:'none',padding:'1em 0',color:'var(--primary-red)'}} > Share </Button>
 </Box>
 
 

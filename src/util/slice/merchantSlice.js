@@ -6,6 +6,7 @@ const merchantSlice = createSlice({
     data: [],
     orderCart: [],
     orders: [],
+    userDetails:null,
     previewOrders:[],
     orderInView: 0,
     categoryNameInView: "",
@@ -74,7 +75,6 @@ const merchantSlice = createSlice({
           },
           0
         );
-        console.log(subTotal,JSON.parse(JSON.stringify( state.orders[orderIndex])))
         state.orders[orderIndex] = {...state.orders[orderIndex],amount:subTotal} ;
 
         state.totalAmount = amount;
@@ -162,7 +162,6 @@ const merchantSlice = createSlice({
   return item
 }
       )
-      console.log(JSON.parse(JSON.stringify(neil)))
     },
     removeItemFromCart:(state,action)=>{
       state.orders[state.orderInView - 1].items = state.orders[state.orderInView - 1].items.filter((item)=> item.id !== action.payload.id )
@@ -192,6 +191,9 @@ const merchantSlice = createSlice({
     },
     showReceiptInView:(state,action)=>{
       state.receiptInView  = action.payload
+    },
+    fillUserDetails:(state,action)=>{
+      state.userDetails  = action.payload
     }
 
   },
@@ -200,6 +202,7 @@ const merchantSlice = createSlice({
 export const {
   populateMerchantDetails,
   addOrders,
+  fillUserDetails,
   removeOrder,
   showReceiptInView,
   addMenu,
