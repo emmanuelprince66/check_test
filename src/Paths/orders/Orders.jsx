@@ -41,11 +41,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 
 const Orders = () => {
   const orders = useOrders();
-  console.log(orders.data);
   const restaurantOrders =  useRestaurantOrders();
-  console.log(restaurantOrders.data)
   const {data:merchantDetails} = useSelector(state=>state.merchantReducer)
-console.log(restaurantOrders)
   const [ordersItem, setOrdersItem] = useState();
   const [open, setOpen] = React.useState(false);
   const [view, setView] = useState('restaurant');

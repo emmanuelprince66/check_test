@@ -144,7 +144,7 @@ const RestaurantMenu = () => {
                   : "black",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "eat-out"
+                orders[orderInView - 1].orderType === "eat-in"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
@@ -157,12 +157,12 @@ const RestaurantMenu = () => {
           <span
             style={{
               color:
-                orders[orderInView - 1].orderType === "eat-out"
+                orders[orderInView - 1].orderType === "eat-in"
                   ? "black"
                   : "white",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "take-away"
+                orders[orderInView - 1].orderType === "eat-out"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
