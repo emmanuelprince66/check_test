@@ -9,7 +9,7 @@ export default function useRestaurantOrders() {
 
   const enabled = token !== undefined && token !== null;
 
-  const orders = useQuery(["orders", token], fetcher, {
+  const orders = useQuery(["restaurantOrders", token], fetcher, {
     refetchOnReconnect: false,
     refetchOnWindowFocus: false,
     refetchInterval: 50000,

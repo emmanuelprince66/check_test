@@ -6,6 +6,7 @@ const merchantSlice = createSlice({
     data: [],
     orderCart: [],
     orders: [],
+    previewOrders:[],
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
@@ -35,7 +36,7 @@ const merchantSlice = createSlice({
       );
       state.orders[orderIndex].menu = state.orders[orderIndex].menu.map((item)=>{
         if(item.id === action.payload.order.menuId ){
-          return {...item,'added':true }
+          return {...item,'added':true ,canPreview:true,canEditPreview:true}
 
         }
         return item;
@@ -155,7 +156,7 @@ const merchantSlice = createSlice({
       state.orders[state.orderInView - 1].menu = state.orders[state.orderInView - 1].menu.map(
 (item)=>{
   if(item.id === action.payload){
-    return{...item,added:false}
+    return{...item,added:false,canEditPreview:false}
   }
   return item
 }
@@ -184,7 +185,11 @@ const merchantSlice = createSlice({
         categoryNameInView: "",
         totalAmount: 0,
       };
+    },
+    handlePreview:(state,action)=>{
+      state.previewOrders  = state.orders[state.orderInView - 1]?.menu?.filter(item=>item.canPreview)
     }
+
   },
 });
 
@@ -193,6 +198,7 @@ export const {
   addOrders,
   removeOrder,
   addMenu,
+  handlePreview,
   addItemsToCart,
   setOrderInView,
   removeItemFromCart,

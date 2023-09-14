@@ -49,7 +49,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
       sx={{
         width: "48%",
         height: "200px",
-        display: category === itemInfo.category.name ? "block" : preview ? 'block': "none",
+        display: category === itemInfo.category.name ? "block" :preview ? 'block': "none",
       }}
       item
     >
@@ -114,14 +114,14 @@ setTimeout(()=>setShowRemoveModal(false),300)
           alignItems="center"
         >
 
-          {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id || preview ? (
+          {itemInfo?.added  && orders[id - 1]?.menu[index].id === itemInfo.id || itemInfo.canEditPreview ? (
             <Box display="flex" sx={{width:'100%'}} gap={'.3em'} justifyContent={'space-between'} >
               <Button sx={{backgroundColor:"#E8E5E5",width:'60%', minWidth:'30px', padding:'4px 8px', textTransform:'none',color:'black'}} onClick={()=>setShowRemoveModal(true)} >Remove</Button>
               <Button  sx={{backgroundColor:"grey", minWidth:'30px',  '&:hover': {
           backgroundColor: 'rgb(11 13 14 / 43%)',
         }, '&.:focus':{backgroundColor:"grey"}, width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
             </Box>
-          ) : !itemInfo.added  ?(
+          ) : !itemInfo.added || !itemInfo.canEditPreview  ?(
             <Box sx={{width:'100%' ,display:'flex'}} >
             <Box
             display="flex"
@@ -168,6 +168,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
 
             </Box>
           )
+          : itemInfo.canPreview ? null
           : null
           }
         </Box>

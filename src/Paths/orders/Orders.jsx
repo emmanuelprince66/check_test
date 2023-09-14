@@ -40,7 +40,8 @@ const Transition = React.forwardRef(function Transition(props, ref) {
 const Orders = () => {
   const orders = useOrders();
   console.log(orders.data);
-  const restaurantOrders =  useRestaurantOrders()
+  const restaurantOrders =  useRestaurantOrders();
+  console.log(restaurantOrders.data)
   const {data:merchantDetails} = useSelector(state=>state.merchantReducer)
 console.log(restaurantOrders)
   const [ordersItem, setOrdersItem] = useState();
@@ -102,11 +103,11 @@ console.log(restaurantOrders)
             My Status
           </Typography>
 
-          <Box sx={{borderBottom:"1px solid grey", justifyContent:"center",display:'flex',gap:'2em'}} >
-            <Button onClick={()=>setView('restaurant')} sx={{color:"var(--primary-red)",textTransform:"none"
-,'&:focus':{borderBottom:"1px solid var(--primary-red)"}}} >Restaurant</Button>
-            <Button onClick={()=>setView('supermarket')} sx={{color:"var(--primary-red)"
-,textTransform:"none",'&:focus':{borderBottom:"1px solid var(--primary-red)"}}}>Supermarket </Button>
+          <Box sx={{borderBottom:"1px solid grey", justifyContent:"center",display:'flex',gap:'2em',marginBottom:'1em'}} >
+            <Button onClick={()=>setView('restaurant')} sx={{color: view === 'restaurant' ? "  var(--primary-red)" : 'grey', borderBottom: view === 'restaurant'? "2px solid var(--primary-red)" :'', fontSize:'1.2em',fontWeight:'600',textTransform:"none"
+,'&:focus':{borderBottom:"2px solid var(--primary-red)"}}} >Restaurant</Button>
+            <Button onClick={()=>setView('supermarket')} sx={{color:  view === 'supermarket' ?'var(--primary-red)' : 'grey',borderBottom: view === 'supermarket'? "2px solid var(--primary-red)" :'',
+textTransform:"none", fontSize:'1.2em',fontWeight:'600', '&:focus':{borderBottom:"2px solid var(--primary-red)"}}}>Supermarket </Button>
           </Box>
 
           <Box
@@ -117,7 +118,7 @@ console.log(restaurantOrders)
               marginBottom: "5rem",
             }}
           >
-            { view === 'supermarket' && orders?.data ? (
+            {  orders?.data ? (
               orders.data == 0 ? (
                 <NoResult
                   notification="You currenty have no orders!"
@@ -126,7 +127,7 @@ console.log(restaurantOrders)
                   linkText="/home"
                 />
               ) : (
-                orders.data.map((item) => (
+                view === 'supermarket' && orders.data.map((item) => (
                   <Card
                     onClick={() => handleOpen(item.id)}
                     key={item.id}
@@ -287,9 +288,9 @@ console.log(restaurantOrders)
             )}
 
 
-            {restaurantOrders.data ? 
+            { restaurantOrders?.data ? 
             (
-              restaurantOrders.data == 0 ? (
+              restaurantOrders.data.length === 0 ? (
                 <NoResult
                   notification="You currenty have no orders!"
                   smallText="Proceed to scan to add more orders"
@@ -297,7 +298,7 @@ console.log(restaurantOrders)
                   linkText="/home"
                 />
               ) : (
-                view === 'restaurant' && restaurantOrders.data.map((item) => (
+                 view === 'restaurant' && restaurantOrders.data.map((item) => (
                   <Card
                     onClick={() => handleOpen(item.id)}
                     key={item.id}

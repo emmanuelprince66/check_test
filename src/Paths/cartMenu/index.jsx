@@ -21,6 +21,7 @@ import {
   addMenu,
   updateOrderType,
   setCategoryNameInView,
+  handlePreview,
 } from "../../util/slice/merchantSlice";
 import CartBox from "../../components/cartBox/cartBox";
 import { useNavigate } from "react-router-dom";
@@ -39,6 +40,7 @@ const RestaurantMenu = () => {
     orderInView,
     orderCart,
     totalAmount,
+    previewOrders,
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails.restaurant.id)
   const menu = useMenu(merchantDetails.restaurant.id);
@@ -72,6 +74,13 @@ const RestaurantMenu = () => {
     }
   }, [category, orderCart, dispatch, categoryInView, categoryNameInView]);
 
+  useEffect(() => {
+    
+  
+   dispatch(handlePreview())
+    
+  }, [orders[orderInView -1].menu])
+  
   function checkCategory(i, name) {
     dispatch(setCategoryNameInView(name));
     setCategoryInView(i);
@@ -223,7 +232,7 @@ const RestaurantMenu = () => {
           })
         ) : (
           orders[orderInView - 1]?.menu
-            .filter((item) => item.added)
+            .filter((item) => item.canPreview)
             .map((item, i) => {
               return (
                 <CartBox
