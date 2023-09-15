@@ -17,6 +17,8 @@
   --cart-deep-red:#EB001B;
   --grey-cart-btn:#E8E5E5;
   --currency-green:#008000;
+  --text-gold:hsla(36, 100%, 39%, 1);
+  --box-gold:rgba(197, 118, 0, 0.1)
 }
 .max_width {
   display: flex;

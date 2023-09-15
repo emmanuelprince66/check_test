@@ -462,20 +462,22 @@ const Orders = () => {
                     sx={{
                       display: "flex",
                       cursor: "pointer",
+                      flexDirection:'column',
                       justifyContent: "space-between",
-                      alignItems: "start",
+                      alignItems: "center",
                       padding: "0.6rem",
                     }}
                   >
                     <Box
                       sx={{
                         display: "flex",
-                        flexDirection: "column",
-                        justifyContent: "center",
-                        gap: "5px",
+                        justifyContent:'space-between',
+                                             gap: "5px",
+                                             width:'100%',
                         alignItems: "start",
                       }}
                     >
+                    <Box>
                       <Typography
                         sx={{
                           fontFamily: "raleWay",
@@ -498,7 +500,7 @@ const Orders = () => {
                           color:
                             item.status === "COMPLETED"
                               ? "#008000"
-                              : item.status === "PENDING"
+                              : item.status === "PENDING"  || item.status === "PREPARING" 
                               ? "#C57600"
                               : item.status === "CANCELLED"
                               ? "red"
@@ -507,8 +509,15 @@ const Orders = () => {
                       >
                         <FormattedPrice amount={item.totalAmount} />
                       </Typography>
+                      </Box>
+                      <MoreVertRoundedIcon />
 
-                      <Box
+                    </Box>
+
+
+
+<Box  sx={{display:'flex',width:'100%', justifyContent:'space-between' }} >
+<Box
                         sx={{
                           display: "flex",
                           justifyContent: "start",
@@ -522,8 +531,8 @@ const Orders = () => {
                             paddingTop: "2px",
                             color:
                               item.status === "COMPLETED"
-                                ? "#008000"
-                                : item.status === "PENDING"
+                                ? "#727272"
+                                : item.status === "PENDING"   || item.status === "PREPARING"
                                 ? "#C57600"
                                 : item.status === "CANCELLED"
                                 ? "red"
@@ -534,23 +543,24 @@ const Orders = () => {
                           sx={{
                             fontFamily: "raleWay",
                             fontWeight: "900",
-                            fontSize: "15px",
+                            fontSize: "10px",
                             color:
                               item.status === "COMPLETED"
-                                ? "#008000"
-                                : item.status === "PENDING"
+                                ? "#727272"
+                                : item.status === "PENDING" || item.status === "PREPARING"
                                 ? "#C57600"
                                 : item.status === "CANCELLED"
                                 ? "red"
                                 : "#727272",
                           }}
                         >
-                          {item.status.toLowerCase()}
+                          {item.isHomeDelivery ? 'Processing':'Pending' }
                         </Typography>
                       </Box>
-                    </Box>
 
-                    <Box
+
+
+   <Box
                       sx={{
                         display: "flex",
                         flexDirection: "column",
@@ -558,7 +568,51 @@ const Orders = () => {
                         gap: "2rem",
                       }}
                     >
-                      <MoreVertRoundedIcon />
+
+                      <Box
+                        sx={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "3px",
+                        }}
+                      >
+                        <CheckCircleOutlineRoundedIcon
+                          sx={{
+                            color:
+                              item.status === "COMPLETED"
+                                ? "#727272"
+                                : item.status === "PENDING"  || item.status === "PREPARING"
+                                ? "#727272"
+                                : item.status === "CANCELLED"
+                                ? "red"
+                                : "#727272",
+                            fontSize: "13px",
+                          }}
+                        />
+                        <Typography
+                          sx={{
+                            fontFamily: "raleWay",
+                            fontWeight: "900",
+                            fontSize: "11px",
+                            color:
+                              item.status === "OUT FOR DELIVERY"
+                                ? "#C57600"
+                                : "#727272",
+                          }}
+                        >
+                         { item.orders[0].orderType === 'eat-in' ? 'Serving': item.orders[0].orderType === 'delivery'? 'Out For Delivery':'To be picked up'}
+                        </Typography>
+                      </Box>
+                    </Box>
+
+<Box
+                      sx={{
+                        display: "flex",
+                        flexDirection: "column",
+                        alignItems: "end",
+                        gap: "2rem",
+                      }}
+                    >
 
                       <Box
                         sx={{
@@ -572,7 +626,7 @@ const Orders = () => {
                             color:
                               item.status === "COMPLETED"
                                 ? "#008000"
-                                : item.status === "PENDING"
+                                : item.status === "PENDING"  || item.status === "PREPARING"
                                 ? "#727272"
                                 : item.status === "CANCELLED"
                                 ? "red"
@@ -584,21 +638,30 @@ const Orders = () => {
                           sx={{
                             fontFamily: "raleWay",
                             fontWeight: "900",
-                            fontSize: "15px",
+                            fontSize: "11px",
                             color:
                               item.status === "COMPLETED"
                                 ? "#008000"
-                                : item.status === "PENDING"
+                                : item.status === "PENDING" || item.status === "PREPARING"
                                 ? "#727272"
                                 : item.status === "CANCELLED"
                                 ? "red"
                                 : "#727272",
                           }}
                         >
-                          completed
+                          Completed
                         </Typography>
                       </Box>
                     </Box>
+
+
+
+
+</Box>
+
+
+
+
                   </Card>
                 ))
               )

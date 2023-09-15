@@ -43,8 +43,8 @@ const RestaurantMenu = () => {
     totalAmount,
     previewOrders,
   } = useSelector((state) => state.merchantReducer);
-  const menu = useMenu(merchantDetails.restaurant.id);
-  const category = useRestaurantCategory(merchantDetails.restaurant.id);
+  const menu = useMenu(10);
+  const category = useRestaurantCategory(10);
   const navigate = useNavigate();
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
