@@ -66,7 +66,7 @@ const Cart = () => {
 
   const cart = useSelector((state) => state.cart);
   const supermarketCart = useSelector((state) => state.cart);
-  
+
   const [text, setText] = useState(false);
   const [phoneNo, setPhoneNo] = useState("");
   const [openLocationOptions, setOpenLocationOptions] = useState(false);
@@ -75,10 +75,12 @@ const Cart = () => {
   const [phoneNoError, setPhoneNoError] = useState(false);
   const currentTheme = useTheme();
 
-
-const {data:merchantDetails,orders,takeAwayPrice,totalAmount} = useSelector((state) => state.merchantReducer);
-
-
+  const {
+    data: merchantDetails,
+    orders,
+    takeAwayPrice,
+    totalAmount,
+  } = useSelector((state) => state.merchantReducer);
 
   return (
     <AuthProvider>
@@ -90,109 +92,106 @@ const {data:merchantDetails,orders,takeAwayPrice,totalAmount} = useSelector((sta
           maxWidth: { xs: "100%", sm: "100%", md: "31%" },
         }}
       >
-        
-
-
-{merchantDetails?.restaurant ?
-
-<Restaurant/>
-:  
-
-<Container
-          sx={{
-            display: "flex",
-            flexDirection: "column",
-            alignItems: "start",
-            mx: "auto",
-            width: { xs: "96%", sm: "70%", md: "100%" },
-            minHeight: "100vh",
-            maxHeight: "100vh",
-            padding: 0,
-            position: "relative",
-          }}
-        >
-          <Box
-            sx={{
-              marginBottom: "1rem",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "center",
-              width: "100%",
-              marginBottom: "3rem",
-            }}
-          >
-            <Typography
-              sx={{
-                fontFamily: "raleWay",
-                fontSize: "24px",
-                fontWeight: 600,
-              }}
-            >
-              My Cart
-            </Typography>
-
-            {supermarketCart.length != 0 && (
-              <Button
-                onClick={() => setDeleteCart(true)}
-                sx={{
-                  width: "35%",
-                  textTransform: "capitalize",
-                  fontWeight: "1000",
-                  background:
-                    currentTheme.palette.type === "light"
-                      ? "#dc0019"
-                      : "#dc0019",
-                  padding: "10px",
-                  borderRadius: "8px",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor:
-                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                  },
-                  fontFamily: "raleWay",
-                }}
-              >
-                Clear Cart
-              </Button>
-            )}
-          </Box>
-
-          {/*Card  */}
-          <Box
+        {merchantDetails?.restaurant ? (
+          <Restaurant />
+        ) : (
+          <Container
             sx={{
               display: "flex",
               flexDirection: "column",
-              alignItems: "center",
-              gap: "10px",
-              width: "100%",
-              paddingY: "10px",
-              maxHeight: "22rem",
-              overflowY: "scroll",
+              alignItems: "start",
+              mx: "auto",
+              width: { xs: "96%", sm: "70%", md: "100%" },
+              minHeight: "100vh",
+              maxHeight: "100vh",
+              padding: 0,
+              position: "relative",
             }}
           >
-            {supermarketCart.length === 0 ? (
-              <NoResult
-                notification="You have no item in your cart"
-                smallText="proceed to scan to add items"
-                buttonText="Proceed"
-                linkText="/scan"
-              />
-            ) : (
-              supermarketCart.map((item) => <CartItem item={item} key={item.id} />)
-            )}
-          </Box>
-          {/* Card end */}
+            <Box
+              sx={{
+                marginBottom: "1rem",
+                display: "flex",
+                justifyContent: "space-between",
+                alignItems: "center",
+                width: "100%",
+                marginBottom: "3rem",
+              }}
+            >
+              <Typography
+                sx={{
+                  fontFamily: "raleWay",
+                  fontSize: "24px",
+                  fontWeight: 600,
+                }}
+              >
+                My Cart
+              </Typography>
 
-          <ToastContainer />
-        </Container>
+              {supermarketCart.length != 0 && (
+                <Button
+                  onClick={() => setDeleteCart(true)}
+                  sx={{
+                    width: "35%",
+                    textTransform: "capitalize",
+                    fontWeight: "1000",
+                    background:
+                      currentTheme.palette.type === "light"
+                        ? "#dc0019"
+                        : "#dc0019",
+                    padding: "10px",
+                    borderRadius: "8px",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor:
+                        currentTheme.palette === "light"
+                          ? "#dc0019"
+                          : "#dc0019",
+                    },
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Clear Cart
+                </Button>
+              )}
+            </Box>
 
-}
+            {/*Card  */}
+            <Box
+              sx={{
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                gap: "10px",
+                width: "100%",
+                paddingY: "10px",
+                maxHeight: "22rem",
+                overflowY: "scroll",
+              }}
+            >
+              {supermarketCart.length === 0 ? (
+                <NoResult
+                  notification="You have no item in your cart"
+                  smallText="proceed to scan to add items"
+                  buttonText="Proceed"
+                  linkText="/scan"
+                />
+              ) : (
+                supermarketCart.map((item) => (
+                  <CartItem item={item} key={item.id} />
+                ))
+              )}
+            </Box>
+            {/* Card end */}
 
+            <ToastContainer />
+          </Container>
+        )}
 
-<PlaceOrder
-restaurant={merchantDetails.restaurant}
-supermarketCart={supermarketCart}
-  />
+        <PlaceOrder
+          restaurant={merchantDetails.restaurant}
+          supermarketCart={supermarketCart}
+        />
 
         {/* NAVBAR */}
 

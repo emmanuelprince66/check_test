@@ -24,6 +24,7 @@ navigate("/restaurant/menu");
   return (
     <Dialog
       open="true"
+      onClose={closeModal}
       sx={{
         "& .MuiPaper-root": {
           position: "absolute",

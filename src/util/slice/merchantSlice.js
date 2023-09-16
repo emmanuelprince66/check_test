@@ -13,6 +13,8 @@ const merchantSlice = createSlice({
     totalAmount: 0,
     receiptInView:null,
     takeAwayPrice:0,
+    myLocation:{},
+    landmarks:null,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
@@ -195,6 +197,12 @@ const merchantSlice = createSlice({
     },
     setTakeAwayPrice:(state,action)=>{
       state.takeAwayPrice  = action.payload
+    },
+    setLocation:(state,action)=>{
+      state.myLocation  = action.payload
+    },
+    setLandmarks:(state,action)=>{
+      state.landmarks  = action.payload
     }
 
   },
@@ -208,6 +216,8 @@ export const {
   showReceiptInView,
   addMenu,
   setTakeAwayPrice,
+  setLocation,
+  setLandmarks,
   handlePreview,
   addItemsToCart,
   setOrderInView,

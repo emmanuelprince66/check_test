@@ -47,9 +47,10 @@ import checkLogo from "../../images/checkLogo.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
-import { resetState } from "../../util/slice/merchantSlice";
+import { getLandmarks } from "../../hooks/useGetLandMarks";
+import { resetState, setLandmarks, setLocation } from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
-
+import { useLocation } from "react-router-dom";
 export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const Transition = React.forwardRef(function Transition(props, ref) {
     return <Slide direction="up" ref={ref} {...props} />;
@@ -125,7 +126,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
     return totalPrice;
   };
-  const { orders, takeAwayPrice, totalAmount } = useSelector(
+  const { orders,data:merchantDetails, takeAwayPrice, myLocation,landmarks, totalAmount } = useSelector(
     (state) => state.merchantReducer
   );
 
@@ -133,10 +134,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     (order) => order.orderType === "delivery"
   );
 
-  let packCost = takeAwayPrice * ordersDelivery.length;
-  let restaurantAmount =
-    ordersDelivery.length > 0 ? totalAmount + packCost : totalAmount;
-  const totalPrice = restaurant ? restaurantAmount : calculateTotalPrice();
 
   const handleOpen = () => {
     // calling the modals if its restaurant or supermarket...
@@ -145,9 +142,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     if (restaurant) {
       itemInCart ? setOpen(true) : notify("No items in your cart!");
 
-      ordersDelivery.length > 0
+      ordersDelivery.length > 0 && location.pathname === "/cart"
         ? navigate("/restaurant-checkout")
-        : null
+        : null;
     } else {
       supermarketCart?.length !== 0
         ? setOpen(true)
@@ -181,6 +178,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   };
   const handleOpenLocationOptions = () => {
     setOpenLocationOptions(true);
+   getLandmarks( myLocation.latitude,myLocation.longitude ).then((res)=>{
+      dispatch(setLandmarks(res.data))
+      console.log(res.data)
+
+   })
+   .catch(err=>console.log(err))
   };
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
@@ -388,14 +391,20 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       throw new Error(error.response);
     }
   };
-  const commissionCal = (0.5 / 100) * totalPrice;
+  let restaurantCommission = Number(((1 / 100) * totalAmount).toFixed(2))
+    let packCost = takeAwayPrice * ordersDelivery.length;
+  let restaurantAmount =
+  ordersDelivery.length > 0 ? totalAmount + packCost + restaurantCommission  : totalAmount + restaurantCommission;
+    const totalPrice = restaurant ? restaurantAmount  : calculateTotalPrice();
+  const commissionCal = (1 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
   const superMarketId = superMarket.data ? superMarket.data.id : "";
 
+
   const restaurantPayLoad = {
-    commission: commission,
+    commission: restaurantCommission,
     category: "restaurant",
-    restaurantId: 10,
+    restaurantId: merchantDetails?.restaurant.id,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
@@ -537,6 +546,15 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
   const navigate = useNavigate();
   const currentTheme = useTheme();
+  const location = useLocation();
+  const locationData = useMyLocation();
+  locationData
+    .then((coords) => {
+      dispatch(setLocation(coords));
+    })
+    .catch((err) => console.log(err));
+
+  console.log(location);
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
@@ -656,7 +674,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               fontFamily: "raleWay",
             }}
           >
-            {ordersDelivery.length > 0 ? "CheckOut" : "Proceed to payment"}
+            {ordersDelivery.length > 0 && location.pathname === "/cart"
+              ? "Checkout"
+              : "Proceed to payment"}
           </Button>
         </Box>
       </Box>
@@ -1687,69 +1707,75 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
       {/* Dialog for Location Options   */}
 
-{openLocationOptions ?
-         <Dialog
-        sx={{
-          "& .MuiPaper-root": {
-            width: "100%",
-            position: "absolute",
-            bottom: "0",
-            margin: "0",
-          },
-        }}
-        open={openLocationOptions}
-        onClose={closeLocationOptions}
-        TransitionComponent={Transition}
-      >
-        <Box
+      {openLocationOptions ? (
+        <Dialog
           sx={{
-            display: "flex",
-            height: "100%",
-            width: "100%",
-            alignItems: "center",
-            justifyContent: "center",
-            flexDirection: "column",
-            gap: "1rem",
+            "& .MuiPaper-root": {
+              width: "100%",
+              position: "absolute",
+              bottom: "0",
+              margin: "0",
+            },
           }}
+          open={openLocationOptions}
+          onClose={closeLocationOptions}
+          TransitionComponent={Transition}
         >
           <Box
             sx={{
-              marginBottom: "1rem",
+              display: "flex",
+              height: "100%",
+              width: "100%",
+              alignItems: "center",
+              justifyContent: "center",
+              flexDirection: "column",
+              gap: "1rem",
             }}
           >
-            <Typography
-              variant="h2"
+            <Box
               sx={{
-                fontFamily: "raleWay",
-                letterSpacing: "0.2em",
-                lineHeight: "2em",
-                fontWeight: "600",
-                textAlign: "left",
-
-                color:
-                  currentTheme.palette.type === "light" ? "#000000" : "#EEEEEE",
-                fontSize: "18px",
+                marginBottom: "1rem",
               }}
             >
-              Select Landmark
-            </Typography>
-            <TextField
-              label="Search Items"
-              sx={{ "& .MuiInputBase-root": { height: "44px" } }}
-              fullWidth
-              InputProps={{
-                startAdornment: (
-                  <InputAdornment position="start">
-                    <SearchIcon />
-                  </InputAdornment>
-                ),
-              }}
-            />
+              <Typography
+                variant="h2"
+                sx={{
+                  fontFamily: "raleWay",
+                  letterSpacing: "0.2em",
+                  lineHeight: "2em",
+                  fontWeight: "600",
+                  textAlign: "left",
+
+                  color:
+                    currentTheme.palette.type === "light"
+                      ? "#000000"
+                      : "#EEEEEE",
+                  fontSize: "18px",
+                }}
+              >
+                Select Landmark
+              </Typography>
+              <TextField
+                label="Search Items"
+                sx={{ "& .MuiInputBase-root": { height: "44px" } }}
+                fullWidth
+                InputProps={{
+                  startAdornment: (
+                    <InputAdornment position="start">
+                      <SearchIcon />
+                    </InputAdornment>
+                  ),
+                }}
+              />
+
+<Box>
+   <Typography> { landmarks?.address.city }  </Typography>
+</Box>
+
+            </Box>
           </Box>
-        </Box>
-      </Dialog>
-      :null
-}
+        </Dialog>
+      ) : null}
       {/* insufficient funds modal 8  start */}
 
       <InsufficientFund

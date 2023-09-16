@@ -18,6 +18,10 @@ import { useSelector } from "react-redux";
 import { CreateTable } from "../../components/createTable";
 import del from "../../assets/Cart/trash.svg";
 import edit from "../../assets/Cart/edit-2.svg";
+import BackArrow from "../../components/backArrow/BackArrow";
+import { getLandmarks } from "../../hooks/useGetLandMarks";
+
+import { PlaceOrder } from "../../components/handlePlacingOrder/handlePlacingOrder";
 const RestaurantCheckout = () => {
   const [showSummary, setShowSummary] = useState(false);
   const [deliveryDetails, setDeliveryDetails] = useState({});
@@ -28,16 +32,15 @@ const RestaurantCheckout = () => {
     register,
     formState: { errors },
   } = useForm();
-  const { orders } = useSelector((state) => state.merchantReducer);
+  const { data: merchantDetails,myLocation, orders } = useSelector((state) => state.merchantReducer);
   const ordersToSend = orders
     .filter((order) => order.items.length > 0)
     .map((item) => {
       const { menu, ...rest } = item;
       return rest;
     });
-  console.log(ordersToSend?.items);
+
   const onSubmit = (data) => {
-    console.log(data);
     setDeliveryDetails(data)
     setShowSummary(true);
   };
@@ -54,22 +57,42 @@ const RestaurantCheckout = () => {
     <Container
       sx={{
         display: "flex",
-        paddingBottom: "100px",
+        marginBottom: "400px",
+        paddingTop:'1em',
         flexDirection: "column",
         gap: "1em",
         position:'relative',
       }}
     >
+          <BackArrow/>
+
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
         <Typography fontSize={"1.3em"} fontWeight={700}>
           Checkout{" "}
         </Typography>
+        <Box          sx={{
+            padding: "0 1em",
+            justifyContent: "space-between",
+            display: "flex",alignItems:'center',
+            width:'100%'
+          }}
+ >
+
+          <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
+  <span style={{height:'2px',width:'100%', margin:'0 .5em', backgroundColor:'var(--text-gold)'}} ></span>
+  <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
+  <span style={{height:'2px',margin:'0 .5em',width:'100%',backgroundColor:!showSummary ?' var(--box-gold)':'var(--text-gold)'}} ></span>
+
+<img src={stepCircle}  style={{ width: "20px" ,opacity:!showSummary ?.7:1}} alt="step icon" />
+
+        </Box>
         <Box
           sx={{
-            color: "var(--text-gold)",
             padding: "0 1em",
             justifyContent: "space-between",
             display: "flex",
+            fontWeight:'600',
+            fontSize:'.8em'
           }}
         >
           <div
@@ -80,8 +103,8 @@ const RestaurantCheckout = () => {
               gap: ".5em",
             }}
           >
-            <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
             <span>Add Items</span>
+          
           </div>
           <div
             style={{
@@ -91,7 +114,6 @@ const RestaurantCheckout = () => {
               gap: ".5em",
             }}
           >
-            <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
             <span>Delivery</span>
           </div>
           <div
@@ -100,9 +122,9 @@ const RestaurantCheckout = () => {
               flexDirection: "column",
               alignItems: "center",
               gap: ".5em",
+              opacity:!showSummary ?.7:1,
             }}
           >
-            <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
             <span> Summary </span>
           </div>
         </Box>
@@ -112,8 +134,7 @@ const RestaurantCheckout = () => {
           <Box
             sx={{
               backgroundColor: "var(--box-gold)",
-              color: "var(--text-gold)",
-              fontSize: ".8em",
+                fontSize: ".8em",
               padding: "1em",
               gap: ".5em",
               display: "flex",
@@ -132,7 +153,7 @@ const RestaurantCheckout = () => {
           </Typography>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={5}>
+            <Grid container spacing={3}>
               <Grid item xs={12} sm={6}>
                 <Controller
                   name="phoneNumber"
@@ -174,6 +195,22 @@ const RestaurantCheckout = () => {
                     />
                   )}
                 />
+                                          <Box
+            sx={{
+              color: "var(--text-gold)",
+              fontSize: ".8em",
+              padding: ".5em 0",
+              gap: ".5em",
+              display: "flex",
+            }}
+          >
+            <img src={infoCircle} alt="info icon" />
+            <span>
+            Ensure this line is available until delivery.
+                        </span>
+          </Box>
+
+
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Controller
@@ -240,6 +277,21 @@ const RestaurantCheckout = () => {
                     />
                   )}
                 />
+                                          <Box
+            sx={{
+              color: "var(--text-gold)",
+              fontSize: ".8em",
+              padding: ".5em 0",
+              gap: ".5em",
+              display: "flex",
+            }}
+          >
+            <img src={infoCircle} alt="info icon" />
+            <span>
+            Please, provide a well detailed address for easy location.            </span>
+          </Box>
+
+
                 {errors.deliveryAddress && (
                   <p style={{ color: "red" }}>
                     {errors.deliveryAddress.message}
@@ -392,6 +444,9 @@ const RestaurantCheckout = () => {
 
 </Box>
 </Box>
+
+<PlaceOrder restaurant={merchantDetails.restaurant} />
+
 
         </Box>
       )}{" "}
