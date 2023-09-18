@@ -48,7 +48,11 @@ import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
-import { resetState, setLandmarks, setLocation } from "../../util/slice/merchantSlice";
+import {
+  resetState,
+  setLandmarks,
+  setLocation,
+} from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useLocation } from "react-router-dom";
 export const PlaceOrder = ({ supermarketCart, restaurant }) => {
@@ -126,14 +130,18 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
 
     return totalPrice;
   };
-  const { orders,data:merchantDetails, takeAwayPrice, myLocation,landmarks, totalAmount } = useSelector(
-    (state) => state.merchantReducer
-  );
+  const {
+    orders,
+    data: merchantDetails,
+    takeAwayPrice,
+    myLocation,
+    landmarks,
+    totalAmount,
+  } = useSelector((state) => state.merchantReducer);
 
   const ordersDelivery = orders.filter(
     (order) => order.orderType === "delivery"
   );
-
 
   const handleOpen = () => {
     // calling the modals if its restaurant or supermarket...
@@ -178,12 +186,12 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   };
   const handleOpenLocationOptions = () => {
     setOpenLocationOptions(true);
-   getLandmarks( myLocation.latitude,myLocation.longitude ).then((res)=>{
-      dispatch(setLandmarks(res.data))
-      console.log(res.data)
-
-   })
-   .catch(err=>console.log(err))
+    getLandmarks(myLocation.latitude, myLocation.longitude)
+      .then((res) => {
+        dispatch(setLandmarks(res.data));
+        console.log(res.data);
+      })
+      .catch((err) => console.log(err));
   };
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
@@ -391,20 +399,21 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       throw new Error(error.response);
     }
   };
-  let restaurantCommission = Number(((1 / 100) * totalAmount).toFixed(2))
-    let packCost = takeAwayPrice * ordersDelivery.length;
+  let restaurantCommission = Number(((1 / 100) * totalAmount).toFixed(2));
+  let packCost = takeAwayPrice * ordersDelivery.length;
   let restaurantAmount =
-  ordersDelivery.length > 0 ? totalAmount + packCost + restaurantCommission  : totalAmount + restaurantCommission;
-    const totalPrice = restaurant ? restaurantAmount  : calculateTotalPrice();
+    ordersDelivery.length > 0
+      ? totalAmount + packCost + restaurantCommission
+      : totalAmount + restaurantCommission;
+  const totalPrice = restaurant ? restaurantAmount : calculateTotalPrice();
   const commissionCal = (1 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
   const superMarketId = superMarket.data ? superMarket.data.id : "";
 
-
   const restaurantPayLoad = {
     commission: restaurantCommission,
     category: "restaurant",
-    restaurantId: merchantDetails?.restaurant.id,
+    restaurantId: merchantDetails?.restaurant?.id,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
@@ -570,10 +579,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           display: "flex",
           flexDirection: "column",
           position: "fixed",
-          bottom: "10px",
+          bottom: "0px",
           width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
           padding: "1.5rem",
-          gap: "2rem",
+          gap: "1rem",
           justifyContent: "start",
           background: "white",
           right: { xs: "1px", sm: "19%", lg: "35%" },
@@ -1768,10 +1777,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 }}
               />
 
-<Box>
-   <Typography> { landmarks?.address.city }  </Typography>
-</Box>
-
+              <Box>
+                <Typography> {landmarks?.address.city} </Typography>
+              </Box>
             </Box>
           </Box>
         </Dialog>

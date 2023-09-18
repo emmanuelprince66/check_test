@@ -43,8 +43,8 @@ const RestaurantMenu = () => {
     totalAmount,
     previewOrders,
   } = useSelector((state) => state.merchantReducer);
-  const menu = useMenu(10);
-  const category = useRestaurantCategory(10);
+  const menu = useMenu(merchantDetails?.restaurant?.id);
+  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
   const navigate = useNavigate();
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
@@ -60,7 +60,7 @@ const RestaurantMenu = () => {
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
-dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price))
+    dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price));
     if (!orders[orderInView - 1]?.menu) {
       dispatch(addMenu(filteredResult));
     }
@@ -75,12 +75,9 @@ dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price))
   }, [category, orderCart, dispatch, categoryInView, categoryNameInView]);
 
   useEffect(() => {
-    
-  
-   dispatch(handlePreview())
-    
-  }, [orders[orderInView -1].menu])
-  
+    dispatch(handlePreview());
+  }, [orders[orderInView - 1].menu]);
+
   function checkCategory(i, name) {
     dispatch(setCategoryNameInView(name));
     setCategoryInView(i);
@@ -116,23 +113,29 @@ dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price))
       <Box display="flex" sx={{}} gap="1em" justifyContent="space-between">
         <div style={{ display: "flex", flexDirection: "column", gap: ".5em" }}>
           <span>Order {orderInView}</span>
-          {orders[orderInView - 1].items.length > 0 && !preview ?  (
+          {orders[orderInView - 1].items.length > 0 && !preview ? (
             <Button
               onClick={showPreview}
               sx={{
                 cursor: "pointer",
                 borderRadius: ".5em",
                 padding: ".5em .8em",
-                color:'grey',
+                color: "grey",
                 border: "1px solid var(--primary-red)",
               }}
             >
               {" "}
-              Preview {" "}
+              Preview{" "}
             </Button>
           ) : null}{" "}
         </div>
-        <div style={{ display:'grid', gap:'.5em',gridTemplateColumns:'1fr 1fr' }}>
+        <div
+          style={{
+            display: "grid",
+            gap: ".5em",
+            gridTemplateColumns: "1fr 1fr",
+          }}
+        >
           <span
             style={{
               width: "100%",
@@ -154,14 +157,14 @@ dispatch(setTakeAwayPrice(menu?.data?.takeAway?.price))
           </span>
           <span
             style={{
-              width:'100%',
+              width: "100%",
               color:
                 orders[orderInView - 1].orderType !== "eat-out"
                   ? "black"
                   : "white",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === 'eat-out'
+                orders[orderInView - 1].orderType === "eat-out"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",

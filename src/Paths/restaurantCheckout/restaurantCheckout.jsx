@@ -32,7 +32,11 @@ const RestaurantCheckout = () => {
     register,
     formState: { errors },
   } = useForm();
-  const { data: merchantDetails,myLocation, orders } = useSelector((state) => state.merchantReducer);
+  const {
+    data: merchantDetails,
+    myLocation,
+    orders,
+  } = useSelector((state) => state.merchantReducer);
   const ordersToSend = orders
     .filter((order) => order.items.length > 0)
     .map((item) => {
@@ -41,7 +45,7 @@ const RestaurantCheckout = () => {
     });
 
   const onSubmit = (data) => {
-    setDeliveryDetails(data)
+    setDeliveryDetails(data);
     setShowSummary(true);
   };
   function handleCollapse(id) {
@@ -58,41 +62,60 @@ const RestaurantCheckout = () => {
       sx={{
         display: "flex",
         marginBottom: "400px",
-        paddingTop:'1em',
+        paddingTop: "1em",
         flexDirection: "column",
         gap: "1em",
-        position:'relative',
+        position: "relative",
       }}
     >
-          <BackArrow/>
-
+      <BackArrow />
       <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
         <Typography fontSize={"1.3em"} fontWeight={700}>
           Checkout{" "}
         </Typography>
-        <Box          sx={{
+        <Box
+          sx={{
             padding: "0 1em",
             justifyContent: "space-between",
-            display: "flex",alignItems:'center',
-            width:'100%'
+            display: "flex",
+            alignItems: "center",
+            width: "100%",
           }}
- >
-
+        >
           <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
-  <span style={{height:'2px',width:'100%', margin:'0 .5em', backgroundColor:'var(--text-gold)'}} ></span>
-  <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
-  <span style={{height:'2px',margin:'0 .5em',width:'100%',backgroundColor:!showSummary ?' var(--box-gold)':'var(--text-gold)'}} ></span>
+          <span
+            style={{
+              height: "2px",
+              width: "100%",
+              margin: "0 .5em",
+              backgroundColor: "var(--text-gold)",
+            }}
+          ></span>
+          <img src={stepCircle} style={{ width: "20px" }} alt="step icon" />
+          <span
+            style={{
+              height: "2px",
+              margin: "0 .5em",
+              width: "100%",
+              backgroundColor: !showSummary
+                ? " var(--box-gold)"
+                : "var(--text-gold)",
+            }}
+          ></span>
 
-<img src={stepCircle}  style={{ width: "20px" ,opacity:!showSummary ?.7:1}} alt="step icon" />
-
+          <img
+            src={stepCircle}
+            style={{ width: "20px", opacity: !showSummary ? 0.7 : 1 }}
+            alt="step icon"
+          />
         </Box>
         <Box
           sx={{
             padding: "0 1em",
             justifyContent: "space-between",
             display: "flex",
-            fontWeight:'600',
-            fontSize:'.8em'
+            fontWeight: "600",
+            fontSize: ".8em",
           }}
         >
           <div
@@ -104,7 +127,6 @@ const RestaurantCheckout = () => {
             }}
           >
             <span>Add Items</span>
-          
           </div>
           <div
             style={{
@@ -122,7 +144,7 @@ const RestaurantCheckout = () => {
               flexDirection: "column",
               alignItems: "center",
               gap: ".5em",
-              opacity:!showSummary ?.7:1,
+              opacity: !showSummary ? 0.7 : 1,
             }}
           >
             <span> Summary </span>
@@ -134,8 +156,9 @@ const RestaurantCheckout = () => {
           <Box
             sx={{
               backgroundColor: "var(--box-gold)",
-                fontSize: ".8em",
+              fontSize: ".8em",
               padding: "1em",
+              color: "var(--text-gold)",
               gap: ".5em",
               display: "flex",
             }}
@@ -153,7 +176,7 @@ const RestaurantCheckout = () => {
           </Typography>
 
           <form onSubmit={handleSubmit(onSubmit)}>
-            <Grid container spacing={3}>
+            <Grid container spacing={4}>
               <Grid item xs={12} sm={6}>
                 <Controller
                   name="phoneNumber"
@@ -167,12 +190,18 @@ const RestaurantCheckout = () => {
                       sx={{
                         "& .MuiInputLabel-root": {
                           color: "black",
-                          top: "-.45em",
+                          top: "-1em",
+                          left:'-.6em',
                           fontSize: "1.3em",
                           fontWeight: "800",
                         },
                         "& .MuiInputBase-root": {
                           backgroundColor: "hsla(0, 0%, 78%, .2)",
+                          border: "1px solid  rgb(204, 204, 204)",
+                          "&:focus": { borderColor: "blue" }, // Set border width
+                        },
+                        "& fieldset": {
+                          display: "none",
                         },
                       }}
                       label="Phone Number*"
@@ -195,22 +224,18 @@ const RestaurantCheckout = () => {
                     />
                   )}
                 />
-                                          <Box
-            sx={{
-              color: "var(--text-gold)",
-              fontSize: ".8em",
-              padding: ".5em 0",
-              gap: ".5em",
-              display: "flex",
-            }}
-          >
-            <img src={infoCircle} alt="info icon" />
-            <span>
-            Ensure this line is available until delivery.
-                        </span>
-          </Box>
-
-
+                <Box
+                  sx={{
+                    color: "var(--text-gold)",
+                    fontSize: ".8em",
+                    padding: ".5em 0",
+                    gap: ".5em",
+                    display: "flex",
+                  }}
+                >
+                  <img src={infoCircle} alt="info icon" />
+                  <span>Ensure this line is available until delivery.</span>
+                </Box>
               </Grid>
               <Grid item xs={12} sm={6}>
                 <Controller
@@ -227,11 +252,16 @@ const RestaurantCheckout = () => {
                         "& .MuiInputLabel-root": {
                           color: "black",
                           fontSize: "1.3em",
-                          top: "-.45em",
+                          top: "-1em",
+                          left:'-.6em',
                           fontWeight: "800",
                         },
                         "& .MuiInputBase-root": {
                           backgroundColor: "hsla(0, 0%, 78%, .2)",
+                          border: "1px solid  rgb(204, 204, 204)",
+                        },
+                        "& fieldset": {
+                          display: "none",
                         },
                       }}
                       placeholder="Enter an alternative phone number"
@@ -277,20 +307,20 @@ const RestaurantCheckout = () => {
                     />
                   )}
                 />
-                                          <Box
-            sx={{
-              color: "var(--text-gold)",
-              fontSize: ".8em",
-              padding: ".5em 0",
-              gap: ".5em",
-              display: "flex",
-            }}
-          >
-            <img src={infoCircle} alt="info icon" />
-            <span>
-            Please, provide a well detailed address for easy location.            </span>
-          </Box>
-
+                <Box
+                  sx={{
+                    color: "var(--text-gold)",
+                    fontSize: ".8em",
+                    padding: ".5em 0",
+                    gap: ".5em",
+                    display: "flex",
+                  }}
+                >
+                  <img src={infoCircle} alt="info icon" />
+                  <span>
+                    Please, provide a well detailed address for easy location.{" "}
+                  </span>
+                </Box>
 
                 {errors.deliveryAddress && (
                   <p style={{ color: "red" }}>
@@ -306,8 +336,8 @@ const RestaurantCheckout = () => {
                 backgroundColor: "var(--primary-red)",
                 "&:focus ,&:hover ": { backgroundColor: "var(--primary-red)" },
                 width: "100%",
-                padding:'10px 8px',
-                marginTop:'.5em'
+                padding: "10px 8px",
+                marginTop: ".5em",
               }}
             >
               Proceed
@@ -315,7 +345,7 @@ const RestaurantCheckout = () => {
           </form>
         </>
       ) : (
-        <Box sx={{display:'flex',flexDirection:'column',gap:'1em'}} >
+        <Box sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
           <Typography fontWeight={700} fontSize={"1.2em"}>
             {" "}
             Order Summary{" "}
@@ -378,7 +408,7 @@ const RestaurantCheckout = () => {
                           collapse.id === item.id && collapse.status === true
                             ? "rotate(270deg)"
                             : "rotate(90deg)",
-                            cursor:'pointer',
+                        cursor: "pointer",
                       }}
                       width="24"
                       height="24"
@@ -411,43 +441,57 @@ const RestaurantCheckout = () => {
             );
           })}
 
-<Box sx={{}} >
-<Typography marginBottom={"1em"} fontWeight={700} fontSize={"1.2em"}>
-            {" "}
-            Delivery Details{" "}
-          </Typography>
-<Box sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "2em",
-                  }} >
-<span>PHONE NO:</span>
-   <span style={{fontWeight:'600'}}> {deliveryDetails.phoneNumber} </span>
+          <Box sx={{}}>
+            <Typography
+              marginBottom={"1em"}
+              fontWeight={700}
+              fontSize={"1.2em"}
+            >
+              {" "}
+              Delivery Details{" "}
+            </Typography>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2em",
+              }}
+            >
+              <span>PHONE NO:</span>
+              <span style={{ fontWeight: "600" }}>
+                {" "}
+                {deliveryDetails.phoneNumber}{" "}
+              </span>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2em",
+              }}
+            >
+              <span>ALT PHONE NO:</span>
+              <span style={{ fontWeight: "600" }}>
+                {" "}
+                {deliveryDetails.altPhoneNumber}{" "}
+              </span>
+            </Box>
+            <Box
+              sx={{
+                display: "flex",
+                alignItems: "center",
+                gap: "2em",
+              }}
+            >
+              <span>ADDRESS:</span>
+              <span style={{ fontWeight: "600" }}>
+                {" "}
+                {deliveryDetails.deliveryAddress}
+              </span>
+            </Box>
+          </Box>
 
-</Box>
-<Box sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "2em",
-                  }} >
-<span>ALT PHONE NO:</span>
-   <span style={{fontWeight:'600'}} > {deliveryDetails.altPhoneNumber} </span>
-
-</Box>
-<Box sx={{
-                    display: "flex",
-                    alignItems: "center",
-                    gap: "2em",
-                  }} >
-<span>ADDRESS:</span>
-   <span style={{fontWeight:'600'}}>  {deliveryDetails.deliveryAddress}</span>
-
-</Box>
-</Box>
-
-<PlaceOrder restaurant={merchantDetails.restaurant} />
-
-
+          <PlaceOrder restaurant={merchantDetails.restaurant} />
         </Box>
       )}{" "}
     </Container>

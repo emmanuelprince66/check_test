@@ -7,7 +7,8 @@
     "dev": "vite",
     "build": "vite build",
     "lint": "eslint src --ext js,jsx --report-unused-disable-directives --max-warnings 0",
-    "preview": "vite preview"
+    "preview": "vite preview",
+    "proxy": "https://maps.googleapis.com/maps/api/geocode/json"
   },
   "dependencies": {
     "@emotion/react": "^11.11.1",
@@ -18,6 +19,8 @@
     "@reduxjs/toolkit": "^1.9.5",
     "@tanstack/react-query": "^4.29.19",
     "axios": "^1.4.0",
+    "cors": "^2.8.5",
+    "express": "^4.18.2",
     "formik": "^2.4.2",
     "html2canvas": "^1.4.1",
     "js-cookie": "^3.0.5",

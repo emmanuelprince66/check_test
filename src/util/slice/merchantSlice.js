@@ -8,6 +8,7 @@ const merchantSlice = createSlice({
     orders: [],
     userDetails:null,
     previewOrders:[],
+    OTDRestaurants:[],
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
@@ -15,6 +16,7 @@ const merchantSlice = createSlice({
     takeAwayPrice:0,
     myLocation:{},
     landmarks:null,
+    isOTD:false,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
@@ -203,6 +205,13 @@ const merchantSlice = createSlice({
     },
     setLandmarks:(state,action)=>{
       state.landmarks  = action.payload
+    },
+    initOTD:(state,action)=>{
+      state.isOTD  = action.payload
+    }
+,
+    setOTDRestaurants:(state,action)=>{
+      state.OTDRestaurants  = action.payload
     }
 
   },
@@ -217,6 +226,8 @@ export const {
   addMenu,
   setTakeAwayPrice,
   setLocation,
+  initOTD,
+  setOTDRestaurants,
   setLandmarks,
   handlePreview,
   addItemsToCart,

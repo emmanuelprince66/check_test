@@ -29,6 +29,8 @@ import RestaurantMenu from "../Paths/cartMenu";
 import OrderSummary from "../Paths/orderSummary";
 import RestaurantReceipt from "../Paths/restaurantOrderReceipt/restaurantReceipt";
 import RestaurantCheckout from "../Paths/restaurantCheckout/restaurantCheckout";
+import OTDMainPage from "../Paths/OTD/otd";
+import RestaurantPage from "../Paths/otdRestaurant/otdrestaurant";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -85,15 +87,17 @@ const Routess = () => {
             <Route path="/orders" element={<Orders />} />
             <Route path="/restaurant/menu" element={<RestaurantMenu />} />
             <Route path="/order/:id" element={<OrderSummary />} />
-         
+
             <Route path="/restaurant-receipt/:id" element={<RestaurantReceipt/>} />
             <Route path="/restaurant-checkout" element={<RestaurantCheckout/>} />
-         
+            <Route path="/order-out" element={<OTDMainPage/>} />
+            <Route path="/restaurant/:id" element={<RestaurantPage/>} />
+
           </Routes>
 
          {
           location.pathname !== '/' && location.pathname !== '/restaurant/menu'  ? <Navbar/>: null
-         } 
+         }
         </CssBaseline>
       </ThemeProvider>
     </div>

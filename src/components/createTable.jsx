@@ -28,7 +28,6 @@ export const CreateTable = ({ order }) => {
       border: 0,
     },
   }));
-
   return (
     <div>
       <TableContainer sx={{ boxShadow: "none" }} component={Paper}>
@@ -44,10 +43,13 @@ export const CreateTable = ({ order }) => {
             {order?.map((item, i) => (
               <StyledTableRow key={i}>
                 <StyledTableCell component="th" scope="item">
-                  {item.name}
+                  {item?.menu ? item.menu.name : item.name}
                 </StyledTableCell>
                 <StyledTableCell align="right">{item.quantity}</StyledTableCell>
-                <StyledTableCell align="right">{item.price}</StyledTableCell>
+                <StyledTableCell align="right">
+                  {" "}
+                  {item?.menu ? item.menu.price : item.price}
+                </StyledTableCell>
               </StyledTableRow>
             ))}
           </TableBody>

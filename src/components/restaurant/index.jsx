@@ -72,7 +72,7 @@ function clearCart(){
         overflowY: "auto",
         gap: "1em",
         flex: "1",
-        marginBottom: "10em",
+        marginBottom: "15em",
       }}
     >
       <Box

@@ -52,7 +52,7 @@ import checkLogo from "../../images/checkLogo.svg";
 import SearchIcon from "@mui/icons-material/Search";
 import CheckCircleIcon from "@mui/icons-material/CheckCircle";
 import Restaurant from "../../components/restaurant";
-import { resetState } from "../../util/slice/merchantSlice";
+import { resetState,initOTD } from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
 import { PlaceOrder } from "../../components/handlePlacingOrder/handlePlacingOrder";
 
@@ -78,10 +78,15 @@ const Cart = () => {
   const {
     data: merchantDetails,
     orders,
+    isOTD,
     takeAwayPrice,
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
-
+const navigate = useNavigate()
+function setOTD (){
+  dispatch(initOTD(true))
+  navigate('/order-out')
+}
   return (
     <AuthProvider>
       <Box
@@ -92,7 +97,7 @@ const Cart = () => {
           maxWidth: { xs: "100%", sm: "100%", md: "31%" },
         }}
       >
-        {merchantDetails?.restaurant ? (
+        {merchantDetails?.restaurant || isOTD ? (
           <Restaurant />
         ) : (
           <Container
@@ -181,6 +186,14 @@ const Cart = () => {
                   <CartItem item={item} key={item.id} />
                 ))
               )}
+
+
+{
+  supermarketCart.length === 0 && merchantDetails.length === 0 ?
+  <Button onClick={()=>setOTD()} sx={{backgroundColor:'var(--primary-red)',color:'white',width:'80%',margin:'auto',textTransform:'none',padding:'10px 5px'}} > Make a Delivery Order or Pick-up </Button>
+  : null
+}
+
             </Box>
             {/* Card end */}
 
