@@ -23,6 +23,7 @@ import Suport from "../Paths/support/Suport";
 import Cpass from "../Paths/cpassword/Cpass";
 import Rlocation from "../Paths/rlocation/Rlocation";
 import Orders from "../Paths/orders/Orders";
+import MainScanner from "../components/MainScanner";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -60,7 +61,7 @@ const Routess = () => {
             />
 
             <Route index path="/transactions" element={<Transaction />} />
-            <Route index path="/scan" element={<Scan />} />
+            <Route index path="/mainScanner" element={<MainScanner />} />
             <Route index path="/cart" element={<Cart />} />
             <Route path="/paybills" element={<PayBills />} />
             <Route path="/wallet" element={<Wallet />} />

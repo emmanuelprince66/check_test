@@ -133,6 +133,7 @@ const Orders = () => {
                         justifyContent: "center",
                         gap: "5px",
                         alignItems: "start",
+                        flex: "1",
                       }}
                     >
                       <Typography

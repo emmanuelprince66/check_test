@@ -27,7 +27,7 @@ const Navbar = () => {
 
   const homeMatch = useMatch("/home");
   const transactionsMatch = useMatch("/transactions");
-  const scanMatch = useMatch("/scan");
+  const scanMatch = useMatch("/mainScanner");
   const cartMatch = useMatch("/cart");
   const profileMatch = useMatch("/profile");
   const ordersMatch = useMatch("/orders");
@@ -60,7 +60,7 @@ const Navbar = () => {
             listStyleType: "none",
           }}
         >
-          {/* <li>
+          <li>
             <Link
               to="/home"
               className={homeMatch ? "active-link" : ""}
@@ -69,22 +69,6 @@ const Navbar = () => {
               <div className="gpt3__navbar" id="firstnav">
                 <img src={hutLogo} alt="hut-logo" />
                 <MyTypography>Dashbaord</MyTypography>
-              </div>
-            </Link>
-          </li> */}
-          <li>
-            <Link
-              sx={{
-                color: scanMatch || homeMatch ? "#DC2A12" : "",
-                fontWeight: scanMatch || homeMatch ? "1000" : ",",
-              }}
-              to="/scan"
-              className={scanMatch || homeMatch ? "active-link" : ""}
-              style={{ color: "black", textDecoration: "none" }}
-            >
-              <div className="gpt3__navbar">
-                <img src={scan} alt="scan-logo" />
-                <MyTypography>Scan</MyTypography>
               </div>
             </Link>
           </li>
@@ -97,6 +81,22 @@ const Navbar = () => {
               <div className="gpt3__navbar">
                 <img src={sideArrow} alt="side-logo" />
                 <MyTypography>Transaction</MyTypography>
+              </div>
+            </Link>
+          </li>
+
+          <li>
+            <Link
+              sx={{
+                fontWeight: scanMatch ? "1000" : ",",
+              }}
+              to="/mainScanner"
+              className={scanMatch ? "active-link" : ""}
+              style={{ color: "black", textDecoration: "none" }}
+            >
+              <div className="gpt3__navbar">
+                <img src={scan} alt="scan-logo" />
+                <MyTypography>Scan</MyTypography>
               </div>
             </Link>
           </li>
@@ -135,23 +135,24 @@ const Navbar = () => {
               </div>
             </Link>
           </li>
-          <li>
+          {/* <li>
             <Link
               to="/orders"
               className={ordersMatch ? "active-link" : ""}
               style={{ color: "black", textDecoration: "none" }}
-            >
-              <div className="gpt3__navbar">
-                {/* <img src={cart} alt="cart-logo" /> */}
-                <BookmarkAddRoundedIcon
+            > */}
+          {/* <div className="gpt3__navbar"> */}
+          {/* <img src={cart} alt="cart-logo" /> */}
+          {/* <BookmarkAddRoundedIcon
                   sx={{
                     color: "#7F7F7F",
                   }}
-                />
-                <MyTypography>Status</MyTypography>
-              </div>
-            </Link>
+                /> */}
+          {/* <MyTypography>Status</MyTypography> */}
+          {/* </div> */}
+          {/* </Link>
           </li>
+           */}
           <li>
             <Link
               to="/profile"

@@ -23,7 +23,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const [result, setResult] = useState("");
   const dispatch = useDispatch();
 
-  // test states
+  // test states`
   const [scanning, setScanning] = useState(true); // toggleable state for "should render scanner"
   const [cameras, setCameras] = useState([]); // array of available cameras, as returned by Quagga.CameraAccess.enumerateVideoDevices()
   const [cameraId, setCameraId] = useState(null); // id of the active camera device
@@ -70,6 +70,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     notifyErr("Error Fetching Product");
     console.log("err func");
   }
+  // i have to work on a better version of this code
   const handleModal = (res) => {
     if (!companyLocation || !companyName) {
       setShowMarketEntryModal(true);
@@ -77,7 +78,6 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     }
     setResult(res);
     setShowProgress(true);
-
     setTimeout(() => {
       console.log(errState);
       setShowProgress(false);

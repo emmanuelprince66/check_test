@@ -5,7 +5,6 @@ import VisibilityOff from "@mui/icons-material/VisibilityOff";
 import { Form, Formik, Field, ErrorMessage } from "formik";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { useState, useEffect } from "react";
-import * as Yup from "yup";
 import FormControl from "@mui/material/FormControl";
 import TextField from "@mui/material/TextField";
 import InputAdornment from "@mui/material/InputAdornment";
