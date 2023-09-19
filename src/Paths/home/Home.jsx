@@ -17,6 +17,7 @@ import FormattedPrice from "../../components/FormattedPrice";
 import QrCodeRoundedIcon from "@mui/icons-material/QrCodeRounded";
 import NotificationsRoundedIcon from "@mui/icons-material/NotificationsRounded";
 import { useLocation } from "react-router-dom";
+import QrCodeIcon from "@mui/icons-material/QrCode";
 
 import exclamgreen from "../../images/practise/exclamgreen.svg";
 
@@ -66,7 +67,12 @@ const Home = () => {
               gap: "0.5rem",
             }}
           >
-            <img src={groupLogo} alt="group-logo" />
+            <QrCodeRoundedIcon
+              sx={{
+                color: currentTheme.palette.type === "light" ? "#000" : "#eeee",
+                fontSize: "2rem",
+              }}
+            />
             <Typography
               sx={{
                 color:
@@ -83,7 +89,12 @@ const Home = () => {
           </Box>
 
           <Box>
-            <img src={notiLogo} alt="noti-logo" />
+            <NotificationsRoundedIcon
+              sx={{
+                color: currentTheme.palette.type === "light" ? "#000" : "#eeee",
+                fontSize: "1.8rem",
+              }}
+            />
           </Box>
         </Box>
 
