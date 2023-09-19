@@ -9,6 +9,7 @@ import BackArrow from "../../components/backArrow/BackArrow";
 import { useNavigate } from "react-router-dom";
 import { Card, Typography, Box } from "@mui/material";
 import { useTheme } from "@mui/material";
+import { AuthProvider } from "../../util/AuthContext";
 import { Link } from "react-router-dom";
 
 const payBillsItems = [

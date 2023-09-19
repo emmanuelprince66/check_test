@@ -36,24 +36,244 @@ const Home = () => {
 
   const user = useUser();
 
-  useEffect(() => {
-    setTimeout(() => {
-      setShowScanner(true);
-    }, 4000);
-  }, []);
+  // useEffect(() => {
+  //   setTimeout(() => {
+  //     setShowScanner(true);
+  //   }, 4000);
+  // }, []);
+
+  const handleShowAmount = () => {
+    !isTextVisible
+      ? setIsTextVisible(!isTextVisible)
+      : setIsTextVisible(!isTextVisible);
+  };
 
   return (
     <AuthProvider>
       <div className="gpt3__home">
-        <Acctbox />
+        <Box
+          sx={{
+            display: "flex",
+            justifyContent: "space-between",
+            alignItems: "center",
+            marginBottom: "0.2rem",
+          }}
+        >
+          <Box
+            sx={{
+              display: "flex",
+              alignItems: "center",
+              gap: "0.5rem",
+            }}
+          >
+            <img src={groupLogo} alt="group-logo" />
+            <Typography
+              sx={{
+                color:
+                  currentTheme.palette.type === "light" ? "#1e1e1e" : "#ffff",
+                fontFamily: "raleWay",
+                fontWeight: "1000",
+                fontSize: "16px",
+              }}
+            >
+              {`${user.data ? user.data.firstName : ""} ${
+                user.data ? user.data.lastName : ""
+              }  `}
+            </Typography>
+          </Box>
+
+          <Box>
+            <img src={notiLogo} alt="noti-logo" />
+          </Box>
+        </Box>
+
+        {/* Account Box Card */}
+        <Card
+          sx={{
+            height: "110px",
+            maxWidth: "100%",
+            borderRadius: "16px",
+            padding: "0.9rem",
+            marginY: "1rem",
+            backgroundColor:
+              currentTheme.palette.type === "light" ? "#FFEDED" : "#2C2C2E",
+          }}
+        >
+          <Box
+            sx={{
+              width: "100%",
+              display: "flex",
+              justifyContent: "space-between",
+              alignItems: "start",
+            }}
+          >
+            <Box
+              sx={{
+                flex: "1",
+                width: "100%",
+              }}
+            >
+              {!isTextVisible ? (
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: "600",
+                    fontSize: "18px",
+                  }}
+                >
+                  ***********
+                </Typography>
+              ) : (
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    fontWeight: "600",
+                    fontSize: "18px",
+                  }}
+                >
+                  {user.data ? (
+                    <FormattedPrice amount={user.data.balance} />
+                  ) : (
+                    <CircularProgress />
+                  )}
+                </Typography>
+              )}
+            </Box>
+
+            <Box
+              sx={{
+                display: "flex",
+                justifyContent: "center",
+                flexDirection: "column",
+                alignItems: "end",
+              }}
+            >
+              <Box
+                onClick={() => handleShowAmount()}
+                sx={{
+                  display: "flex",
+                  alignItems: "center",
+                  gap: "8px",
+                  width: "103px",
+                  height: "28px",
+                  borderRadius: "8px",
+                  backgroundColor: "rgba(220, 0, 25, 0.1)",
+                  padding: "4px 8px 4px 8px",
+                  cursor: "pointer",
+                }}
+              >
+                {isTextVisible ? (
+                  <Visibility sx={{ color: "#C57600", fontSize: "15px" }} />
+                ) : (
+                  <VisibilityOff sx={{ color: "#C57600", fontSize: "15px" }} />
+                )}
+                <Typography
+                  sx={{
+                    fontWeight: "400",
+                    fontSize: "10px",
+                    color:
+                      currentTheme.palette.type === "light"
+                        ? "#1e1e1e"
+                        : "#ffff",
+                    letterSpacing: "-0.24px",
+                    fontFamily: "raleWay",
+                    paddingTop: "1px",
+                  }}
+                >
+                  {isTextVisible ? "Hide Balance" : "Show Balance"}
+                </Typography>
+              </Box>
+            </Box>
+          </Box>
+
+          <Box
+            sx={{
+              display: "flex",
+              justifyContent: {
+                xs: "space-between",
+                sm: "space-evenly",
+                md: "space-evenly",
+                lg: "space-evenly",
+              },
+              alignItems: "center",
+              gap: "1rem",
+            }}
+          >
+            <Box
+              sx={{
+                height: "36px",
+                background: "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                width: "145px",
+                marginTop: "1rem",
+              }}
+            >
+              <img src={plusLogo} alt="plus-logo" />
+              <Link to="/fwallet">
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Fund Wallet
+                </Typography>
+              </Link>
+            </Box>
+
+            <Box
+              sx={{
+                height: "36px",
+                background: "#EB001B",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                width: "145px",
+                marginTop: "1rem",
+              }}
+            >
+              <Link to="/wtransfer">
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "12px",
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Transfer
+                </Typography>
+              </Link>
+            </Box>
+          </Box>
+        </Card>
+        {/* Account Box Card end */}
+
+        <Typography
+          sx={{
+            color: currentTheme.palette.type === "light" ? "#1e1e1e" : "#ffff",
+            fontFamily: "raleWay",
+            fontWeight: "1000",
+            fontSize: "16px",
+            marginBottom: "1rem",
+          }}
+        >
+          Your Insights
+        </Typography>
 
         <HomeCard />
 
         {/* Header */}
 
         {/* CARD */}
-
-        {/* <Card
+        {/* 
+        <Card
           sx={{
             display: "flex",
             alignItems: "center",

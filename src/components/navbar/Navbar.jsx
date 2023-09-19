@@ -26,6 +26,8 @@ const Navbar = () => {
   }));
 
   const homeMatch = useMatch("/home");
+  const walletMatch = useMatch("/wallet");
+  const fwalletMatch = useMatch("/fwallet");
   const transactionsMatch = useMatch("/transactions");
   const scanMatch = useMatch("/mainScanner");
   const cartMatch = useMatch("/cart");
@@ -63,7 +65,9 @@ const Navbar = () => {
           <li>
             <Link
               to="/home"
-              className={homeMatch ? "active-link" : ""}
+              className={
+                homeMatch || fwalletMatch || walletMatch ? "active-link" : ""
+              }
               style={{ color: "black", textDecoration: "none" }}
             >
               <div className="gpt3__navbar" id="firstnav">
