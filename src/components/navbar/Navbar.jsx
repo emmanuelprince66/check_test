@@ -58,7 +58,7 @@ const Navbar = () => {
         <ul
           style={{
             display: "flex",
-            justifyContent: "space-around",
+            justifyContent: "space-between",
             listStyleType: "none",
           }}
         >

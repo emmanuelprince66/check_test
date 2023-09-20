@@ -22,7 +22,7 @@ const cards = [
   {
     id: 2,
     image: locationIcon,
-    title: " OTD",
+    title: " Order",
     small: "Order to Doorstep",
     pathname: "/rlocation",
   },
@@ -36,7 +36,7 @@ const cards = [
   {
     id: 4,
     image: bookIcon,
-    title: "Orders ",
+    title: "Status ",
     small: "",
     pathname: "/orders",
   },
