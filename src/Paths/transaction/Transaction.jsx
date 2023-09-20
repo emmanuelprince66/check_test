@@ -110,9 +110,8 @@ const Transaction = () => {
             transaction.data.queryResult.length == 0 ? (
               <NoResult
                 notification="You Have No Recent Transactions"
+                mainText="Recent Transactions"
                 smallText="Records of transactions you perform will appear here"
-                buttonText="Scan"
-                linkText="/home"
               />
             ) : (
               transaction.data.queryResult.map((item) => (

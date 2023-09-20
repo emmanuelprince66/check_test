@@ -526,15 +526,15 @@ const Cart = () => {
               width: "100%",
               paddingY: "10px",
               maxHeight: "22rem",
-              overflowY: "scroll",
+              overflowY: cart.length !== 0 && "scroll",
             }}
           >
             {cart.length === 0 ? (
               <NoResult
-                notification="You have no item in your cart"
-                smallText="proceed to scan to add items"
-                buttonText="Proceed"
-                linkText="/scan"
+                notification="Your Cart is Empty"
+                smallText="proceed to scan to start new order"
+                buttonText="Scan to add new order"
+                btn="true"
               />
             ) : (
               cart.map((item) => <CartItem item={item} key={item.id} />)
@@ -579,84 +579,89 @@ const Cart = () => {
             )}
           </Box>
 
-          <Box
-            sx={{
-              display: "flex",
-              flexDirection: "column",
-              position: "fixed",
-              bottom: "10px",
-              width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
-              padding: "1.5rem",
-              gap: "2rem",
-              justifyContent: "start",
-              right: { xs: "1px", sm: "19%", lg: "35%" },
-              background:
-                currentTheme.palette.type === "light" ? "" : "#2C2C2E",
-              borderRadius: currentTheme.palette.type === "light" ? "" : "10px",
-              textAlign: "center",
-              boxShadow:
-                currentTheme.palette.type === "light"
-                  ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
-                  : "#2C2C2E",
-              marginBottom: "5rem",
-            }}
-          >
+          {cart.length !== 0 && (
             <Box
               sx={{
                 display: "flex",
-                justifyContent: "space-between",
-                alignItems: "center",
+                flexDirection: "column",
+                position: "fixed",
+                bottom: "10px",
+                width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
+                padding: "1.5rem",
+                gap: "2rem",
+                justifyContent: "start",
+                right: { xs: "1px", sm: "19%", lg: "35%" },
+                background:
+                  currentTheme.palette.type === "light" ? "" : "#2C2C2E",
+                borderRadius:
+                  currentTheme.palette.type === "light" ? "" : "10px",
+                textAlign: "center",
+                boxShadow:
+                  currentTheme.palette.type === "light"
+                    ? " 2px -18px 93px -5px rgba(0,0,0,0.1) inset"
+                    : "#2C2C2E",
+                marginBottom: "5rem",
               }}
             >
-              <Typography
+              <Box
                 sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fomtWeight: "900",
-                  fontSize: "16px",
+                  display: "flex",
+                  justifyContent: "space-between",
+                  alignItems: "center",
                 }}
               >
-                Grand Total
-              </Typography>
-              <Typography
-                sx={{
-                  fontFamily: "raleWay",
-                  color:
-                    currentTheme.palette.type === "light" ? "#000" : "#fff",
-                  fomtWeight: "900",
-                  fontSize: "16px",
-                }}
-              >
-                <FormattedPrice amount={totalPrice} />
-              </Typography>
-            </Box>
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    color:
+                      currentTheme.palette.type === "light" ? "#000" : "#fff",
+                    fomtWeight: "900",
+                    fontSize: "16px",
+                  }}
+                >
+                  Grand Total
+                </Typography>
+                <Typography
+                  sx={{
+                    fontFamily: "raleWay",
+                    color:
+                      currentTheme.palette.type === "light" ? "#000" : "#fff",
+                    fomtWeight: "900",
+                    fontSize: "16px",
+                  }}
+                >
+                  <FormattedPrice amount={totalPrice} />
+                </Typography>
+              </Box>
 
-            <Box>
-              <Button
-                onClick={handleOpen}
-                sx={{
-                  background:
-                    currentTheme.palette.type === "light"
-                      ? "#dc0019"
-                      : "#dc0019",
-                  padding: "10px",
-                  fontWeight: "1000",
-                  width: "100%",
-                  textTransform: "capitalize",
-                  borderRadius: "8px",
-                  color: "#fff",
-                  "&:hover": {
-                    backgroundColor:
-                      currentTheme.palette === "light" ? "#dc0019" : "#dc0019",
-                  },
-                  fontFamily: "raleWay",
-                }}
-              >
-                Proceed to payment
-              </Button>
+              <Box>
+                <Button
+                  onClick={handleOpen}
+                  sx={{
+                    background:
+                      currentTheme.palette.type === "light"
+                        ? "#dc0019"
+                        : "#dc0019",
+                    padding: "10px",
+                    fontWeight: "1000",
+                    width: "100%",
+                    textTransform: "capitalize",
+                    borderRadius: "8px",
+                    color: "#fff",
+                    "&:hover": {
+                      backgroundColor:
+                        currentTheme.palette === "light"
+                          ? "#dc0019"
+                          : "#dc0019",
+                    },
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Proceed to payment
+                </Button>
+              </Box>
             </Box>
-          </Box>
+          )}
 
           {/* Modal 1  modal for purchase*/}
           <Modal

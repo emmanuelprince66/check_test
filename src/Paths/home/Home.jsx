@@ -99,171 +99,188 @@ const Home = () => {
         </Box>
 
         {/* Account Box Card */}
-        <Card
+        <Box
           sx={{
-            height: "110px",
-            maxWidth: "100%",
-            borderRadius: "16px",
-            padding: "0.9rem",
-            marginY: "1rem",
-            backgroundColor:
-              currentTheme.palette.type === "light" ? "#FFEDED" : "#2C2C2E",
+            display: "flex",
+            justifyContent: "center",
+            width: "100%",
           }}
         >
-          <Box
+          <Card
             sx={{
-              width: "100%",
-              display: "flex",
-              justifyContent: "space-between",
-              alignItems: "start",
+              maxheight: "125px",
+              height: "125px",
+              width: "341px",
+              borderRadius: "16px",
+              marginY: "1rem",
+              backgroundColor:
+                currentTheme.palette.type === "light" ? "#FFEDED" : "#2C2C2E",
             }}
           >
             <Box
               sx={{
-                flex: "1",
                 width: "100%",
-              }}
-            >
-              {!isTextVisible ? (
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    fontWeight: "600",
-                    fontSize: "18px",
-                  }}
-                >
-                  ***********
-                </Typography>
-              ) : (
-                <Typography
-                  sx={{
-                    fontFamily: "raleWay",
-                    fontWeight: "600",
-                    fontSize: "18px",
-                  }}
-                >
-                  {user.data ? (
-                    <FormattedPrice amount={user.data.balance} />
-                  ) : (
-                    <CircularProgress />
-                  )}
-                </Typography>
-              )}
-            </Box>
-
-            <Box
-              sx={{
                 display: "flex",
-                justifyContent: "center",
-                flexDirection: "column",
-                alignItems: "end",
+                justifyContent: "space-between",
+                alignItems: "start",
+                padding: "1.2rem 0.7rem 0.4rem 0.7rem ",
               }}
             >
               <Box
-                onClick={() => handleShowAmount()}
                 sx={{
-                  display: "flex",
-                  alignItems: "center",
-                  gap: "8px",
-                  width: "103px",
-                  height: "28px",
-                  borderRadius: "8px",
-                  backgroundColor: "rgba(220, 0, 25, 0.1)",
-                  padding: "4px 8px 4px 8px",
-                  cursor: "pointer",
+                  flex: "1",
+                  width: "100%",
                 }}
               >
-                {isTextVisible ? (
-                  <Visibility sx={{ color: "#C57600", fontSize: "15px" }} />
+                {!isTextVisible ? (
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                    }}
+                  >
+                    ***********
+                  </Typography>
                 ) : (
-                  <VisibilityOff sx={{ color: "#C57600", fontSize: "15px" }} />
+                  <Typography
+                    sx={{
+                      fontFamily: "raleWay",
+                      fontWeight: "600",
+                      fontSize: "18px",
+                    }}
+                  >
+                    {user.data ? (
+                      <FormattedPrice amount={user.data.balance} />
+                    ) : (
+                      <CircularProgress />
+                    )}
+                  </Typography>
                 )}
-                <Typography
+              </Box>
+
+              <Box
+                sx={{
+                  display: "flex",
+                  justifyContent: "center",
+                  flexDirection: "column",
+                  alignItems: "end",
+                }}
+              >
+                <Box
+                  onClick={() => handleShowAmount()}
                   sx={{
-                    fontWeight: "400",
-                    fontSize: "10px",
-                    color:
-                      currentTheme.palette.type === "light"
-                        ? "#1e1e1e"
-                        : "#ffff",
-                    letterSpacing: "-0.24px",
-                    fontFamily: "raleWay",
-                    paddingTop: "1px",
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    width: "103px",
+                    height: "28px",
+                    borderRadius: "8px",
+                    backgroundColor: "rgba(220, 0, 25, 0.1)",
+                    padding: "4px 8px 4px 8px",
+                    cursor: "pointer",
                   }}
                 >
-                  {isTextVisible ? "Hide Balance" : "Show Balance"}
-                </Typography>
+                  {isTextVisible ? (
+                    <Visibility sx={{ color: "#C57600", fontSize: "15px" }} />
+                  ) : (
+                    <VisibilityOff
+                      sx={{ color: "#C57600", fontSize: "15px" }}
+                    />
+                  )}
+                  <Typography
+                    sx={{
+                      fontWeight: "400",
+                      fontSize: "10px",
+                      color:
+                        currentTheme.palette.type === "light"
+                          ? "#1e1e1e"
+                          : "#ffff",
+                      letterSpacing: "-0.24px",
+                      fontFamily: "raleWay",
+                      paddingTop: "1px",
+                    }}
+                  >
+                    {isTextVisible ? "Hide Balance" : "Show Balance"}
+                  </Typography>
+                </Box>
               </Box>
             </Box>
-          </Box>
-
-          <Box
-            sx={{
-              display: "flex",
-              justifyContent: {
-                xs: "space-between",
-                sm: "space-evenly",
-                md: "space-evenly",
-                lg: "space-evenly",
-              },
-              alignItems: "center",
-              gap: "1rem",
-            }}
-          >
-            <Box
-              sx={{
-                height: "36px",
-                background: "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
-                borderRadius: "8px",
-                display: "flex",
-                alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                width: "145px",
-                marginTop: "1rem",
-              }}
-            >
-              <img src={plusLogo} alt="plus-logo" />
-              <Link to="/fwallet">
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontFamily: "raleWay",
-                  }}
-                >
-                  Fund Wallet
-                </Typography>
-              </Link>
-            </Box>
 
             <Box
               sx={{
-                height: "36px",
-                background: "#EB001B",
-                borderRadius: "8px",
                 display: "flex",
+                justifyContent: {
+                  xs: "space-evenly",
+                  sm: "space-evenly",
+                  md: "space-evenly",
+                  lg: "space-evenly",
+                },
                 alignItems: "center",
-                justifyContent: "center",
-                gap: "0.5rem",
-                width: "145px",
-                marginTop: "1rem",
+                gap: { xs: "0.5rem" },
+                paddingX: { xs: "0.5rem" },
+                paddingBottom: "1rem",
               }}
             >
-              <Link to="/wtransfer">
-                <Typography
-                  sx={{
-                    color: "#fff",
-                    fontSize: "12px",
-                    fontFamily: "raleWay",
-                  }}
-                >
-                  Transfer
-                </Typography>
-              </Link>
+              <Box
+                sx={{
+                  height: "36px",
+                  background:
+                    "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  width: "145px",
+                  marginTop: "1rem",
+                }}
+              >
+                <img src={plusLogo} alt="plus-logo" />
+                <Link to="/fwallet">
+                  <Typography
+                    sx={{
+                      color: "#fff",
+                      fontSize: "14px",
+                      fontWeight: "400px",
+                      fontFamily: "raleWay",
+                    }}
+                  >
+                    Fund Wallet
+                  </Typography>
+                </Link>
+              </Box>
+
+              <Box
+                sx={{
+                  height: "36px",
+                  background: "#EB001B",
+                  borderRadius: "8px",
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  gap: "0.5rem",
+                  width: "156px",
+                  marginTop: "1rem",
+                }}
+              >
+                <Link to="/wtransfer">
+                  <Typography
+                    sx={{
+                      color: "#fff",
+                      fontSize: "14px",
+                      fontWeight: "400px",
+                      fontFamily: "raleWay",
+                    }}
+                  >
+                    Transfer
+                  </Typography>
+                </Link>
+              </Box>
             </Box>
-          </Box>
-        </Card>
+          </Card>
+        </Box>
+
         {/* Account Box Card end */}
 
         <Typography
