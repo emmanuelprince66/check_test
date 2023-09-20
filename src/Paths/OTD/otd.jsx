@@ -19,6 +19,7 @@ import { setOTDRestaurants } from "../../util/slice/merchantSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
+import BackArrow from "../../components/backArrow/BackArrow";
 const OTDMainPage = () => {
   const data = useGetRestaurantsOTD();
   const restaurants = data?.data;
@@ -45,7 +46,11 @@ const OTDMainPage = () => {
     navigate(`/restaurant/${id}`);
   }
   return (
-    <Container sx={{ display: "flex", marginBottom:"100px", paddingTop:'1em', flexDirection: "column", gap: "1em" }}>
+    <div className="gpt3__restaurant" >
+    <Container sx={{ display: "flex", marginBottom:"100px", flexDirection: "column", gap: "1em" }}>
+    
+<BackArrow/>
+
       <Typography fontWeight={700} fontSize={"1.6em"}>
         Order to Doorstep{" "}
       </Typography>
@@ -69,12 +74,12 @@ const OTDMainPage = () => {
         </Typography>
       </Box>
 
-      <Container
+      <Box
         sx={{
           display: "flex",
           flexDirection: "column",
           gap: "1em",
-          padding: "0em",
+          paddingLeft: "0em",
         }}
       >
         {restaurants
@@ -83,7 +88,9 @@ const OTDMainPage = () => {
                 <Card
                   onClick={() => handleClick(item.restaurant.id)}
                   key={i}
-                  sx={{ padding: ".5em ", display: "flex" }}
+                  sx={{ padding: ".5em ",            boxShadow:
+              " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
+height:"30vh", display: "flex" }}
                 >
                   <Avatar
                     sx={{
@@ -104,7 +111,7 @@ const OTDMainPage = () => {
                       padding: ".5em",
                     }}
                   >
-                    <Typography> {item.restaurant.companyName} </Typography>
+                    <Typography fontWeight={600} fontSize={'.9em'} > {item.restaurant.companyName} </Typography>
                     <Box sx={{ display: "flex", gap: ".5em" }}>
                       <Avatar
                         sx={{ width: "20px", height: "20px" }}
@@ -119,7 +126,7 @@ const OTDMainPage = () => {
                         sx={{ width: "20px", height: "20px" }}
                         src={card2}
                       />
-                      <Typography sx={{ fontSize: "13px" }}></Typography>
+                      <Typography sx={{ fontSize: "13px" }}> 0.5km away </Typography>
                     </Box>
                     <Box sx={{ display: "flex", gap: ".5em" }}>
                       <Avatar
@@ -147,8 +154,9 @@ const OTDMainPage = () => {
                 />
               );
             })}
-      </Container>
+      </Box>
     </Container>
+    </div>
   );
 };
 export default OTDMainPage;

@@ -11,6 +11,7 @@ import {
   InputAdornment,
   Skeleton,
   Typography,
+  Container,
 } from "@mui/material";
 import "../../components/restaurant/restaurant.css";
 import SearchIcon from "@mui/icons-material/Search";
@@ -98,6 +99,7 @@ const RestaurantMenu = () => {
 
   return (
     <div className="gpt3__restaurant">
+    <Container>
       <Box display="flex" gap="1em">
         <BackArrow />
         <TextField
@@ -295,6 +297,7 @@ const RestaurantMenu = () => {
           Save{" "}
         </Button>
       </Box>
+      </Container>
     </div>
   );
 };

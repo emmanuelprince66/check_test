@@ -13,14 +13,13 @@
 @media screen and (max-width:400px) {
    .gpt3__restaurant {
    min-width: 100%;
-   padding: 1rem;
    }
  }
  
  @media screen and (min-width:400px) and (max-width:820px){
      .gpt3__restaurant {
      width: 80%;
-     margin-top: 25%;
+     /* margin-top: 25%; */
      }
  }
  

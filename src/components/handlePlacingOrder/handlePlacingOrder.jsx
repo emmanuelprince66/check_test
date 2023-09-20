@@ -111,6 +111,18 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const [openCreatePinSuccessModal, setOpenCreatePinSuccessModal] =
     useState(false);
   const superMarket = useSuperMarket(superMarketKey);
+  const notify = (message) => {
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 5000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
+  };
 
   const handleShowOrderText = () => {
     setShowInsufficientBalance(false);
@@ -154,18 +166,25 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     // calling the modals if its restaurant or supermarket...
     // chechandleOpendisabledking if there are any items in cart...
     let itemInCart = orders?.some((order) => order.items.length > 0);
-    if (isOTD) {
-      itemInCart ? setOpen(true) : notify("No items in your cart!");
-
-      ordersDelivery.length > 0 && location.pathname === "/cart"
-        ? navigate("/restaurant-checkout")
-        : null;
+    if (restaurant || isOTD) {
+      if (location.pathname === "/cart") {
+        console.log(landmarkCost.amount);
+        ordersDelivery.length > 0 && landmarkCost.amount !== undefined
+          ? navigate("/restaurant-checkout")
+          : landmarkCost.amount === undefined
+          ? notify("Choose a Landmark!")
+          : itemInCart
+          ? setOpen(true)
+          : notify("No items in your cart!");
+      } else {
+        setOpen(true);
+      }
     } else {
       supermarketCart?.length !== 0
         ? setOpen(true)
         : notify("you have no item in your cart");
     }
-    console.log(deliveryDetails)
+    console.log(deliveryDetails);
   };
   const handleOpen2 = () => setOpen2(true);
   const handleOpen3 = () => {
@@ -414,9 +433,13 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       : ordersPickUp.length > 0
       ? takeAwayPrice * ordersPickUp.length
       : takeAwayPrice;
+
   let restaurantAmount =
     ordersDelivery.length > 0
-      ? totalAmount + packCost + restaurantCommission + Number(landmarkCost.amount)
+      ? totalAmount +
+        packCost +
+        restaurantCommission +
+        (Number(landmarkCost?.amount) || 0)
       : OTDtype == "pick-up"
       ? totalAmount + restaurantCommission + packCost
       : totalAmount + restaurantCommission;
@@ -435,20 +458,19 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     orders: ordersToSend,
   };
 
-  const deliveryPayload ={
+  const deliveryPayload = {
     commission: restaurantCommission,
     isHomeDelivery: true,
-    phoneNumber:deliveryDetails.phoneNumber,
-    address:deliveryDetails.deliveryAddress,
+    phoneNumber: deliveryDetails.phoneNumber,
+    address: deliveryDetails.deliveryAddress,
     category: "restaurant",
-    deliveryFee:`${landmarkCost.location} | ${landmarkCost.amount} `,
+    deliveryFee: `${landmarkCost.location} | ${landmarkCost.amount} `,
     restaurantId: OTDOrderOnClickId,
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
-
-  }
-  const pickUpPayload ={
+  };
+  const pickUpPayload = {
     commission: restaurantCommission,
     isHomeDelivery: true,
     category: "restaurant",
@@ -456,16 +478,17 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     totalAmount: totalPrice,
     paymentType: "WALLET",
     orders: ordersToSend,
-
-  }
+  };
 
   const mutationOrder = useMutation(sendPinToEndpoint, {
     onSuccess: (response) => {
       // api to save cart
       restaurant
         ? mutationRestaurantData.mutate(restaurantPayLoad)
-        : ordersDelivery.length > 0 ? mutationRestaurantData.mutate(deliveryPayload)
-        : ordersPickUp.length > 0 ? mutationRestaurantData.mutate(pickUpPayload)
+        : ordersDelivery.length > 0
+        ? mutationRestaurantData.mutate(deliveryPayload)
+        : ordersPickUp.length > 0
+        ? mutationRestaurantData.mutate(pickUpPayload)
         : mutationData.mutate(payLoad);
       queryClient.invalidateQueries("pins"); // Optionally, invalidate relevant queries after the mutation
     },
@@ -582,19 +605,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   // data to send to complete order endpoint end
   // complete order ends
 
-  const notify = (message) => {
-    toast.error(message, {
-      position: "top-center",
-      autoClose: 5000,
-      hideProgressBar: false,
-      closeOnClick: true,
-      pauseOnHover: true,
-      draggable: true,
-      progress: undefined,
-      theme: "dark",
-    });
-  };
-
   const navigate = useNavigate();
   const currentTheme = useTheme();
   const location = useLocation();
@@ -617,12 +627,13 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     (item) => item.restaurant.id == OTDOrderOnClickId
   );
   console.log(OTDLandmarks, OTDOrderOnClickId, OTDRestaurants);
-  function handleSaveDeliveryCost(amount,location) {
-    dispatch(setLandmarkCost({amount,location}));
+  function handleSaveDeliveryCost(amount, location) {
+    dispatch(setLandmarkCost({ amount, location }));
     setOpenLocationOptions(false);
   }
   return (
     <>
+    <ToastContainer/>
       <Box
         sx={{
           display: "flex",
@@ -631,7 +642,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           bottom: "0px",
           width: { xs: "100%", sm: "60%", md: "30%", lg: "30%" },
           padding: "1.5rem",
-          gap: "1rem",
+          gap: ".5rem",
           justifyContent: "start",
           background: "white",
           right: { xs: "1px", sm: "19%", lg: "35%" },
@@ -653,8 +664,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               <Typography>
                 {" "}
                 {OTDtype === "delivery"
-                  ? takeAwayPrice + " " + "x" + " " + ordersDelivery.length
-                  : takeAwayPrice + " " + "x" + " " + ordersPickUp.length}
+                  ? (takeAwayPrice || 0) + " " + "x" + " " + ordersDelivery.length
+                  : (takeAwayPrice || 0) + " " + "x" + " " + ordersPickUp.length}
               </Typography>
             </Box>
           ) : null}
@@ -687,6 +698,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 </Button>
               ) : (
                 <Typography
+                  onClick={() => setOpenLocationOptions(true)}
                   sx={{
                     color: "var(--currency-green)",
                     fontSize: "1em",
@@ -726,7 +738,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               fontSize: "16px",
             }}
           >
-            <FormattedPrice amount={totalPrice} />
+            <FormattedPrice amount={totalPrice || 0 } />
           </Typography>
         </Box>
 
@@ -1864,7 +1876,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 {OTDLandmarks?.landmarks?.map((item, i) => {
                   return (
                     <Typography
-                      onClick={() => handleSaveDeliveryCost(item.amount,item.location)}
+                      onClick={() =>
+                        handleSaveDeliveryCost(item.amount, item.location)
+                      }
                       sx={{ borderBottom: "1px solid grey" }}
                       key={i}
                     >

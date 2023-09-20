@@ -169,11 +169,19 @@ const merchantSlice = createSlice({
     ...item,id:i + 1
   }
 })
+console.log(action.payload)
+
+state.totalAmount -= state.orders[action.payload - 1].amount
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter(
         (order) => order.id === 1
       )
+      state.orders =  []
+      state.orderInView =  0
+      state.categoryNameInView = ""
+      state.totalAmount = 0
+      state.landmarkCost = {}
     },
     editStatusUpdate: (state, action) => {
       let neil = state.orders[state.orderInView - 1].menu
@@ -205,6 +213,7 @@ const merchantSlice = createSlice({
         state.orderInView =  0
         state.categoryNameInView = ""
         state.totalAmount = 0
+              state.landmarkCost = {}
     },
 
     handlePreview:(state,action)=>{

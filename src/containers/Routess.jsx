@@ -31,6 +31,7 @@ import RestaurantReceipt from "../Paths/restaurantOrderReceipt/restaurantReceipt
 import RestaurantCheckout from "../Paths/restaurantCheckout/restaurantCheckout";
 import OTDMainPage from "../Paths/OTD/otd";
 import RestaurantPage from "../Paths/otdRestaurant/otdrestaurant";
+import ScrollToTop from "../components/scrollToTop";
 
 const Routess = () => {
   const [darkMode, setDarkMode] = useState(false);
@@ -53,6 +54,7 @@ const Routess = () => {
 
   return (
     <div>
+    <ScrollToTop/>
       <ThemeProvider theme={theme}>
         <CssBaseline>
           <Routes>

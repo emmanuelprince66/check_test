@@ -63,7 +63,7 @@ const RestaurantCheckout = () => {
     <Container
       sx={{
         display: "flex",
-        marginBottom: "400px",
+        marginBottom: showSummary ? "400px":'100px',
         paddingTop: "1em",
         flexDirection: "column",
         gap: "1em",

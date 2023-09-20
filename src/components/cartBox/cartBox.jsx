@@ -122,7 +122,7 @@ setTimeout(()=>setShowRemoveModal(false),300)
         }, '&.:focus':{backgroundColor:"grey"}, width:'40%',  padding:'4px 8px', textTransform:'none',color:'white' }} onClick={editStatus} >Edit</Button>
             </Box>
           ) : !itemInfo.added || !itemInfo.canEditPreview  ?(
-            <Box sx={{width:'100%' ,display:'flex'}} >
+            <Box sx={{width:'100%' ,gap:'.4em', display:'flex'}} >
             <Box
             display="flex"
             justifyContent="space-between"

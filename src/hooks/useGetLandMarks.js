@@ -37,7 +37,9 @@ console.log(resCoords,userCoords)
     },
   });
   
-console.log(res,poop)
+return res,poop
+
+
     // try {
     //   const response = await axios.get(endpoint, {
     //     params: {
