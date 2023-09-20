@@ -24,19 +24,28 @@ const OTDMainPage = () => {
   const restaurants = data?.data;
   const { myLocation } = useSelector((state) => state.merchantReducer);
   const dispatch = useDispatch();
+
   const navigate = useNavigate();
   console.log(myLocation);
   useEffect(() => {
-    getLandmarks(myLocation.latitude, myLocation.longitude);
-    dispatch(setOTDRestaurants(restaurants));
-    console.log(data.data);
-  }, [data]);
-
+    if (restaurants && restaurants[0]) {
+      const resCoords = {
+        lat: restaurants[0].latitude,
+        long: restaurants[0].longitude,
+      };
+      const userCoords = {
+        lat: myLocation.latitude,
+        long: myLocation.longitude,
+      };
+      getLandmarks({ resCoords, userCoords });
+      dispatch(setOTDRestaurants(restaurants));
+    }
+  }, [restaurants, myLocation, dispatch]);
   function handleClick(id) {
     navigate(`/restaurant/${id}`);
   }
   return (
-    <Container sx={{ display: "flex", flexDirection: "column", gap: "1em" }}>
+    <Container sx={{ display: "flex", marginBottom:"100px", paddingTop:'1em', flexDirection: "column", gap: "1em" }}>
       <Typography fontWeight={700} fontSize={"1.6em"}>
         Order to Doorstep{" "}
       </Typography>

@@ -17,10 +17,14 @@ const merchantSlice = createSlice({
     myLocation:{},
     landmarks:null,
     isOTD:false,
+    OTDOrderOnClickId:0,
   },
   reducers: {
     populateMerchantDetails: (state, action) => {
       state.data = action.payload;
+    },
+    setOTDOrderOnClickId: (state, action) => {
+      state.OTDOrderOnClickId = action.payload;
     },
     setCategoryNameInView: (state, action) => {
       state.categoryNameInView = action.payload;
@@ -230,6 +234,7 @@ export const {
   setOTDRestaurants,
   setLandmarks,
   handlePreview,
+  setOTDOrderOnClickId,
   addItemsToCart,
   setOrderInView,
   removeItemFromCart,

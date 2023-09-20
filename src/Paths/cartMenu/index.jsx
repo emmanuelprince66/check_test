@@ -27,24 +27,28 @@ import {
 import CartBox from "../../components/cartBox/cartBox";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
-
+import { useParams } from "react-router-dom";
 const RestaurantMenu = () => {
   const [id, setId] = useState(null);
   const [mode, setMode] = useState("eat-in");
   const [categoryInView, setCategoryInView] = useState(0);
   const [preview, setPreview] = useState(false);
+  const params = useParams()
   const dispatch = useDispatch();
   const {
     data: merchantDetails,
     orders,
+    isOTD,
     categoryNameInView,
     orderInView,
     orderCart,
+    OTDOrderOnClickId,
     totalAmount,
     previewOrders,
   } = useSelector((state) => state.merchantReducer);
-  const menu = useMenu(merchantDetails?.restaurant?.id);
-  const category = useRestaurantCategory(merchantDetails?.restaurant?.id);
+  const idToUse = isOTD ? OTDOrderOnClickId :merchantDetails.restaurant?merchantDetails?.restaurant?.id :null 
+  const menu = useMenu(idToUse);
+  const category = useRestaurantCategory(idToUse);
   const navigate = useNavigate();
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
@@ -83,7 +87,7 @@ const RestaurantMenu = () => {
     setCategoryInView(i);
   }
   function handleSaveToCart() {
-    navigate("/cart");
+     isOTD ? navigate(`/restaurant/${OTDOrderOnClickId}`) : navigate("/cart");
   }
   function handleOrderType(type) {
     dispatch(updateOrderType(type));

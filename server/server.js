@@ -1,27 +1,41 @@
-import express from 'express'
-import axios from 'axios'
-import cors from 'cors'
-import { useSelector } from 'react-redux'
-const app = express()
-const {myLocation} = useSelector(state=>state.merchantReducer)
-app.use(cors())
-app.get('/geocode/latlng=:lat,:long&key=:key',async(req,res)=>{
+import express from 'express';
+import axios from 'axios';
+import cors from 'cors';
+
+const app = express();
+app.use(cors());
+
+app.get('/geocode', async (req, res) => {
   try {
-    const apiKey = 'AIzaSyBmzSu1bNx4venaADcZGAuMnGlWoEBNKL4';
-const {lat,long,key} = req.params
+    const apiKey = 'YOUR_API_KEY'; // Replace with your actual API key
+
+    const { latlng, key } = req.params;
+    console.log(req.query,'milk')
+    
+
     const response = await axios.get('https://maps.googleapis.com/maps/api/geocode/json', {
-      params: {
-        latlng:`${lat},${long}`,
-        key:key
-      }, // Forward all query parameters to Google's API
+      params: req.query
     });
-    console.log(req.query); // Log the query parameters
+
     res.json(response.data);
   } catch (error) {
-    res.status(500).json({ error: 'Internal Server Error' });
-  }   
-})
-  
-  app.listen(3001,()=>{
-      console.log('Proxy server is running on http://localhost:3001');
-    })
+    res.status(500).json(error);
+  }
+});
+app.get(
+  "/distance",
+  async (req, res) => {
+    const response = await axios.get(
+      "https://maps.googleapis.com/maps/api/distancematrix/json",
+      {
+          params:req.query, // Forward all query parameters to Google's API
+      }
+    );
+    console.log(req.query); // Log the query parameters
+    res.json(response.data);
+  }
+);
+
+app.listen(3001, () => {
+  console.log('Proxy server is running on http://localhost:3001');
+});

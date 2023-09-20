@@ -10,6 +10,7 @@ import useRestaurantCategory from "../../hooks/useRestaurantCategory";
 import { useDispatch } from "react-redux";
 import {
   addOrders,
+  setOTDOrderOnClickId,
   removeOrder,
   clearRestaurantCart,
   setOrderInView,
@@ -17,19 +18,27 @@ import {
 import options from "../../assets/MoreOptions.svg";
 import BackArrow from "../backArrow/BackArrow";
 import RestaurantOrderModal from "../restaurantOrderModal";
+import { useParams,useLocation } from "react-router-dom";
 const Restaurant = () => {
   const {
     orders,
     orderCart,
     data: merchantDetails,
+    isOTD
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails)
   const navigate = useNavigate();
+  
+  const params = useParams()
+
+  const location = useLocation()
+  console.log(params)
   const dispatch = useDispatch();
   const [openOrderOptions, setOpenOrderOptions] = useState({
     id: null,
     status: false,
   });
+
   const [allCartOptions, setAllCartOptions] = useState(false);
 
   useEffect(() => {
@@ -54,6 +63,8 @@ function clearCart(){
 }
   function handleClickMenu(id) {
     dispatch(setOrderInView(id));
+  console.log( location.pathname.includes('/restaurant'))
+  location.pathname.includes('/restaurant') ? dispatch(setOTDOrderOnClickId(params.id)) : null
     navigate("/restaurant/menu");
   }
   function handleRemoveOrder(id) {
@@ -75,7 +86,9 @@ function clearCart(){
         marginBottom: "15em",
       }}
     >
-      <Box
+{    
+  !isOTD ?
+    <Box
         sx={{
           justifyContent: "space-between",
           display: "flex",
@@ -94,9 +107,12 @@ function clearCart(){
           <img src={options} />
         </Button>
       </Box>
+: null
 
-      <h1 className="h1-text">My Cart</h1>
+}
 
+{!isOTD ?      <h1 className="h1-text">My Cart</h1>:null
+}
       <div
         style={{
           overflowY: "auto",

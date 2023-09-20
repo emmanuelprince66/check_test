@@ -20,18 +20,23 @@ const RestaurantPage = () => {
   const menu = useMenu(params.id);
   console.log(menu.data, "menu gotten");
   return (
-    <Container sx={{ padding: "0px" }}>
+    <Container sx={{ padding: "0px",display:'flex',gap:'8em',flexDirection:'column' }}>
+      
+      <Box sx={{height:"20vh"}} >
       <Avatar
         sx={{
           width: "100%",
+          height:'100%',
           borderRadius: "4px 4px 0 0",
-          height: "20vh",
+          objectFit:'cover'
         }}
         variant="rounded"
         alt="Menu Item Image"
         src={restaurant?.image}
       />
-              <Card    sx={{ padding: ".5em ",width:'70%',margin:' 0 auto', insetInline:'0', position:'absolute', top:'2em', display: "flex" }}>
+
+      </Box>
+              <Card    sx={{ padding: ".5em ",width:'90%',margin:' 0 auto', insetInline:'0', position:'absolute', top:'5em', display: "flex" }}>
                 <Box
                   sx={{
                     display: "flex",
