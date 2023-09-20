@@ -18,13 +18,13 @@ import { useSelector } from "react-redux";
 import { CreateTable } from "../../components/createTable";
 import del from "../../assets/Cart/trash.svg";
 import edit from "../../assets/Cart/edit-2.svg";
+import { setDeliveryDetails } from "../../util/slice/merchantSlice";
 import BackArrow from "../../components/backArrow/BackArrow";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
-
+import { useDispatch } from "react-redux";
 import { PlaceOrder } from "../../components/handlePlacingOrder/handlePlacingOrder";
 const RestaurantCheckout = () => {
   const [showSummary, setShowSummary] = useState(false);
-  const [deliveryDetails, setDeliveryDetails] = useState({});
   const [collapse, setCollapse] = useState({ id: null, status: false });
   const {
     handleSubmit,
@@ -35,8 +35,10 @@ const RestaurantCheckout = () => {
   const {
     data: merchantDetails,
     myLocation,
+    deliveryDetails,
     orders,
   } = useSelector((state) => state.merchantReducer);
+  const dispatch = useDispatch()
   const ordersToSend = orders
     .filter((order) => order.items.length > 0)
     .map((item) => {
@@ -45,7 +47,7 @@ const RestaurantCheckout = () => {
     });
 
   const onSubmit = (data) => {
-    setDeliveryDetails(data);
+    dispatch(setDeliveryDetails(data));
     setShowSummary(true);
   };
   function handleCollapse(id) {

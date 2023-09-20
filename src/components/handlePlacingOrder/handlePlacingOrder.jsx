@@ -52,6 +52,7 @@ import {
   resetState,
   setLandmarks,
   setLocation,
+  setLandmarkCost,
 } from "../../util/slice/merchantSlice";
 import { useMyLocation } from "../../hooks/useLocation";
 import { useLocation } from "react-router-dom";
@@ -135,19 +136,25 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     data: merchantDetails,
     takeAwayPrice,
     myLocation,
-    landmarks,
+    landmarkCost,
+    OTDOrderOnClickId,
+    OTDRestaurants,
+    isOTD,
+    OTDtype,
+    deliveryDetails,
     totalAmount,
   } = useSelector((state) => state.merchantReducer);
 
   const ordersDelivery = orders.filter(
     (order) => order.orderType === "delivery"
   );
+  const ordersPickUp = orders.filter((order) => order.orderType === "pick-up");
 
   const handleOpen = () => {
     // calling the modals if its restaurant or supermarket...
     // chechandleOpendisabledking if there are any items in cart...
     let itemInCart = orders?.some((order) => order.items.length > 0);
-    if (restaurant) {
+    if (isOTD) {
       itemInCart ? setOpen(true) : notify("No items in your cart!");
 
       ordersDelivery.length > 0 && location.pathname === "/cart"
@@ -158,6 +165,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         ? setOpen(true)
         : notify("you have no item in your cart");
     }
+    console.log(deliveryDetails)
   };
   const handleOpen2 = () => setOpen2(true);
   const handleOpen3 = () => {
@@ -184,7 +192,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const closeLocationOptions = () => {
     setOpenLocationOptions(false);
   };
-  const handleOpenLocationOptions = () => {
+  function handleOpenLocationOptions() {
     setOpenLocationOptions(true);
     getLandmarks(myLocation.latitude, myLocation.longitude)
       .then((res) => {
@@ -192,7 +200,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         console.log(res.data);
       })
       .catch((err) => console.log(err));
-  };
+  }
   const handleChange = (index, value) => {
     // Ensure that the value is only one digit
     if (value.length > 1) return;
@@ -400,12 +408,20 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     }
   };
   let restaurantCommission = Number(((1 / 100) * totalAmount).toFixed(2));
-  let packCost = takeAwayPrice * ordersDelivery.length;
+  let packCost =
+    ordersDelivery.length > 0
+      ? takeAwayPrice * ordersDelivery.length
+      : ordersPickUp.length > 0
+      ? takeAwayPrice * ordersPickUp.length
+      : takeAwayPrice;
   let restaurantAmount =
     ordersDelivery.length > 0
-      ? totalAmount + packCost + restaurantCommission
+      ? totalAmount + packCost + restaurantCommission + Number(landmarkCost.amount)
+      : OTDtype == "pick-up"
+      ? totalAmount + restaurantCommission + packCost
       : totalAmount + restaurantCommission;
-  const totalPrice = restaurant ? restaurantAmount : calculateTotalPrice();
+  const totalPrice =
+    restaurant || isOTD ? restaurantAmount : calculateTotalPrice();
   const commissionCal = (1 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
   const superMarketId = superMarket.data ? superMarket.data.id : "";
@@ -419,11 +435,37 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     orders: ordersToSend,
   };
 
+  const deliveryPayload ={
+    commission: restaurantCommission,
+    isHomeDelivery: true,
+    phoneNumber:deliveryDetails.phoneNumber,
+    address:deliveryDetails.deliveryAddress,
+    category: "restaurant",
+    deliveryFee:`${landmarkCost.location} | ${landmarkCost.amount} `,
+    restaurantId: OTDOrderOnClickId,
+    totalAmount: totalPrice,
+    paymentType: "WALLET",
+    orders: ordersToSend,
+
+  }
+  const pickUpPayload ={
+    commission: restaurantCommission,
+    isHomeDelivery: true,
+    category: "restaurant",
+    restaurantId: OTDOrderOnClickId,
+    totalAmount: totalPrice,
+    paymentType: "WALLET",
+    orders: ordersToSend,
+
+  }
+
   const mutationOrder = useMutation(sendPinToEndpoint, {
     onSuccess: (response) => {
       // api to save cart
       restaurant
         ? mutationRestaurantData.mutate(restaurantPayLoad)
+        : ordersDelivery.length > 0 ? mutationRestaurantData.mutate(deliveryPayload)
+        : ordersPickUp.length > 0 ? mutationRestaurantData.mutate(pickUpPayload)
         : mutationData.mutate(payLoad);
       queryClient.invalidateQueries("pins"); // Optionally, invalidate relevant queries after the mutation
     },
@@ -571,7 +613,14 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       setSuperMarketKey(val);
     }
   }, []);
-
+  const OTDLandmarks = OTDRestaurants.find(
+    (item) => item.restaurant.id == OTDOrderOnClickId
+  );
+  console.log(OTDLandmarks, OTDOrderOnClickId, OTDRestaurants);
+  function handleSaveDeliveryCost(amount,location) {
+    dispatch(setLandmarkCost({amount,location}));
+    setOpenLocationOptions(false);
+  }
   return (
     <>
       <Box
@@ -597,16 +646,19 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           marginBottom: "5rem",
         }}
       >
-        {restaurant && ordersDelivery.length > 0 ? (
-          <Box>
+        <Box>
+          {restaurant || isOTD ? (
             <Box sx={{ display: "flex", justifyContent: "space-between" }}>
               <Typography> Take-Away Pack(+1) </Typography>
               <Typography>
                 {" "}
-                {takeAwayPrice} x {ordersDelivery.length}{" "}
+                {OTDtype === "delivery"
+                  ? takeAwayPrice + " " + "x" + " " + ordersDelivery.length
+                  : takeAwayPrice + " " + "x" + " " + ordersPickUp.length}
               </Typography>
             </Box>
-
+          ) : null}
+          {ordersDelivery.length > 0 ? (
             <Box
               sx={{
                 display: "flex",
@@ -618,23 +670,37 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 {" "}
                 Delivery Fee{" "}
               </Typography>
-              <Button
-                onClick={handleOpenLocationOptions}
-                sx={{
-                  color: "var(--currency-green)",
-                  minWidth: "30px",
-                  padding: "0",
-                  textTransform: "none",
-                  fontSize: ".75em",
-                  fontWeight: "600",
-                }}
-              >
-                {" "}
-                Tap to Select your nearest location{" "}
-              </Button>
+              {!landmarkCost.amount ? (
+                <Button
+                  onClick={handleOpenLocationOptions}
+                  sx={{
+                    color: "var(--currency-green)",
+                    minWidth: "30px",
+                    padding: "0",
+                    textTransform: "none",
+                    fontSize: ".75em",
+                    fontWeight: "600",
+                  }}
+                >
+                  {" "}
+                  Tap to Select your nearest location
+                </Button>
+              ) : (
+                <Typography
+                  sx={{
+                    color: "var(--currency-green)",
+                    fontSize: "1em",
+                    fontWeight: "600",
+                  }}
+                >
+                  {" "}
+                  {landmarkCost.amount}{" "}
+                </Typography>
+              )}{" "}
             </Box>
-          </Box>
-        ) : null}
+          ) : null}{" "}
+        </Box>
+
         <Box
           sx={{
             display: "flex",
@@ -1724,6 +1790,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               position: "absolute",
               bottom: "0",
               margin: "0",
+              padding: "1em 0",
             },
           }}
           open={openLocationOptions}
@@ -1744,12 +1811,17 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             <Box
               sx={{
                 marginBottom: "1rem",
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                gap: "1rem",
               }}
             >
               <Typography
                 variant="h2"
                 sx={{
                   fontFamily: "raleWay",
+                  padding: "0 1em",
                   letterSpacing: "0.2em",
                   lineHeight: "2em",
                   fontWeight: "600",
@@ -1766,7 +1838,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               </Typography>
               <TextField
                 label="Search Items"
-                sx={{ "& .MuiInputBase-root": { height: "44px" } }}
+                sx={{
+                  "& .MuiInputBase-root": { height: "44px" },
+                  padding: "0 1em",
+                }}
                 fullWidth
                 InputProps={{
                   startAdornment: (
@@ -1777,8 +1852,27 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 }}
               />
 
-              <Box>
-                <Typography> {landmarks?.address.city} </Typography>
+              <Box
+                sx={{
+                  display: "flex",
+                  padding: "0 1em",
+                  width: "100%",
+                  flexDirection: "column",
+                  gap: ".8em",
+                }}
+              >
+                {OTDLandmarks?.landmarks?.map((item, i) => {
+                  return (
+                    <Typography
+                      onClick={() => handleSaveDeliveryCost(item.amount,item.location)}
+                      sx={{ borderBottom: "1px solid grey" }}
+                      key={i}
+                    >
+                      {" "}
+                      {item.location}{" "}
+                    </Typography>
+                  );
+                })}
               </Box>
             </Box>
           </Box>

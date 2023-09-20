@@ -80,14 +80,14 @@ const RestaurantMenu = () => {
 
   useEffect(() => {
     dispatch(handlePreview());
-  }, [orders[orderInView - 1].menu]);
+  }, [orders[orderInView - 1]?.menu]);
 
   function checkCategory(i, name) {
     dispatch(setCategoryNameInView(name));
     setCategoryInView(i);
   }
   function handleSaveToCart() {
-     isOTD ? navigate(`/restaurant/${OTDOrderOnClickId}`) : navigate("/cart");
+      navigate("/cart");
   }
   function handleOrderType(type) {
     dispatch(updateOrderType(type));
@@ -117,7 +117,7 @@ const RestaurantMenu = () => {
       <Box display="flex" sx={{}} gap="1em" justifyContent="space-between">
         <div style={{ display: "flex", flexDirection: "column", gap: ".5em" }}>
           <span>Order {orderInView}</span>
-          {orders[orderInView - 1].items.length > 0 && !preview ? (
+          {orders[orderInView - 1]?.items?.length > 0 && !preview ? (
             <Button
               onClick={showPreview}
               sx={{
@@ -133,7 +133,11 @@ const RestaurantMenu = () => {
             </Button>
           ) : null}{" "}
         </div>
-        <div
+
+
+{
+  !isOTD?
+          <div
           style={{
             display: "grid",
             gap: ".5em",
@@ -144,12 +148,12 @@ const RestaurantMenu = () => {
             style={{
               width: "100%",
               color:
-                orders[orderInView - 1].orderType === "eat-in"
+                orders[orderInView - 1]?.orderType === "eat-in"
                   ? "white"
                   : "black",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "eat-in"
+                orders[orderInView - 1]?.orderType === "eat-in"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
@@ -163,12 +167,12 @@ const RestaurantMenu = () => {
             style={{
               width: "100%",
               color:
-                orders[orderInView - 1].orderType !== "eat-out"
+                orders[orderInView - 1]?.orderType !== "eat-out"
                   ? "black"
                   : "white",
               cursor: "pointer",
               backgroundColor:
-                orders[orderInView - 1].orderType === "eat-out"
+                orders[orderInView - 1]?.orderType === "eat-out"
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
@@ -179,46 +183,9 @@ const RestaurantMenu = () => {
             {" "}
             Takeaway
           </span>
-          <span
-            style={{
-              color:
-                orders[orderInView - 1].orderType !== "delivery"
-                  ? "black"
-                  : "white",
-              cursor: "pointer",
-              backgroundColor:
-                orders[orderInView - 1].orderType === "delivery"
-                  ? "var(--cart-deep-red)"
-                  : "#EDEDED",
-              padding: ".5em .8em",
-              borderRadius: "0em .5em .5em 0",
-            }}
-            onClick={() => handleOrderType("delivery")}
-          >
-            {" "}
-            Delivery
-          </span>
-          <span
-            style={{
-              color:
-                orders[orderInView - 1].orderType !== "pick-up"
-                  ? "black"
-                  : "white",
-              cursor: "pointer",
-              backgroundColor:
-                orders[orderInView - 1].orderType === "pick-up"
-                  ? "var(--cart-deep-red)"
-                  : "#EDEDED",
-              padding: ".5em .8em",
-              borderRadius: "0em .5em .5em 0",
-            }}
-            onClick={() => handleOrderType("pick-up")}
-          >
-            {" "}
-            Pick-Up
-          </span>
         </div>
-      </Box>
+        : null
+}      </Box>
 
       {/* Category List   */}
       {!preview ? (

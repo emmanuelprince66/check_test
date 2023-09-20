@@ -7,16 +7,19 @@ const merchantSlice = createSlice({
     orderCart: [],
     orders: [],
     userDetails:null,
+    deliveryDetails:{},
     previewOrders:[],
     OTDRestaurants:[],
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
+    landmarkCost: 0,
     receiptInView:null,
     takeAwayPrice:0,
     myLocation:{},
     landmarks:null,
     isOTD:false,
+    OTDtype:'delivery',
     OTDOrderOnClickId:0,
   },
   reducers: {
@@ -25,6 +28,18 @@ const merchantSlice = createSlice({
     },
     setOTDOrderOnClickId: (state, action) => {
       state.OTDOrderOnClickId = action.payload;
+    },
+    setLandmarkCost: (state, action) => {
+      state.landmarkCost = action.payload;
+    },
+    setDeliveryDetails: (state, action) => {
+      state.deliveryDetails = action.payload;
+    },
+    setOTDtype: (state, action) => {
+      state.OTDtype = action.payload;
+      state.orders =  state.orders.map((item)=>{
+        return {...item, orderType:action.payload}
+      })
     },
     setCategoryNameInView: (state, action) => {
       state.categoryNameInView = action.payload;
@@ -226,7 +241,10 @@ export const {
   addOrders,
   fillUserDetails,
   removeOrder,
+  setDeliveryDetails,
   showReceiptInView,
+  setLandmarkCost,
+  setOTDtype,
   addMenu,
   setTakeAwayPrice,
   setLocation,

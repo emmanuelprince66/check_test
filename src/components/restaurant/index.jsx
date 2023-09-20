@@ -14,6 +14,7 @@ import {
   removeOrder,
   clearRestaurantCart,
   setOrderInView,
+setOTDtype,
 } from "../../util/slice/merchantSlice";
 import options from "../../assets/MoreOptions.svg";
 import BackArrow from "../backArrow/BackArrow";
@@ -24,7 +25,8 @@ const Restaurant = () => {
     orders,
     orderCart,
     data: merchantDetails,
-    isOTD
+    isOTD,
+    OTDtype
   } = useSelector((state) => state.merchantReducer);
   // console.log(merchantDetails)
   const navigate = useNavigate();
@@ -42,7 +44,8 @@ const Restaurant = () => {
   const [allCartOptions, setAllCartOptions] = useState(false);
 
   useEffect(() => {
-    let firstOrder = { id: 1, amount: 0.0,orderType:'eat-in', items: [] };
+    let firstOrder = { id: 1, amount: 0.0,      orderType:  isOTD? 'delivery' :'eat-in',
+    items: [] };
     dispatch(addOrders(firstOrder));
   }, [orderCart, orders]);
 
@@ -51,7 +54,7 @@ const Restaurant = () => {
     let newOrder = {
       id: maxId,
       amount: 0.0,
-      orderType:'eat-in',
+      orderType:  isOTD? 'delivery' :'eat-in',
       items: [],
     };
     dispatch(addOrders(newOrder));
@@ -74,6 +77,9 @@ function clearCart(){
   function handleViewOptions(id) {
     setOpenOrderOptions({ id: id, status: true });
   }
+  function handleOrderType(type){
+    dispatch(setOTDtype(type))
+  }
 
   return (
     <Container
@@ -87,7 +93,7 @@ function clearCart(){
       }}
     >
 {    
-  !isOTD ?
+  isOTD && location.pathname === '/cart' || !isOTD  ?
     <Box
         sx={{
           justifyContent: "space-between",
@@ -111,8 +117,60 @@ function clearCart(){
 
 }
 
-{!isOTD ?      <h1 className="h1-text">My Cart</h1>:null
+<Box sx={{display:'flex',justifyContent:'space-between', width:'100%',alignItems:'center'}}>
+{isOTD && location.pathname === '/cart' || !isOTD  ? 
+
+     <h1 className="h1-text">My Cart</h1>:null
 }
+
+{ isOTD && location.pathname === '/cart' || !isOTD? 
+<Box>
+  <span
+            style={{
+              cursor: "pointer",
+              backgroundColor:
+              OTDtype === 'delivery'?
+                "var(--cart-deep-red)"
+                :
+                "#EDEDED",
+                color:OTDtype === 'delivery'?
+                "white"
+                :
+                "black",
+              padding: ".5em .8em",
+              borderRadius: "0em .5em .5em 0",
+            }}
+            onClick={() => handleOrderType("delivery")}
+          >
+            {" "}
+            Delivery
+          </span>
+          <span
+            style={{
+              cursor: "pointer",
+              backgroundColor:
+              OTDtype === 'pick-up'?
+                "var(--cart-deep-red)"
+                :
+                "#EDEDED",
+                color:OTDtype === 'pick-up'?
+                "white"
+                :
+                "black",
+              padding: ".5em .8em",
+              borderRadius: "0em .5em .5em 0",
+            }}
+            onClick={() => handleOrderType("pick-up")}
+          >
+            {" "}
+            Pick-Up
+          </span>
+
+</Box> 
+:null}
+
+</Box>
+
       <div
         style={{
           overflowY: "auto",
