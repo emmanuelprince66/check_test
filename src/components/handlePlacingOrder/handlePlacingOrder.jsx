@@ -161,14 +161,13 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     (order) => order.orderType === "delivery"
   );
   const ordersPickUp = orders.filter((order) => order.orderType === "pick-up");
+  const itemInCart = orders?.some((order) => order.items.length > 0);
 
   const handleOpen = () => {
     // calling the modals if its restaurant or supermarket...
     // chechandleOpendisabledking if there are any items in cart...
-    let itemInCart = orders?.some((order) => order.items.length > 0);
     if (restaurant || isOTD) {
       if (location.pathname === "/cart") {
-        console.log(landmarkCost.amount);
         ordersDelivery.length > 0 && landmarkCost.amount !== undefined
           ? navigate("/restaurant-checkout")
           : landmarkCost.amount === undefined
@@ -184,7 +183,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
         ? setOpen(true)
         : notify("you have no item in your cart");
     }
-    console.log(deliveryDetails);
   };
   const handleOpen2 = () => setOpen2(true);
   const handleOpen3 = () => {
@@ -216,7 +214,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     getLandmarks(myLocation.latitude, myLocation.longitude)
       .then((res) => {
         dispatch(setLandmarks(res.data));
-        console.log(res.data);
       })
       .catch((err) => console.log(err));
   }
@@ -611,11 +608,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const locationData = useMyLocation();
   locationData
     .then((coords) => {
-      dispatch(setLocation(coords));
+      dispatch(setLocation({latitude:coords.latitude,longitude:coords.longitude}));
     })
     .catch((err) => console.log(err));
 
-  console.log(location);
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
@@ -623,10 +619,9 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       setSuperMarketKey(val);
     }
   }, []);
-  const OTDLandmarks = OTDRestaurants.find(
+  const OTDLandmarks = OTDRestaurants?.find(
     (item) => item.restaurant.id == OTDOrderOnClickId
   );
-  console.log(OTDLandmarks, OTDOrderOnClickId, OTDRestaurants);
   function handleSaveDeliveryCost(amount, location) {
     dispatch(setLandmarkCost({ amount, location }));
     setOpenLocationOptions(false);
@@ -713,16 +708,18 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
           ) : null}{" "}
 
 
-<Box sx={{
+{
+  itemInCart ?
+  <Box sx={{
           display: "flex",          
           justifyContent:'space-between'}} >
 
-<Typography> Service Charge </Typography>
+<Typography  > Service Charge </Typography>
 <Typography> {restaurantCommission} </Typography>
 
 </Box>
-
-        </Box>
+: null
+}        </Box>
 
 
 

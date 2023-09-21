@@ -34,7 +34,6 @@ const Restaurant = () => {
   const params = useParams()
 
   const location = useLocation()
-  console.log(params)
   const dispatch = useDispatch();
   const [openOrderOptions, setOpenOrderOptions] = useState({
     id: null,

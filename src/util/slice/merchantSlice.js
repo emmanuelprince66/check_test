@@ -9,7 +9,7 @@ const merchantSlice = createSlice({
     userDetails:null,
     deliveryDetails:{},
     previewOrders:[],
-    OTDRestaurants:[],
+    OTDRestaurants:null,
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
@@ -171,7 +171,7 @@ const merchantSlice = createSlice({
 })
 console.log(action.payload)
 
-state.totalAmount -= state.orders[action.payload - 1].amount
+state.totalAmount -= state.orders[action.payload - 1]?.amount
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter(

@@ -125,7 +125,7 @@ const RestaurantMenu = () => {
               sx={{
                 cursor: "pointer",
                 borderRadius: ".5em",
-                padding: ".5em .8em",
+                padding: ".2em .8em",
                 color: "grey",
                 border: "1px solid var(--primary-red)",
               }}

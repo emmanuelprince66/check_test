@@ -44,6 +44,7 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
   return (
     <div className="gpt3__restaurant" >
+    <Container>
     <BackArrow/>
     <Typography fontWeight={700} fontSize={'1.5em'} > Order {params.id }  ( {type} ) </Typography>
     <TableContainer sx={{boxShadow:'none'}} component={Paper}>
@@ -78,6 +79,8 @@ const StyledTableRow = styled(TableRow)(({ theme }) => ({
 
 </Box>
 
+    
+</Container>
     </div>
   )
 }
