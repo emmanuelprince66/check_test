@@ -426,7 +426,6 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       throw new Error(error.response);
     }
   };
-  let restaurantCommission = Number(((1 / 100) * totalAmount).toFixed(2));
   let packCost =
     ordersDelivery.length > 0
       ? takeAwayPrice * ordersDelivery.length
@@ -438,13 +437,14 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
     ordersDelivery.length > 0
       ? totalAmount +
         packCost +
-        restaurantCommission +
         (Number(landmarkCost?.amount) || 0)
       : OTDtype == "pick-up"
-      ? totalAmount + restaurantCommission + packCost
-      : totalAmount + restaurantCommission;
+      ? totalAmount+ packCost
+      : totalAmount 
+
+  let restaurantCommission = Number(((1 / 100) * restaurantAmount).toFixed(2));
   const totalPrice =
-    restaurant || isOTD ? restaurantAmount : calculateTotalPrice();
+    restaurant || isOTD ? restaurantAmount  + restaurantCommission : calculateTotalPrice();
   const commissionCal = (1 / 100) * totalPrice;
   const commission = commissionCal.toFixed(2);
   const superMarketId = superMarket.data ? superMarket.data.id : "";
@@ -711,7 +711,20 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               )}{" "}
             </Box>
           ) : null}{" "}
+
+
+<Box sx={{
+          display: "flex",          
+          justifyContent:'space-between'}} >
+
+<Typography> Service Charge </Typography>
+<Typography> {restaurantCommission} </Typography>
+
+</Box>
+
         </Box>
+
+
 
         <Box
           sx={{
@@ -741,6 +754,8 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
             <FormattedPrice amount={totalPrice || 0 } />
           </Typography>
         </Box>
+
+
 
         <Box>
           <Button

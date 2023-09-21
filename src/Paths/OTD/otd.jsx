@@ -90,8 +90,8 @@ const OTDMainPage = () => {
                   key={i}
                   sx={{ padding: ".5em ",            boxShadow:
               " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
-height:"30vh", display: "flex" }}
-                >
+height:"20vh", display: "flex" }}
+               >
                   <Avatar
                     sx={{
                       width: "40%",
