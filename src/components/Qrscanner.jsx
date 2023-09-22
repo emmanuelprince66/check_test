@@ -43,6 +43,7 @@ const Qrscanner = () => {
 
     notifyErr("Error Fetching Supermarket");
     console.log("error");
+    setSuperMarketId("");
     setShowProgress(false);
   };
   const notifyErr = (message) => {

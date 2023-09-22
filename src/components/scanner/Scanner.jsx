@@ -8,6 +8,8 @@ import { useTheme } from "@mui/material";
 import vcart from "../../images/practise/vcart.svg";
 import { CircularProgress } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
+import { ToastContainer, toast } from "react-toastify";
+
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../util/slice/CartSlice";
@@ -38,7 +40,10 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
   const [count, setCount] = React.useState(1);
 
   const handleOpen = () => setOpen(true);
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setResult("");
+  };
   const handleCloseMarketEntryModal = () => setShowMarketEntryModal(false);
   const { data: superMarketP, isError: isError } = useSuperMarketP(
     result,
@@ -67,6 +72,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     setShowProgress(false);
     setOpen(false);
     setErrState(true);
+    console.log("error");
     notifyErr("Error Fetching Product");
     setResult("");
   }
@@ -91,6 +97,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
 
   const handleAddToCart = (data) => {
     const isValueInArray = cart.some((item) => item.id === data.id);
+    console.log("cart");
 
     if (isValueInArray) {
       notifyWarn("Item is already in cart");
