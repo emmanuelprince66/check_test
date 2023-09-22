@@ -138,7 +138,7 @@ const OTDMainPage = () => {
                   onClick={() => handleClick(item.restaurant.id)}
                   key={i}
                   sx={{
-                    padding: ".5em 0",
+                    padding: ".3em 0",
                     boxShadow:
                       " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
                     height: "22vh",
@@ -164,7 +164,7 @@ const OTDMainPage = () => {
                       width: "100%",
                       position:'relative',
                       padding: " .5em",
-                      gap:''
+                      gap:'.5em'
                     }}
                   >
                     <Typography

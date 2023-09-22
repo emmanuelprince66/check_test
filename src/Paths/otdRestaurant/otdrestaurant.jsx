@@ -99,7 +99,7 @@ const RestaurantPage = () => {
             <Box sx={{ display: "flex", gap: ".5em" }}>
               <Avatar sx={{ width: "20px", height: "20px" }} src={clockIcon} />
               <Typography sx={{ fontSize: "13px" }}>
-                {convertTo12HourFormat(menu?.data?.openingTime) + '-' + convertTo12HourFormat(menu?.data?.closingTime)  }{" "}
+                {convertTo12HourFormat(restaurant?.openingTime) + '-' + convertTo12HourFormat(restaurant?.closingTime)  }{" "}
                 <span
                   style={{
                     background: "hsla(120, 100%, 25%, 0.1)",
