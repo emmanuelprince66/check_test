@@ -18,6 +18,7 @@ import clockIcon from "../../assets/clock.svg";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
 import card1 from "../../assets/Card/card1.svg";
 import card2 from "../../assets/card2.svg";
+import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
 
 const RestaurantPage = () => {
   const params = useParams();
@@ -98,7 +99,7 @@ const RestaurantPage = () => {
             <Box sx={{ display: "flex", gap: ".5em" }}>
               <Avatar sx={{ width: "20px", height: "20px" }} src={clockIcon} />
               <Typography sx={{ fontSize: "13px" }}>
-                9AM- 8PM{" "}
+                {convertTo12HourFormat(menu?.data?.openingTime) + '-' + convertTo12HourFormat(menu?.data?.closingTime)  }{" "}
                 <span
                   style={{
                     background: "hsla(120, 100%, 25%, 0.1)",

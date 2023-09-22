@@ -20,6 +20,7 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BackArrow from "../../components/backArrow/BackArrow";
+import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
 const OTDMainPage = () => {
   const data = useGetRestaurantsOTD();
   const restaurants = data?.data;
@@ -59,7 +60,7 @@ const OTDMainPage = () => {
 
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
-            dispatch(setOTDRestaurants(filteredResults));
+            dispatch(setOTDRestaurants(results));
           }
         } catch (error) {
           console.error("Error fetching results:", error);
@@ -137,16 +138,16 @@ const OTDMainPage = () => {
                   onClick={() => handleClick(item.restaurant.id)}
                   key={i}
                   sx={{
-                    padding: ".5em ",
+                    padding: ".5em 0",
                     boxShadow:
                       " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
-                    height: "25vh",
+                    height: "22vh",
                     display: "flex",
                   }}
                 >
                   <Avatar
                     sx={{
-                      width: "40%",
+                      width: "35%",
                       borderRadius: "4px 4px ",
                       height: "auto",
                     }}
@@ -159,10 +160,11 @@ const OTDMainPage = () => {
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      height: "80%",
-                      justifyContent: "space-between",
+                      height: "100%",
                       width: "100%",
+                      position:'relative',
                       padding: " .5em",
+                      gap:''
                     }}
                   >
                     <Typography
@@ -173,7 +175,7 @@ const OTDMainPage = () => {
                       {" "}
                       {item.restaurant.companyName}{" "}
                     </Typography>
-                    <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Box sx={{ display: "flex", alignItems:'center', gap: ".5em" }}>
                       <Avatar
                         sx={{ width: "15px", height: "13px" }}
                         src={clockIcon}
@@ -186,12 +188,14 @@ const OTDMainPage = () => {
                           fontSize: "13px",
                         }}
                       >
-                        {item.openingTime + "-" + item.closingTime}{" "}
+                        {convertTo12HourFormat(item.openingTime) + "-" + convertTo12HourFormat(item.closingTime)}{" "}
                         <span
                           style={{
                             background: "hsla(120, 100%, 25%, 0.1)",
-                            color: "var(--currency-green",
-                            padding: ".4em",
+                            color: "var(--currency-green)",
+                            padding: " 0 .4em",
+                            position:'absolute',
+                            right:'.5em',
                             height: "fit-content",
                             borderRadius: ".3em",
                             fontWeight: "600",
@@ -202,7 +206,7 @@ const OTDMainPage = () => {
                         </span>
                       </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Box sx={{ display: "flex", alignItems:'center',gap: ".5em" }}>
                       <Avatar
                         sx={{ width: "15px", height: "13px" }}
                         src={card2}
@@ -214,7 +218,7 @@ const OTDMainPage = () => {
                         } Away){" "}
                       </Typography>
                     </Box>
-                    <Box sx={{ display: "flex", gap: ".5em" }}>
+                    <Box sx={{ display: "flex",alignItems:'center', gap: ".5em" }}>
                       <Avatar
                         sx={{ width: "15px", height: "13px" }}
                         src={card1}
