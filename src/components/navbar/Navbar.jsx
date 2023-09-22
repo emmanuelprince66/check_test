@@ -29,8 +29,9 @@ const Navbar = () => {
   const walletMatch = useMatch("/wallet");
   const fwalletMatch = useMatch("/fwallet");
   const transactionsMatch = useMatch("/transactions");
-  const scanMatch = useMatch("/mainScanner");
+  const scanMatch = useMatch("/scan");
   const cartMatch = useMatch("/cart");
+  const mainScanMatch = useMatch("/mainScanner");
   const profileMatch = useMatch("/profile");
   const ordersMatch = useMatch("/orders");
 
@@ -67,7 +68,9 @@ const Navbar = () => {
             <Link
               to="/home"
               className={
-                homeMatch || fwalletMatch || walletMatch ? "active-link" : ""
+                homeMatch || fwalletMatch || walletMatch || mainScanMatch
+                  ? "active-link"
+                  : ""
               }
               style={{ color: "black", textDecoration: "none" }}
             >
@@ -95,7 +98,7 @@ const Navbar = () => {
               sx={{
                 fontWeight: scanMatch ? "1000" : ",",
               }}
-              to="/mainScanner"
+              to="/scan"
               className={scanMatch ? "active-link" : ""}
               style={{ color: "black", textDecoration: "none" }}
             >
