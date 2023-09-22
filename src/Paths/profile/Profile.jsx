@@ -23,6 +23,7 @@ import { useNavigate } from "react-router-dom";
 import { Modal } from "@mui/material";
 import { useDispatch } from "react-redux";
 import { clearCart } from "../../util/slice/CartSlice";
+import { clearMerchantState } from "../../util/slice/merchantSlice";
 
 const theme = createTheme({
   components: {
@@ -54,6 +55,7 @@ const Profile = ({ darkMode, onToggleDarkMode }) => {
     Cookies.remove("authToken");
     localStorage.clear();
     dispatch(clearCart());
+    dispatch(clearMerchantState());
     navigate("/");
   };
 

@@ -1,5 +1,4 @@
 import { createSlice } from "@reduxjs/toolkit";
-
 const merchantSlice = createSlice({
   name: "merchantDetails",
   initialState: {
@@ -28,9 +27,37 @@ const merchantSlice = createSlice({
     },
     setOTDOrderOnClickId: (state, action) => {
       state.OTDOrderOnClickId = action.payload;
+      if (state.OTDOrderOnClickId === action.payload){
+        console.log('same restaurant')
+      }
+      else{
+        state.orders = []
+      }
     },
     setLandmarkCost: (state, action) => {
       state.landmarkCost = action.payload;
+    },
+   clearMerchantState: (state, action) => {
+      return {
+        data: [],
+        orderCart: [],
+        orders: [],
+        userDetails:null,
+        deliveryDetails:{},
+        previewOrders:[],
+        OTDRestaurants:null,
+        orderInView: 0,
+        categoryNameInView: "",
+        totalAmount: 0,
+        landmarkCost: 0,
+        receiptInView:null,
+        takeAwayPrice:0,
+        myLocation:{},
+        landmarks:null,
+        isOTD:false,
+        OTDtype:'delivery',
+        OTDOrderOnClickId:0,
+      }
     },
     setDeliveryDetails: (state, action) => {
       state.deliveryDetails = action.payload;
@@ -258,6 +285,7 @@ export const {
   setTakeAwayPrice,
   setLocation,
   initOTD,
+  clearMerchantState,
   setOTDRestaurants,
   setLandmarks,
   handlePreview,

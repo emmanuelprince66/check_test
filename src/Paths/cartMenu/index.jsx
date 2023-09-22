@@ -51,7 +51,9 @@ const RestaurantMenu = () => {
   const menu = useMenu(idToUse);
   const category = useRestaurantCategory(idToUse);
   const navigate = useNavigate();
-  useEffect(() => {
+  // this adds the menu as the orderCart which can be used subsequently
+  // adds other fields  - count,subTotal 
+   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 1, subTotal: parseFloat(order.price) };
     });
@@ -61,6 +63,7 @@ const RestaurantMenu = () => {
     }
   }, [orderInView, dispatch]);
 
+  // this is called when the order viewing the menu has changed 
   useEffect(() => {
     const filteredResult = menu?.data?.menu?.map((order) => {
       return { ...order, count: 1, subTotal: parseFloat(order.price) };
@@ -70,7 +73,7 @@ const RestaurantMenu = () => {
       dispatch(addMenu(filteredResult));
     }
   }, [orderInView, menu?.data?.menu]);
-
+// targets categoryName 
   useEffect(() => {
     const selectedCategoryName =
       category?.data?.categories[categoryInView]?.name;
@@ -136,7 +139,7 @@ const RestaurantMenu = () => {
           ) : null}{" "}
         </div>
 
-
+{/* eat-in and takeaway buttons */}
 {
   !isOTD?
           <div
@@ -178,7 +181,7 @@ const RestaurantMenu = () => {
                   ? "var(--cart-deep-red)"
                   : "#EDEDED",
               padding: ".5em .8em",
-              borderRadius: "0em .5em .5em 0",
+              borderRadius: " .5em .5em ",
             }}
             onClick={() => handleOrderType("eat-out")}
           >
@@ -226,8 +229,8 @@ const RestaurantMenu = () => {
           </List>
         </Box>
       ) : null}
-
-      <Grid container justifyContent="space-between" rowGap="1em">
+{/* the menu list itself , it handles the preview,menu and skeleton here */}
+      <Grid container justifyContent="space-between" padding={'1em 0'} rowGap="1em">
         {!orders[orderInView - 1]?.menu ? (
           <Skeleton variant="rectangular" width={210} height={118} />
         ) : !preview ? (
@@ -260,7 +263,7 @@ const RestaurantMenu = () => {
             })
         )}
       </Grid>
-
+{/* save button and amounnt */}
       <Box
         sx={{
           background: "var(--grey-cart-btn)",

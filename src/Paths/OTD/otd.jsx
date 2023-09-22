@@ -15,7 +15,7 @@ import card1 from "../../assets/Card/card1.svg";
 import card2 from "../../assets/card2.svg";
 import useGetRestaurantsOTD from "../../hooks/useGetRestaurantsOTD";
 import { getLandmarks } from "../../hooks/useGetLandMarks";
-import { setOTDRestaurants } from "../../util/slice/merchantSlice";
+import { setOTDRestaurants ,setOTDOrderOnClickId} from "../../util/slice/merchantSlice";
 import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
@@ -30,13 +30,14 @@ const OTDMainPage = () => {
 
   const navigate = useNavigate();
   useEffect(() => {
+    // fetching the nearby OTD restaurants and adding the landmarks distance data to each
     const fetchResults = async () => {
       if (restaurants) {
         const userCoords = {
           lat: myLocation.latitude,
           long: myLocation.longitude,
         };
-  
+
         try {
           const results = await Promise.all(
             restaurants?.map(async (item) => {
@@ -48,27 +49,31 @@ const OTDMainPage = () => {
               return { ...item, data };
             })
           );
-  
+          // return restaurants not more than 20km around.
           const filteredResults = results?.filter((item) => {
-            const distance = parseInt(item?.data?.rows[0].elements[0]?.distance.text);
+            const distance = parseInt(
+              item?.data?.rows[0].elements[0]?.distance.text
+            );
             return distance <= 20;
           });
-  
-  
+
           // Dispatch the filtered results to the store
           if (filteredResults.length > 0) {
             dispatch(setOTDRestaurants(filteredResults));
           }
         } catch (error) {
-          console.error('Error fetching results:', error);
+          console.error("Error fetching results:", error);
         }
       }
     };
-  
+
     fetchResults();
   }, [restaurants, myLocation, dispatch]);
-      function handleClick(id) {
+  // navigate to the clicked restaurant.
+  function handleClick(id) {
     navigate(`/restaurant/${id}`);
+ dispatch(setOTDOrderOnClickId(id))
+
   }
   return (
     <div className="gpt3__restaurant">
@@ -85,7 +90,7 @@ const OTDMainPage = () => {
         <Typography fontWeight={700} fontSize={"1.6em"}>
           Order to Doorstep{" "}
         </Typography>
-
+        {/* Search Field */}
         <TextField
           label="Search Restaurant"
           sx={{ "& .MuiInputBase-root": { height: "44px" } }}
@@ -98,13 +103,13 @@ const OTDMainPage = () => {
             ),
           }}
         />
-
+        {/* Restaurants Near You text */}
         <Box>
           <Typography fontWeight={700} fontSize={"1.3em"}>
             Restaurants Near You{" "}
           </Typography>
         </Box>
-
+        {/* Landmark Items Box */}
         <Box
           sx={{
             display: "flex",
@@ -113,6 +118,7 @@ const OTDMainPage = () => {
             paddingLeft: "0em",
           }}
         >
+          {/* Array for the Skeleton */}
           {OTDRestaurants === null ? (
             Array.from({ length: 5 }).map((item, i) => {
               return (
@@ -153,7 +159,7 @@ const OTDMainPage = () => {
                     sx={{
                       display: "flex",
                       flexDirection: "column",
-                      height: "100%",
+                      height: "80%",
                       justifyContent: "space-between",
                       width: "100%",
                       padding: " .5em",
@@ -172,7 +178,14 @@ const OTDMainPage = () => {
                         sx={{ width: "15px", height: "13px" }}
                         src={clockIcon}
                       />
-                      <Typography sx={{ display: "flex", fontSize: "13px" }}>
+                      <Typography
+                        sx={{
+                          display: "flex",
+                          gap: ".8em",
+                          justifyContent: { xs: "space-between", md: "none" },
+                          fontSize: "13px",
+                        }}
+                      >
                         {item.openingTime + "-" + item.closingTime}{" "}
                         <span
                           style={{

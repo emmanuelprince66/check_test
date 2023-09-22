@@ -65,8 +65,6 @@ function clearCart(){
 }
   function handleClickMenu(id) {
     dispatch(setOrderInView(id));
-  console.log( location.pathname.includes('/restaurant'))
-  location.pathname.includes('/restaurant') ? dispatch(setOTDOrderOnClickId(params.id)) : null
     navigate("/restaurant/menu");
   }
   function handleRemoveOrder(id) {
@@ -137,7 +135,7 @@ function clearCart(){
                 :
                 "black",
               padding: ".5em .8em",
-              borderRadius: "0em .5em .5em 0",
+              borderRadius: " .5em ",
             }}
             onClick={() => handleOrderType("delivery")}
           >

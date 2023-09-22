@@ -1,12 +1,11 @@
 import { Typography, Container, Box } from "@mui/material";
-import React, { useState } from "react";
+import { useState } from "react";
 import infoCircle from "../../assets/Cart/info-circle.svg";
 import { useForm, Controller } from "react-hook-form";
 import {
   TextField,
   Button,
   Grid,
-  IconButton,
   InputAdornment,
   TextareaAutosize,
   InputLabel,
@@ -21,7 +20,6 @@ import del from "../../assets/Cart/trash.svg";
 import edit from "../../assets/Cart/edit-2.svg";
 import { setDeliveryDetails } from "../../util/slice/merchantSlice";
 import BackArrow from "../../components/backArrow/BackArrow";
-import { getLandmarks } from "../../hooks/useGetLandMarks";
 import { useDispatch } from "react-redux";
 import { PlaceOrder } from "../../components/handlePlacingOrder/handlePlacingOrder";
 const RestaurantCheckout = () => {
@@ -30,28 +28,28 @@ const RestaurantCheckout = () => {
   const {
     handleSubmit,
     control,
-    field,
-    register,
     formState: { errors },
   } = useForm();
   const {
     data: merchantDetails,
-    myLocation,
+    userDetails,
     deliveryDetails,
     orders,
   } = useSelector((state) => state.merchantReducer);
   const dispatch = useDispatch();
+  // orders being sent.
   const ordersToSend = orders
     .filter((order) => order.items.length > 0)
     .map((item) => {
       const { menu, ...rest } = item;
       return rest;
     });
-
+// submit and dispatch form details.
   const onSubmit = (data) => {
     dispatch(setDeliveryDetails(data));
     setShowSummary(true);
   };
+  // buggy needs fix
   function handleCollapse(id) {
     if (collapse.id === id) {
       setCollapse({ ...collapse, status: !collapse.status });
@@ -77,6 +75,7 @@ const RestaurantCheckout = () => {
         <Typography fontSize={"1.3em"} fontWeight={700}>
           Checkout{" "}
         </Typography>
+        {/* delivery progress heading */}
         <Box
           sx={{
             padding: "0 1em",
@@ -154,6 +153,7 @@ const RestaurantCheckout = () => {
             <span> Summary </span>
           </div>
         </Box>
+        {/* order summary text when clicked */}
       </Box>
       {!showSummary ? (
         <>
@@ -205,7 +205,7 @@ const RestaurantCheckout = () => {
                   <Controller
                   name="phoneNumber"
                   control={control}
-                  defaultValue=""
+                  defaultValue={userDetails?.phoneNumber}
                   rules={{ required: "Phone Number is required" }}
                   render={({ field }) => (
 
@@ -464,6 +464,7 @@ const RestaurantCheckout = () => {
                     </svg>
                   </Box>
                 </Box>
+                {/* table for orders */}
                 <div
                   style={{
                     display:
@@ -478,7 +479,7 @@ const RestaurantCheckout = () => {
             );
           })}
 
-          <Box sx={{}}>
+          <Box >
             <Typography
               marginBottom={"1em"}
               fontWeight={700}
@@ -527,7 +528,7 @@ const RestaurantCheckout = () => {
               </span>
             </Box>
           </Box>
-
+{/* handle placing orders here */}
           <PlaceOrder restaurant={merchantDetails.restaurant} />
         </Box>
       )}{" "}

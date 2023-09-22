@@ -76,12 +76,13 @@ const Cart = () => {
   const currentTheme = useTheme();
 
   const {
-    data: merchantDetails,
+    data,
     orders,
     isOTD,
     takeAwayPrice,
     totalAmount,
-  } = useSelector((state) => state.merchantReducer);
+  } = useSelector((state) => state?.merchantReducer);
+  const merchantDetails = data
 const navigate = useNavigate()
 function setOTD (){
   dispatch(initOTD(true))
