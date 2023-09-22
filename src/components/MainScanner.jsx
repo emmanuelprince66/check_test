@@ -1,5 +1,6 @@
 import React from "react";
 import Navbar from "./navbar/Navbar";
+
 import Qrscanner from "./Qrscanner";
 import {
   Box,
@@ -31,6 +32,7 @@ const MainScanner = () => {
         <SuperMrktScanner />
       </Box>
       {/* supermarket scanner  ends*/}
+
       <Navbar />
     </Box>
   );

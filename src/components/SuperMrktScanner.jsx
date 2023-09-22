@@ -3,6 +3,7 @@ import Navbar from "./navbar/Navbar";
 import Qrscanner from "./Qrscanner";
 import { Box, CircularProgress, Typography, Button } from "@mui/material";
 import { useState, useEffect } from "react";
+import { ToastContainer, toast } from "react-toastify";
 
 const SuperMrktScanner = () => {
   const [showScanner, setShowScanner] = useState(false);
@@ -44,6 +45,7 @@ const SuperMrktScanner = () => {
       </Box>
 
       {/* Scanner */}
+      <ToastContainer />
 
       <Navbar />
     </div>

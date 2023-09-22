@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 import QrReader from "react-qr-scanner";
 import { Box, CircularProgress, Typography, Button } from "@mui/material";
@@ -6,6 +6,9 @@ import { useNavigate } from "react-router-dom";
 import { Dialog } from "@mui/material";
 import { Slide } from "@mui/material";
 import WelcomeUser from "./WelcomeUser";
+import { ToastContainer, toast } from "react-toastify";
+
+import useSuperMarket from "../hooks/useSuperMarket";
 
 const Transition = React.forwardRef(function Transition(props, ref) {
   return <Slide direction="up" ref={ref} {...props} />;
@@ -16,21 +19,50 @@ const Qrscanner = () => {
 
   const [open, setOpen] = useState(false);
   const handleClose = () => setOpen(false);
+  const [superMarketId, setSuperMarketId] = useState("");
   const [showProgress, setShowProgress] = useState(false);
 
-  const welcomeUser = () => {
-    setShowProgress(false);
-    setOpen(true);
+  const { data: superMarket } = useSuperMarket(superMarketId);
 
-    setTimeout(() => {
-      handleClose();
-      navigate("/scan");
-    }, 3000);
+  const welcomeUser = () => {
+    const storedSuperMarketId = localStorage.getItem("myData");
+    const superMarketData = superMarket[0].find(
+      (item) => item.id.toString() === storedSuperMarketId
+    );
+
+    if (superMarketData) {
+      setShowProgress(false);
+      setOpen(true);
+
+      setTimeout(() => {
+        handleClose();
+        navigate("/scan");
+      }, 3000);
+      return;
+    }
+
+    notifyErr("Error Fetching Supermarket");
+    console.log("error");
+    setShowProgress(false);
+  };
+  const notifyErr = (message) => {
+    toast.error(message, {
+      position: "top-center",
+      autoClose: 2000,
+      hideProgressBar: false,
+      closeOnClick: true,
+      pauseOnHover: true,
+      draggable: true,
+      progress: undefined,
+      theme: "dark",
+    });
   };
 
   const handleQrScan = (data) => {
     if (data) {
-      localStorage.setItem("myData", data.text);
+      const result = data.text;
+      localStorage.setItem("myData", result);
+      setSuperMarketId(result);
       playNotificationSound();
       setShowProgress(true);
       setTimeout(() => {

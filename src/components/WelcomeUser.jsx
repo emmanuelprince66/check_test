@@ -13,6 +13,7 @@ const WelcomeUser = () => {
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
+    console.log(val);
     val ? setSuperMarketKey(val) : "";
   }, []);
   return (

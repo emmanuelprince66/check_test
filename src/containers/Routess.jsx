@@ -62,6 +62,7 @@ const Routess = () => {
 
             <Route index path="/transactions" element={<Transaction />} />
             <Route index path="/mainScanner" element={<MainScanner />} />
+            <Route index path="/scan" element={<Scan />} />
             <Route index path="/cart" element={<Cart />} />
             <Route path="/paybills" element={<PayBills />} />
             <Route path="/wallet" element={<Wallet />} />

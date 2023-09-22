@@ -63,6 +63,7 @@ const Scan = () => {
 
   useEffect(() => {
     const val = localStorage.getItem("myData");
+    console.log(val);
     if (val) {
       setSuperMarketKey(val);
       setSuperMarketEntry(true);

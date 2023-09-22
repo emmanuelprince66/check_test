@@ -8,7 +8,6 @@ import { useTheme } from "@mui/material";
 import vcart from "../../images/practise/vcart.svg";
 import { CircularProgress } from "@mui/material";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer, toast } from "react-toastify";
 import { useNavigate } from "react-router-dom";
 import { useDispatch } from "react-redux";
 import { addToCart } from "../../util/slice/CartSlice";
@@ -48,6 +47,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     onSuccess,
     onError
   );
+  console.log(superMarketP);
   const currentTheme = useTheme();
   const decrement = () => {
     if (count > 1 && count != 0) {
@@ -68,7 +68,7 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     setOpen(false);
     setErrState(true);
     notifyErr("Error Fetching Product");
-    console.log("err func");
+    setResult("");
   }
   // i have to work on a better version of this code
   const handleModal = (res) => {
@@ -78,21 +78,6 @@ const Scanner = ({ companyName, companyLocation, setShowScanner }) => {
     }
     setResult(res);
     setShowProgress(true);
-    setTimeout(() => {
-      console.log(errState);
-      setShowProgress(false);
-      if (superMarketP && onSuccess()) {
-        console.log(superMarketP);
-        setOpen(true);
-        setShowProgress(false);
-        return;
-      } else if (errState) {
-        console.log(errState);
-        setOpen(false);
-        return;
-      }
-      setShowProgress(false);
-    }, 3000);
   };
 
   const defaultComputedPrice = !superMarketP?.price || !count ? 0 : null;

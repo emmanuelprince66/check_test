@@ -58,8 +58,9 @@ const Navbar = () => {
         <ul
           style={{
             display: "flex",
-            justifyContent: "space-between",
+            justifyContent: "space-around",
             listStyleType: "none",
+            paddingX: "1rem ",
           }}
         >
           <li>
@@ -100,7 +101,13 @@ const Navbar = () => {
             >
               <div className="gpt3__navbar">
                 <img src={scan} alt="scan-logo" />
-                <MyTypography>Scan</MyTypography>
+                <MyTypography
+                  sx={{
+                    marginX: "3px",
+                  }}
+                >
+                  Scan
+                </MyTypography>
               </div>
             </Link>
           </li>
@@ -135,7 +142,13 @@ const Navbar = () => {
             >
               <div className="gpt3__navbar">
                 <img src={cart} alt="cart-logo" />
-                <MyTypography>Cart</MyTypography>
+                <MyTypography
+                  sx={{
+                    marginX: "3px",
+                  }}
+                >
+                  Cart
+                </MyTypography>
               </div>
             </Link>
           </li>
