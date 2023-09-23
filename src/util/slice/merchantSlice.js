@@ -12,7 +12,7 @@ const merchantSlice = createSlice({
     orderInView: 0,
     categoryNameInView: "",
     totalAmount: 0,
-    landmarkCost: 0,
+    landmarkCost: {},
     receiptInView:null,
     takeAwayPrice:0,
     myLocation:{},
@@ -196,9 +196,11 @@ const merchantSlice = createSlice({
     ...item,id:i + 1
   }
 })
-console.log(action.payload)
 
 state.totalAmount -= state.orders[action.payload - 1]?.amount
+if (state.OTDtype === 'delivery' && action.payload === 1 ){
+state.landmarkCost = {}
+}
     },
     clearRestaurantCart: (state, action) => {
       state.orders = state.orders.filter(

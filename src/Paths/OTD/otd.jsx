@@ -141,7 +141,7 @@ const OTDMainPage = () => {
                     padding: ".3em 0",
                     boxShadow:
                       " 0px 2px 1px -1px hsla(0, 0%, 0%, 0.05), 0px 1px 1px 0px hsla(0, 0%, 0%, 0.05), 0px 1px 3px 0px hsla(0, 0%, 0%, 0.05)",
-                    height: "22vh",
+                    height: "15vh",
                     display: "flex",
                   }}
                 >
@@ -149,7 +149,7 @@ const OTDMainPage = () => {
                     sx={{
                       width: "35%",
                       borderRadius: "4px 4px ",
-                      height: "auto",
+                      height:'auto',
                     }}
                     variant="rounded"
                     alt="Menu Item Image"
@@ -163,8 +163,9 @@ const OTDMainPage = () => {
                       height: "100%",
                       width: "100%",
                       position:'relative',
+                      justifyContent:'center',
                       padding: " .5em",
-                      gap:'.5em'
+                      gap:'.4em'
                     }}
                   >
                     <Typography

@@ -170,7 +170,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
       if (location.pathname === "/cart") {
         ordersDelivery.length > 0 && landmarkCost.amount !== undefined
           ? navigate("/restaurant-checkout")
-          : landmarkCost.amount === undefined
+          : landmarkCost.amount === undefined && OTDtype === 'pick-up'
           ? notify("Choose a Landmark!")
           : itemInCart
           ? setOpen(true)
@@ -206,10 +206,10 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
   const handleClose7 = () => {
     setOpenReceipt(false);
   };
-  const closeLocationOptions = () => {
+const  closeLocationOptions = ()=>{
     setOpenLocationOptions(false);
-  };
-  function handleOpenLocationOptions() {
+  }
+ const  handleOpenLocationOptions =()=> {
     setOpenLocationOptions(true);
     getLandmarks(myLocation.latitude, myLocation.longitude)
       .then((res) => {
@@ -672,18 +672,19 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
                 justifyContent: "space-between",
               }}
             >
-              <Typography sx={{ whiteSpace: "nowrap", fontSize: ".8em" }}>
+              <Typography sx={{ whiteSpace: "nowrap", fontSize: ".9em" }}>
                 {" "}
                 Delivery Fee{" "}
               </Typography>
               {!landmarkCost.amount ? (
                 <Button
-                  onClick={handleOpenLocationOptions}
+                  onClick={()=>handleOpenLocationOptions()}
                   sx={{
                     color: "var(--currency-green)",
                     minWidth: "30px",
                     padding: "0",
                     textTransform: "none",
+                    textAlign:'right',
                     fontSize: ".75em",
                     fontWeight: "600",
                   }}
@@ -1817,7 +1818,7 @@ export const PlaceOrder = ({ supermarketCart, restaurant }) => {
               padding: "1em 0",
             },
           }}
-          open={openLocationOptions}
+          open={true}
           onClose={closeLocationOptions}
           TransitionComponent={Transition}
         >

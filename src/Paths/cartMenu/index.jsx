@@ -128,13 +128,14 @@ const RestaurantMenu = () => {
               sx={{
                 cursor: "pointer",
                 borderRadius: ".5em",
+                textTransform:'none',
                 padding: ".2em .8em",
                 color: "grey",
                 border: "1px solid var(--primary-red)",
               }}
             >
               {" "}
-              Preview{" "}
+              Preview Items{" "}
             </Button>
           ) : null}{" "}
         </div>
