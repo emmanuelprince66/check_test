@@ -50,16 +50,74 @@ const Home = () => {
       setShowScanner(true);
     }, 4000);
   }, []);
-
+  const handleShowAmount = () => {
+    !isTextVisible
+      ? setIsTextVisible(!isTextVisible)
+      : setIsTextVisible(!isTextVisible);
+  };
   return (
     <AuthProvider>
-      <div className="gpt3__home">
-        {/* <Card
+    <div className="gpt3__home">
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          marginBottom: "0.2rem",
+        }}
+      >
+        <Box
           sx={{
-            height: "92px",
-            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            gap: "0.5rem",
+          }}
+        >
+          <QrCodeRoundedIcon
+            sx={{
+              color: currentTheme.palette.type === "light" ? "#000" : "#eeee",
+              fontSize: "2rem",
+            }}
+          />
+          <Typography
+            sx={{
+              color:
+                currentTheme.palette.type === "light" ? "#1e1e1e" : "#ffff",
+              fontFamily: "raleWay",
+              fontWeight: "1000",
+              fontSize: "16px",
+            }}
+          >
+            {`${user.data ? user.data.firstName : ""} ${
+              user.data ? user.data.lastName : ""
+            }  `}
+          </Typography>
+        </Box>
+
+        <Box>
+          <NotificationsRoundedIcon
+            sx={{
+              color: currentTheme.palette.type === "light" ? "#000" : "#eeee",
+              fontSize: "1.8rem",
+            }}
+          />
+        </Box>
+      </Box>
+
+      {/* Account Box Card */}
+      <Box
+        sx={{
+          display: "flex",
+          justifyContent: "center",
+          width: "100%",
+        }}
+      >
+        <Card
+          sx={{
+            maxheight: "125px",
+            height: "125px",
+            width: "341px",
             borderRadius: "16px",
-            padding: "0.5rem",
             marginY: "1rem",
             backgroundColor:
               currentTheme.palette.type === "light" ? "#FFEDED" : "#2C2C2E",
@@ -71,9 +129,15 @@ const Home = () => {
               display: "flex",
               justifyContent: "space-between",
               alignItems: "start",
+              padding: "1.2rem 0.7rem 0.4rem 0.7rem ",
             }}
           >
-            <Box>
+            <Box
+              sx={{
+                flex: "1",
+                width: "100%",
+              }}
+            >
               {!isTextVisible ? (
                 <Typography
                   sx={{
@@ -82,7 +146,7 @@ const Home = () => {
                     fontSize: "18px",
                   }}
                 >
-                  ******************
+                  ***********
                 </Typography>
               ) : (
                 <Typography
@@ -107,28 +171,27 @@ const Home = () => {
                 justifyContent: "center",
                 flexDirection: "column",
                 alignItems: "end",
-                width: "100%",
               }}
             >
               <Box
+                onClick={() => handleShowAmount()}
                 sx={{
                   display: "flex",
                   alignItems: "center",
-                  gap: "0.5rem",
+                  gap: "8px",
+                  width: "103px",
+                  height: "28px",
                   borderRadius: "8px",
                   backgroundColor: "rgba(220, 0, 25, 0.1)",
                   padding: "4px 8px 4px 8px",
+                  cursor: "pointer",
                 }}
               >
                 {isTextVisible ? (
-                  <Visibility
-                    sx={{ color: "#C57600", fontSize: "15px" }}
-                    onClick={() => setIsTextVisible(false)}
-                  />
+                  <Visibility sx={{ color: "#C57600", fontSize: "15px" }} />
                 ) : (
                   <VisibilityOff
                     sx={{ color: "#C57600", fontSize: "15px" }}
-                    onClick={() => setIsTextVisible(true)}
                   />
                 )}
                 <Typography
@@ -144,112 +207,172 @@ const Home = () => {
                     paddingTop: "1px",
                   }}
                 >
-                  Show Balance
+                  {isTextVisible ? "Hide Balance" : "Show Balance"}
                 </Typography>
-              </Box>
-              <Box
-                sx={{
-                  height: "36px",
-                  background:
-                    "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
-                  borderRadius: "8px",
-                  display: "flex",
-                  alignItems: "center",
-                  justifyContent: "center",
-                  gap: "0.5rem",
-                  width: "103px",
-                  marginTop: "1rem",
-                }}
-              >
-                <img src={plusLogo} alt="plus-logo" />
-                <Link to="/fwallet">
-                  <Typography
-                    sx={{
-                      color: "#fff",
-                      fontSize: "12px",
-                      fontFamily: "raleWay",
-                    }}
-                  >
-                    Fund Wallet
-                  </Typography>
-                </Link>
               </Box>
             </Box>
           </Box>
-        </Card> */}
 
-        <Acctbox />
-
-        {/* Header */}
-
-        {/* CARD */}
-
-        <Card
-          sx={{
-            display: "flex",
-            alignItems: "center",
-            justifyContent: "center",
-            padding: "0.3rem",
-            gap: "7px",
-            borderRadius: "11px",
-            width: { xs: "95%", sm: "48%", md: "70%", lg: "70%" },
-            mx: "auto",
-            marginBottom: "2rem",
-            marginTop: "0.5rem",
-            backgroundColor:
-              currentTheme.palette.type === "light"
-                ? "rgba(232, 229, 229, 1)"
-                : "#2C2C2E",
-          }}
-        >
-          <img src={exclamgreen} alt="ex" />
-          <Typography
+          <Box
             sx={{
-              color: currentTheme.palette.type === "light" ? "#000" : "#fff",
-              paddingTop: "1px",
-              fontFamily: "raleWay",
-              fontWeight: "400",
-              fontSize: "16px",
+              display: "flex",
+              justifyContent: {
+                xs: "space-evenly",
+                sm: "space-evenly",
+                md: "space-evenly",
+                lg: "space-evenly",
+              },
+              alignItems: "center",
+              gap: { xs: "0.5rem" },
+              paddingX: { xs: "0.5rem" },
+              paddingBottom: "1rem",
             }}
           >
-            Scan Qr code to start shopping.
-          </Typography>
+            <Box
+              sx={{
+                height: "36px",
+                background:
+                  "linear-gradient(180deg, #31DC61 0%, #19953C 100%)",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                width: "145px",
+                marginTop: "1rem",
+              }}
+            >
+              <img src={plusLogo} alt="plus-logo" />
+              <Link to="/fwallet">
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "14px",
+                    fontWeight: "400px",
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Fund Wallet
+                </Typography>
+              </Link>
+            </Box>
+
+            <Box
+              sx={{
+                height: "36px",
+                background: "#EB001B",
+                borderRadius: "8px",
+                display: "flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "0.5rem",
+                width: "156px",
+                marginTop: "1rem",
+              }}
+            >
+              <Link to="/wtransfer">
+                <Typography
+                  sx={{
+                    color: "#fff",
+                    fontSize: "14px",
+                    fontWeight: "400px",
+                    fontFamily: "raleWay",
+                  }}
+                >
+                  Transfer
+                </Typography>
+              </Link>
+            </Box>
+          </Box>
         </Card>
+      </Box>
 
-        {/* Scanner*/}
+      {/* Account Box Card end */}
 
-        <Box
+      <Typography
+        sx={{
+          color: currentTheme.palette.type === "light" ? "#1e1e1e" : "#ffff",
+          fontFamily: "raleWay",
+          fontWeight: "1000",
+          fontSize: "16px",
+          marginBottom: "1rem",
+        }}
+      >
+        Your Insights
+      </Typography>
+
+      <HomeCard />
+
+      {/* Header */}
+
+      {/* CARD */}
+      {/* 
+      <Card
+        sx={{
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          padding: "0.3rem",
+          gap: "7px",
+          borderRadius: "11px",
+          width: { xs: "95%", sm: "48%", md: "70%", lg: "70%" },
+          mx: "auto",
+          marginBottom: "2rem",
+          marginTop: "0.5rem",
+          backgroundColor:
+            currentTheme.palette.type === "light"
+              ? "rgba(232, 229, 229, 1)"
+              : "#2C2C2E",
+        }}
+      >
+        <img src={exclamgreen} alt="ex" />
+        <Typography
           sx={{
-            maxHeight: "19rem",
-            overflow: "hidden",
-            display: "flex",
-            justifyContent: "center",
-            alignItems: "center",
-            borderRadius: "20px",
-            marginBottom: "20%",
-
-            padding: "1rem",
+            color: currentTheme.palette.type === "light" ? "#000" : "#fff",
+            paddingTop: "1px",
+            fontFamily: "raleWay",
+            fontWeight: "400",
+            fontSize: "16px",
           }}
         >
-          {showScanner ? (
-            <Qrscanner />
-          ) : (
-            <CircularProgress
-              size="3.5rem"
-              sx={{
-                marginTop: "3rem",
-              }}
-              color="error"
-            />
-          )}
-        </Box>
+          Scan Qr code to start shopping.
+        </Typography>
+      </Card> */}
 
-        {/* Scanner */}
+      {/* Scanner*/}
 
-        {/* NAVBAR */}
-      </div>
-    </AuthProvider>
-  );
+      {/* <Box
+        sx={{
+          maxHeight: "19rem",
+          overflow: "hidden",
+          display: "flex",
+          justifyContent: "center",
+          alignItems: "center",
+          borderRadius: "20px",
+          marginBottom: "20%",
+
+          padding: "1rem",
+        }}
+      >
+        {showScanner ? (
+          <Qrscanner />
+        ) : (
+          <CircularProgress
+            size="3.5rem"
+            sx={{
+              marginTop: "3rem",
+            }}
+            color="error"
+          />
+        )}
+      </Box> */}
+
+      {/* Scanner */}
+
+      {/* NAVBAR */}
+      <Navbar />
+    </div>
+  </AuthProvider>  );
 };
 
 export default Home;

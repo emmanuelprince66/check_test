@@ -20,6 +20,10 @@ import { useDispatch } from "react-redux";
 import { useSelector } from "react-redux";
 import { useNavigate } from "react-router-dom";
 import BackArrow from "../../components/backArrow/BackArrow";
+import { useTheme } from "@mui/material";
+import searchLogo from "../../images/searchLogo.svg";
+import dashdot from "../../images/dashdot.svg";
+
 import { convertTo12HourFormat } from "../../helpers/getAmPmFormat";
 const OTDMainPage = () => {
   const data = useGetRestaurantsOTD();
@@ -28,6 +32,7 @@ const OTDMainPage = () => {
     (state) => state.merchantReducer
   );
   const dispatch = useDispatch();
+  const currentTheme = useTheme();
 
   const navigate = useNavigate();
   useEffect(() => {
@@ -53,7 +58,7 @@ const OTDMainPage = () => {
           // return restaurants not more than 20km around.
           const filteredResults = results?.filter((item) => {
             const distance = parseInt(
-              item?.data?.rows[0].elements[0]?.distance.text
+              item?.data?.rows[0].elements[0]?.distance?.text
             );
             return distance <= 20;
           });
@@ -93,17 +98,43 @@ const OTDMainPage = () => {
         </Typography>
         {/* Search Field */}
         <TextField
-          label="Search Restaurant"
-          sx={{ "& .MuiInputBase-root": { height: "44px" } }}
-          fullWidth
-          InputProps={{
-            startAdornment: (
-              <InputAdornment position="start">
-                <SearchIcon />
-              </InputAdornment>
-            ),
-          }}
-        />
+            sx={{
+              width: { xs: "100%", sm: "25rem", md: "327px" },
+              mx: "auto",
+              color:
+                currentTheme.palette.type === "light" ? "#727272" : "#D4D4D4",
+              borderRadius: "10px",
+              background:
+                currentTheme.palette.type === "light" ? "#F8F8F8" : "#242424",
+              "& .MuiOutlinedInput-root": {
+                "&.Mui-focused fieldset": {
+                  borderColor: "#C57600", // Set the border color on focus here
+                },
+              },
+            }}
+            required
+            placeholder="Search Restaurant"
+            variant="outlined"
+            id="address-input"
+            InputProps={{
+              startAdornment: (
+                <InputAdornment>
+                  <img src={searchLogo} alt="s-logo" />
+                  &nbsp;&nbsp;
+                </InputAdornment>
+              ),
+              endAdornment: (
+                <InputAdornment>
+                  <img src={dashdot} alt="dash-logo" />
+                  &nbsp;&nbsp;
+                </InputAdornment>
+              ),
+            }}
+            aria-describedby="outlined-weight-helper-text"
+            inputProps={{
+              "aria-label": "weight",
+            }}
+          />
         {/* Restaurants Near You text */}
         <Box>
           <Typography fontWeight={700} fontSize={"1.3em"}>

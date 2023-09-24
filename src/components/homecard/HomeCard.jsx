@@ -27,7 +27,7 @@ const cards = [
         "image" : locationIcon,
         "title" : " OTD",
         "small": "Order to Doorstep",
-        "pathname": "/rlocation"
+        "pathname": "/order-out"
 
     },
     {
